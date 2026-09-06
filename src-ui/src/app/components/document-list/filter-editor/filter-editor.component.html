@@ -80,6 +80,196 @@
           shortcutKey="i"></pngx-filterable-dropdown>
         }
 
+        @if (
+          permissionsService.currentUserCan(
+            PermissionAction.View,
+            PermissionType.Folder
+          ) && folderSelectionModel.items.length > 0
+        ) {
+          <div
+            class="btn-group folder-filter-dropdown flex-fill fade"
+            [class.show]="show()"
+            ngbDropdown
+            role="group"
+            (openChange)="$event && onFoldersDropdownOpen()"
+          >
+            <button
+              class="btn btn-sm"
+              ngbDropdownToggle
+              [class.btn-primary]="folderSelectionModel.selectionSize() > 0"
+              [class.btn-outline-primary]="
+                folderSelectionModel.selectionSize() === 0
+              "
+              [disabled]="disabled"
+            >
+              <i-bs name="folder2-open"></i-bs>
+              <div class="d-none d-sm-inline ms-1" i18n>Folders</div>
+              @if (folderSelectionModel.totalCount > 0) {
+                <pngx-clearable-badge
+                  [number]="folderSelectionModel.totalCount"
+                  [selected]="folderSelectionModel.selectionSize() > 0"
+                  (cleared)="folderSelectionModel.clear(); updateRules()"
+                ></pngx-clearable-badge>
+              }
+            </button>
+            <div class="dropdown-menu py-0 shadow" ngbDropdownMenu>
+              <div class="list-group list-group-flush">
+                <div class="list-group-item d-flex">
+                  <div class="btn-group btn-group-xs flex-fill" role="group">
+                    <input
+                      [(ngModel)]="folderSelectionModel.intersection"
+                      (ngModelChange)="
+                        folderSelectionModel.toggleIntersection(); updateRules()
+                      "
+                      type="radio"
+                      class="btn-check"
+                      id="folderFilterInclude"
+                      name="folderFilterIntersection"
+                      value="include"
+                    />
+                    <label
+                      class="btn btn-outline-primary"
+                      for="folderFilterInclude"
+                      i18n
+                      >Include</label
+                    >
+                    <input
+                      [(ngModel)]="folderSelectionModel.intersection"
+                      (ngModelChange)="
+                        folderSelectionModel.toggleIntersection(); updateRules()
+                      "
+                      type="radio"
+                      class="btn-check"
+                      id="folderFilterExclude"
+                      name="folderFilterIntersection"
+                      value="exclude"
+                    />
+                    <label
+                      class="btn btn-outline-primary"
+                      for="folderFilterExclude"
+                      i18n
+                      >Exclude</label
+                    >
+                  </div>
+                </div>
+                <div class="list-group-item">
+                  <div class="input-group input-group-sm">
+                    <input
+                      class="form-control"
+                      type="text"
+                      spellcheck="false"
+                      [(ngModel)]="folderFilterText"
+                      placeholder="Search folders"
+                      i18n-placeholder
+                    />
+                    <button
+                      type="button"
+                      class="btn btn-outline-secondary"
+                      [disabled]="!folderFilterText"
+                      (click)="folderFilterText = ''"
+                      title="Clear search"
+                      i18n-title
+                    >
+                      <i-bs name="x"></i-bs>
+                    </button>
+                  </div>
+                  <div class="d-flex justify-content-between mt-2">
+                    <button
+                      type="button"
+                      class="btn btn-link btn-sm p-0"
+                      (click)="expandAllFolderFilterBranches()"
+                      [disabled]="!!folderFilterText"
+                      i18n
+                    >
+                      Expand all
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-link btn-sm p-0"
+                      (click)="collapseAllFolderFilterBranches()"
+                      [disabled]="!!folderFilterText"
+                      i18n
+                    >
+                      Collapse all
+                    </button>
+                  </div>
+                </div>
+                <div class="folder-filter-items">
+                  @for (folder of visibleFolderFilterItems; track folder.id) {
+                    <button
+                      type="button"
+                      class="list-group-item list-group-item-action d-flex align-items-center p-2 border-top-0 border-start-0 border-end-0 border-bottom folder-filter-item"
+                      [class.opacity-50]="
+                        getFolderFilterDocumentCount(folder) === 0
+                      "
+                      [style.--depth]="(folder.depth ?? 0) + 1"
+                      (click)="toggleFolderFilterSelection(folder)"
+                      [disabled]="disabled"
+                    >
+                      <span
+                        class="folder-filter-expander me-1"
+                        [class.invisible]="!folderHasChildren(folder)"
+                        (click)="
+                          $event.stopPropagation();
+                          toggleFolderFilterBranch(folder)
+                        "
+                      >
+                        <i-bs
+                          [name]="
+                            folderIsCollapsed(folder)
+                              ? 'chevron-right'
+                              : 'chevron-down'
+                          "
+                        ></i-bs>
+                      </span>
+                      <span class="selected-icon me-1">
+                        @if (
+                          folderSelectionModel.get(folder.id) ===
+                          ToggleableItemState.Selected
+                        ) {
+                          <i-bs width="1em" height="1em" name="check"></i-bs>
+                        }
+                        @if (
+                          folderSelectionModel.get(folder.id) ===
+                          ToggleableItemState.Excluded
+                        ) {
+                          <i-bs width="1em" height="1em" name="x"></i-bs>
+                        }
+                      </span>
+                      <span class="folder-filter-name flex-grow-1 text-start">
+                        <i-bs
+                          [name]="folder.is_default ? 'inbox' : 'folder'"
+                          class="me-1"
+                        ></i-bs>
+                        <span>{{ folder.name }}</span>
+                        @if (folderFilterText && folder.full_path) {
+                          <small class="text-muted ms-1">{{
+                            folder.full_path
+                          }}</small>
+                        }
+                      </span>
+                      <span
+                        class="badge bg-light text-dark rounded-pill ms-auto"
+                      >
+                        {{ getFolderFilterDocumentCount(folder) }}
+                      </span>
+                    </button>
+                  } @empty {
+                    <div class="list-group-item text-muted small" i18n>
+                      No folders match your search.
+                    </div>
+                  }
+                </div>
+                <div class="list-group-item list-group-item-note pt-1 pb-2">
+                  <small i18n
+                    >Expand branches or search by folder name/path.</small
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+
         @if (permissionsService.currentUserCan(PermissionAction.View, PermissionType.CustomField) && customFields().length > 0) {
           <pngx-custom-fields-query-dropdown class="flex-fill fade" [class.show]="show()" title="Custom fields" icon="ui-radios" i18n-title
           [(selectionModel)]="customFieldQueriesModel"
@@ -109,4 +299,4 @@
         </div>
       </div>
     </div>
-  </div>
+</div>
