@@ -5,6 +5,7 @@ import { ActivatedRoute, Router, convertToParamMap } from '@angular/router'
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap'
 import { NgxBootstrapIconsModule, allIcons } from 'ngx-bootstrap-icons'
 import { Subject, of, throwError } from 'rxjs'
+import { EditDialogMode } from 'src/app/components/common/edit-dialog/edit-dialog.component'
 import { Folder } from 'src/app/data/folder'
 import { PermissionsService } from 'src/app/services/permissions.service'
 import { DocumentService } from 'src/app/services/rest/document.service'
@@ -153,11 +154,16 @@ describe('FoldersComponent', () => {
   })
 
   it('should open a create dialog', () => {
+    const setDialogMode = jest.fn()
     const modalSpy = jest.spyOn(modalService, 'open').mockReturnValue({
-      componentInstance: { succeeded: of(null) },
+      componentInstance: {
+        dialogMode: { set: setDialogMode },
+        succeeded: of(null),
+      },
     } as any)
     component.createFolder(null)
     expect(modalSpy).toHaveBeenCalled()
+    expect(setDialogMode).toHaveBeenCalledWith(EditDialogMode.CREATE)
   })
 
   it('prevents duplicate moves while a request is pending', () => {
@@ -275,11 +281,16 @@ describe('FoldersComponent', () => {
   })
 
   it('should edit name and parent in a single folder dialog', () => {
+    const setDialogMode = jest.fn()
     const modalSpy = jest.spyOn(modalService, 'open').mockReturnValue({
-      componentInstance: { succeeded: of(null) },
+      componentInstance: {
+        dialogMode: { set: setDialogMode },
+        succeeded: of(null),
+      },
     } as any)
     component.renameFolder(component.foldersById.get(3)!)
     expect(modalSpy).toHaveBeenCalled()
+    expect(setDialogMode).toHaveBeenCalledWith(EditDialogMode.EDIT)
     expect(
       (modalSpy.mock.results[0].value as any).componentInstance.folders
     ).toEqual(component.roots)
