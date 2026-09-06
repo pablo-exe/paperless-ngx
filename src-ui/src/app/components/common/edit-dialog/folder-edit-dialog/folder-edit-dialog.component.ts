@@ -24,8 +24,18 @@ import { EditDialogComponent } from '../edit-dialog.component'
   ],
 })
 export class FolderEditDialogComponent extends EditDialogComponent<Folder> {
+  private foldersValue: Folder[] = []
+  parentOptions: Folder[] = []
+
   @Input()
-  folders: Folder[] = []
+  set folders(folders: Folder[]) {
+    this.foldersValue = folders ?? []
+    this.parentOptions = this.buildParentOptions()
+  }
+
+  get folders(): Folder[] {
+    return this.foldersValue
+  }
 
   constructor() {
     super()
@@ -42,7 +52,7 @@ export class FolderEditDialogComponent extends EditDialogComponent<Folder> {
     return $localize`Edit folder`
   }
 
-  get parentOptions(): Folder[] {
+  private buildParentOptions(): Folder[] {
     if (!this.folders?.length) return []
 
     const blocked = new Set<number>()

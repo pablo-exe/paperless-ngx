@@ -252,7 +252,7 @@ export class FoldersComponent
     const modal = this.modalService.open(FolderEditDialogComponent, {
       backdrop: 'static',
     })
-    modal.componentInstance.dialogMode = EditDialogMode.CREATE
+    modal.componentInstance.dialogMode.set(EditDialogMode.CREATE)
     modal.componentInstance.object = { parent: parent ? parent.id : null }
     modal.componentInstance.folders = this.roots
     modal.componentInstance.succeeded.subscribe(() => {
@@ -265,7 +265,7 @@ export class FoldersComponent
     const modal = this.modalService.open(FolderEditDialogComponent, {
       backdrop: 'static',
     })
-    modal.componentInstance.dialogMode = EditDialogMode.EDIT
+    modal.componentInstance.dialogMode.set(EditDialogMode.EDIT)
     modal.componentInstance.object = folder
     modal.componentInstance.folders = this.roots
     modal.componentInstance.succeeded.subscribe(() => {
