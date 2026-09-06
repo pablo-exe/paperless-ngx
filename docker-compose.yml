@@ -41,7 +41,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: paperless-local:folders-121417583
+    image: paperless-local:folders-82698f5b1
     restart: unless-stopped
     depends_on:
       - db
