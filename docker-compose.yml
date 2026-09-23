@@ -59,3 +59,8 @@ services:
       PAPERLESS_REDIS: redis://broker:6379
       PAPERLESS_DBHOST: db
       PAPERLESS_DBENGINE: postgresql
+      PAPERLESS_EMAIL_TASK_CRON: disable
+      PAPERLESS_WORKFLOW_SCHEDULED_TASK_CRON: disable
+      PAPERLESS_LLM_INDEX_TASK_CRON: disable
+      PAPERLESS_INDEX_TASK_CRON: disable
+      PAPERLESS_TRAIN_TASK_CRON: "30 4 * * *"
