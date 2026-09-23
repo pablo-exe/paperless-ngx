@@ -10,13 +10,13 @@ Esta guía documenta la funcionalidad de **navegación por carpetas** añadida a
 
 La feature introduce una **segunda forma de organizar documentos**, centrada en una jerarquía de carpetas navegable (experiencia tipo explorador de archivos), sin sustituir tags, correspondents, document types ni storage paths.
 
-| Aspecto | Comportamiento |
-|--------|----------------|
-| Entidad | `Folder` (modelo Django nuevo) |
+| Aspecto                 | Comportamiento                                                            |
+| ----------------------- | ------------------------------------------------------------------------- |
+| Entidad                 | `Folder` (modelo Django nuevo)                                            |
 | Relación con documentos | `Document.folder` (FK nullable en BD, **siempre rellena en la práctica**) |
-| Carpeta por defecto | **Inbox** (`is_default=True`), creada on-demand |
-| Mover documento | Cambio **lógico** (solo FK); **no** mueve archivos en disco |
-| Storage path | **Independiente**; sigue gobernando la ruta física |
+| Carpeta por defecto     | **Inbox** (`is_default=True`), creada on-demand                           |
+| Mover documento         | Cambio **lógico** (solo FK); **no** mueve archivos en disco               |
+| Storage path            | **Independiente**; sigue gobernando la ruta física                        |
 
 ## Decisión de arquitectura
 
@@ -45,12 +45,12 @@ Mantener esta separación es un **invariante de diseño**. Cualquier cambio futu
 
 ### `Folder` (`src/documents/models.py`)
 
-| Campo | Tipo | Notas |
-|-------|------|-------|
-| `name` | `CharField(128)` | Nombre visible |
-| `parent` | FK self, `CASCADE` | `null` = carpeta raíz |
-| `is_default` | `BooleanField` | Marca la carpeta **Inbox** |
-| `owner` | FK `User`, nullable | Hereda de `ModelWithOwner` |
+| Campo        | Tipo                | Notas                      |
+| ------------ | ------------------- | -------------------------- |
+| `name`       | `CharField(128)`    | Nombre visible             |
+| `parent`     | FK self, `CASCADE`  | `null` = carpeta raíz      |
+| `is_default` | `BooleanField`      | Marca la carpeta **Inbox** |
+| `owner`      | FK `User`, nullable | Hereda de `ModelWithOwner` |
 
 **Restricciones:**
 
@@ -106,18 +106,18 @@ La migración es **idempotente** en el backfill de Inbox. Al revertir, se elimin
 
 ## Backend — mapa de archivos
 
-| Archivo | Responsabilidad |
-|---------|-----------------|
-| `models.py` | `Folder`, `get_default_folder()`, FK en `Document` |
-| `migrations/0022_*.py` | Esquema + backfill |
-| `serialisers.py` | `FolderSerializer`, `FolderField`, validación en `DocumentSerializer`, `BulkEditSerializer.set_folder` |
-| `views.py` | `FolderViewSet` (árbol en list, borrado seguro) |
-| `filters.py` | `FolderFilterSet`, filtros `folder*` en `DocumentFilterSet` |
-| `bulk_edit.py` | `set_folder(doc_ids, folder)` |
-| `signals/handlers.py` | `set_folder` al consumir documento |
-| `apps.py` | Conexión de la señal |
-| `urls.py` | Registro `r"folders"` |
-| `management/commands/document_exporter.py` | Incluye `folders` en el manifest |
+| Archivo                                    | Responsabilidad                                                                                        |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
+| `models.py`                                | `Folder`, `get_default_folder()`, FK en `Document`                                                     |
+| `migrations/0022_*.py`                     | Esquema + backfill                                                                                     |
+| `serialisers.py`                           | `FolderSerializer`, `FolderField`, validación en `DocumentSerializer`, `BulkEditSerializer.set_folder` |
+| `views.py`                                 | `FolderViewSet` (árbol en list, borrado seguro)                                                        |
+| `filters.py`                               | `FolderFilterSet`, filtros `folder*` en `DocumentFilterSet`                                            |
+| `bulk_edit.py`                             | `set_folder(doc_ids, folder)`                                                                          |
+| `signals/handlers.py`                      | `set_folder` al consumir documento                                                                     |
+| `apps.py`                                  | Conexión de la señal                                                                                   |
+| `urls.py`                                  | Registro `r"folders"`                                                                                  |
+| `management/commands/document_exporter.py` | Incluye `folders` en el manifest                                                                       |
 
 ### API REST — `/api/folders/`
 
@@ -130,10 +130,10 @@ Sigue los mismos patrones que tags/correspondents:
 
 **Filtros (`FolderFilterSet`):**
 
-| Parámetro | Descripción |
-|-----------|-------------|
-| `is_root=true` | Solo carpetas sin padre (usado por el frontend para el árbol) |
-| `name`, `parent__id`, `is_default` | Filtros estándar |
+| Parámetro                          | Descripción                                                   |
+| ---------------------------------- | ------------------------------------------------------------- |
+| `is_root=true`                     | Solo carpetas sin padre (usado por el frontend para el árbol) |
+| `name`, `parent__id`, `is_default` | Filtros estándar                                              |
 
 **Listado con hijos anidados:**
 
@@ -157,11 +157,11 @@ Sigue los mismos patrones que tags/correspondents:
 
 La integración con el editor de filtros de Documents usa tipos de regla nuevos para evitar reutilizar semánticas existentes:
 
-| Rule type | Constante frontend | Query param |
-|-----------|--------------------|-------------|
-| `50` | `FILTER_FOLDER` | `folder__id` / `folder__isnull` |
-| `51` | `FILTER_HAS_FOLDER_ANY` | `folder__id__in` |
-| `52` | `FILTER_DOES_NOT_HAVE_FOLDER` | `folder__id__none` |
+| Rule type | Constante frontend            | Query param                     |
+| --------- | ----------------------------- | ------------------------------- |
+| `50`      | `FILTER_FOLDER`               | `folder__id` / `folder__isnull` |
+| `51`      | `FILTER_HAS_FOLDER_ANY`       | `folder__id__in`                |
+| `52`      | `FILTER_DOES_NOT_HAVE_FOLDER` | `folder__id__none`              |
 
 Estos IDs están registrados en `SavedViewFilterRule.RULE_TYPES` y en la migración `0023_add_folder_saved_view_filter_rules.py`. Si se cambian, también hay que actualizar saved views, frontend y tests.
 
@@ -188,18 +188,18 @@ Si en el futuro la carpeta afectara rutas físicas, habría que reevaluar si enc
 
 ## Frontend — mapa de archivos
 
-| Archivo | Responsabilidad |
-|---------|-----------------|
-| `data/folder.ts` | Interfaz TypeScript |
-| `services/rest/folder.service.ts` | API client; `getTree()` → `?is_root=true` |
-| `services/rest/document.service.ts` | Tipo `set_folder` en bulk edit |
-| `services/permissions.service.ts` | `PermissionType.Folder` |
-| `components/folders/` | Vista principal del explorador |
-| `components/common/edit-dialog/folder-edit-dialog/` | Crear/editar carpeta |
-| `utils/flatten-folders.ts` | Aplana árboles de carpetas preservando orden jerárquico para dropdowns |
-| `app-routing.module.ts` | Rutas `/folders`, `/folders/:id` |
-| `app-frame.component.html` | Entrada en sidebar |
-| `main.ts` | Iconos Bootstrap (`inbox`, `folderPlus`, etc.) |
+| Archivo                                             | Responsabilidad                                                        |
+| --------------------------------------------------- | ---------------------------------------------------------------------- |
+| `data/folder.ts`                                    | Interfaz TypeScript                                                    |
+| `services/rest/folder.service.ts`                   | API client; `getTree()` → `?is_root=true`                              |
+| `services/rest/document.service.ts`                 | Tipo `set_folder` en bulk edit                                         |
+| `services/permissions.service.ts`                   | `PermissionType.Folder`                                                |
+| `components/folders/`                               | Vista principal del explorador                                         |
+| `components/common/edit-dialog/folder-edit-dialog/` | Crear/editar carpeta                                                   |
+| `utils/flatten-folders.ts`                          | Aplana árboles de carpetas preservando orden jerárquico para dropdowns |
+| `app-routing.module.ts`                             | Rutas `/folders`, `/folders/:id`                                       |
+| `app-frame.component.html`                          | Entrada en sidebar                                                     |
+| `main.ts`                                           | Iconos Bootstrap (`inbox`, `folderPlus`, etc.)                         |
 
 ### Rutas y permisos
 
@@ -272,13 +272,13 @@ pytest documents/tests/test_folders.py \
 
 Cobertura principal:
 
-| Área | Tests |
-|------|-------|
-| Modelo | default folder, jerarquía, ciclos, profundidad |
-| Señal | asignación Inbox al consumir |
-| Bulk edit | uno, varios, fallback a default |
-| API | CRUD, árbol, unicidad, borrado, permisos, bulk |
-| Migración | backfill + reverse de columna |
+| Área      | Tests                                          |
+| --------- | ---------------------------------------------- |
+| Modelo    | default folder, jerarquía, ciclos, profundidad |
+| Señal     | asignación Inbox al consumir                   |
+| Bulk edit | uno, varios, fallback a default                |
+| API       | CRUD, árbol, unicidad, borrado, permisos, bulk |
+| Migración | backfill + reverse de columna                  |
 
 **Nota para tests:** la migración `0022` puede dejar Inbox en la BD de test. Tests que asumen `Folder.objects.count() == 0` deben limpiar explícitamente o tener en cuenta la carpeta por defecto.
 
@@ -340,13 +340,13 @@ Puntos de extensión naturales:
 
 ## Limitaciones conocidas
 
-| Limitación | Impacto |
-|------------|---------|
-| Carpeta y storage path independientes | Mover de carpeta no cambia ruta en disco |
-| Permiso de mover doc | Valida cambio sobre documento, no visibilidad de carpeta destino |
-| `full_path` en serializer | O(N × profundidad) al construir árbol grande |
-| Sin drag & drop de carpetas | Solo documentos |
-| Un solo `is_default` | No hay lógica para múltiples Inbox; `get_default_folder()` toma la de menor `pk` |
+| Limitación                            | Impacto                                                                          |
+| ------------------------------------- | -------------------------------------------------------------------------------- |
+| Carpeta y storage path independientes | Mover de carpeta no cambia ruta en disco                                         |
+| Permiso de mover doc                  | Valida cambio sobre documento, no visibilidad de carpeta destino                 |
+| `full_path` en serializer             | O(N × profundidad) al construir árbol grande                                     |
+| Sin drag & drop de carpetas           | Solo documentos                                                                  |
+| Un solo `is_default`                  | No hay lógica para múltiples Inbox; `get_default_folder()` toma la de menor `pk` |
 
 ## Lista de archivos tocados
 
@@ -432,4 +432,4 @@ flowchart TD
 
 ---
 
-*Última revisión: alineada con la migración `0022` y la UI en `/folders`.*
+_Última revisión: alineada con la migración `0022` y la UI en `/folders`._
