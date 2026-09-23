@@ -15,6 +15,7 @@ import { FoldersComponent } from './components/folders/folders.component'
 import { DocumentAttributesComponent } from './components/manage/document-attributes/document-attributes.component'
 import { MailComponent } from './components/manage/mail/mail.component'
 import { SavedViewsComponent } from './components/manage/saved-views/saved-views.component'
+import { ShareLinksComponent } from './components/manage/share-links/share-links.component'
 import { WorkflowsComponent } from './components/manage/workflows/workflows.component'
 import { NotFoundComponent } from './components/not-found/not-found.component'
 import { DirtyDocGuard } from './guards/dirty-doc.guard'
@@ -333,6 +334,24 @@ export const routes: Routes = [
             type: PermissionType.SavedView,
           },
           componentName: 'SavedViewsComponent',
+        },
+      },
+      {
+        path: 'share-links',
+        component: ShareLinksComponent,
+        canActivate: [PermissionsGuard],
+        data: {
+          requiredPermissionAny: [
+            {
+              action: PermissionAction.View,
+              type: PermissionType.ShareLink,
+            },
+            {
+              action: PermissionAction.View,
+              type: PermissionType.ShareLinkBundle,
+            },
+          ],
+          componentName: 'ShareLinksComponent',
         },
       },
     ],

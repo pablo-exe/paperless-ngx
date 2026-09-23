@@ -53,6 +53,7 @@ export const FILTER_MODIFIED_AFTER = 16
 export const FILTER_TITLE_CONTENT = 19 // Deprecated in favor of Tantivy-backed `text` filtervar. Keep for now for existing saved views
 export const FILTER_SIMPLE_TITLE = 48
 export const FILTER_SIMPLE_TEXT = 49
+export const FILTER_HAS_DUPLICATES = 53
 export const FILTER_FULLTEXT_QUERY = 20
 export const FILTER_FULLTEXT_MORELIKE = 21
 
@@ -404,6 +405,13 @@ export const FILTER_RULE_TYPES: FilterRuleType[] = [
     filtervar: 'mime_type',
     datatype: 'string',
     multi: false,
+  },
+  {
+    id: FILTER_HAS_DUPLICATES,
+    filtervar: 'has_duplicates',
+    datatype: 'boolean',
+    multi: false,
+    default: true,
   },
 ]
 

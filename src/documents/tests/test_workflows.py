@@ -23,6 +23,7 @@ from guardian.shortcuts import get_users_with_perms
 from httpx import ConnectError
 from httpx import HTTPError
 from httpx import HTTPStatusError
+from pytest_django.fixtures import Settings
 from pytest_httpx import HTTPXMock
 from rest_framework.test import APIClient
 from rest_framework.test import APITestCase
@@ -38,7 +39,6 @@ from paperless_ai.exceptions import LLMTimeoutError
 
 if TYPE_CHECKING:
     from django.db.models import QuerySet
-from pytest_django.fixtures import SettingsWrapper
 
 from documents import tasks
 from documents.data_models import ConsumableDocument
@@ -3770,6 +3770,66 @@ class TestWorkflows(
             self.assertIn(expected_str, cm.output[0])
 
     @override_settings(
+        EMAIL_ENABLED=True,
+        PAPERLESS_URL="http://localhost:8000",
+    )
+    @mock.patch("django.core.mail.message.EmailMessage.send")
+    def test_workflow_email_action_template_error(self, mock_email_send) -> None:
+        """
+        GIVEN:
+            - Document added workflow with an email action whose body uses an
+              undefined template variable, followed by an assignment action
+        WHEN:
+            - Document consumption finishes
+        THEN:
+            - Error is logged, consumption is not aborted
+            - No email is sent
+            - Subsequent actions still run
+        """
+        trigger = WorkflowTrigger.objects.create(
+            type=WorkflowTrigger.WorkflowTriggerType.DOCUMENT_ADDED,
+        )
+        email_action = WorkflowActionEmail.objects.create(
+            subject="Test Notification: {{ doc_title }}",
+            body="Document Title: {{ title }}",
+            to="me@example.com",
+        )
+        action = WorkflowAction.objects.create(
+            type=WorkflowAction.WorkflowActionType.EMAIL,
+            email=email_action,
+            order=0,
+        )
+        assignment_action = WorkflowAction.objects.create(
+            type=WorkflowAction.WorkflowActionType.ASSIGNMENT,
+            assign_correspondent=self.c2,
+            order=1,
+        )
+        w = Workflow.objects.create(
+            name="Workflow 1",
+            order=0,
+        )
+        w.triggers.add(trigger)
+        w.actions.add(action, assignment_action)
+        w.save()
+
+        doc = Document.objects.create(
+            title="sample test",
+            correspondent=self.c,
+            original_filename="sample.pdf",
+        )
+
+        with self.assertLogs("paperless.workflows", level="ERROR") as cm:
+            document_consumption_finished.send(
+                sender=self.__class__,
+                document=doc,
+            )
+
+        self.assertIn("'title' is undefined", cm.output[0])
+        mock_email_send.assert_not_called()
+        doc.refresh_from_db()
+        self.assertEqual(doc.correspondent, self.c2)
+
+    @override_settings(
         PAPERLESS_EMAIL_HOST="localhost",
         EMAIL_ENABLED=True,
         PAPERLESS_URL="http://localhost:8000",
@@ -5356,7 +5416,7 @@ class TestDateWorkflowLocalization(
     def test_document_consumption_workflow_localization(
         self,
         tmp_path: Path,
-        settings: SettingsWrapper,
+        settings: Settings,
         title_template: str,
         expected_title: str,
     ) -> None:
@@ -5710,6 +5770,39 @@ class TestApplyAISuggestionsWorkflowAction(
 
         self.assertEqual(changed, [])
         self.assertIn("AI is not enabled", "".join(cm.output))
+
+    def test_document_without_content_does_nothing(self) -> None:
+        """
+        GIVEN:
+            - A document whose OCR content is empty or whitespace-only
+        WHEN:
+            - AI suggestions are applied by a workflow
+        THEN:
+            - The classifier is not called and the document is left unchanged
+        """
+        action = self.make_action(ai_overwrite_existing=True)
+
+        for content in ("", " \n\t"):
+            with self.subTest(content=content):
+                self.doc.content = content
+                self.doc.save(update_fields=["content"])
+
+                with (
+                    mock.patch(
+                        "documents.workflows.ai.get_ai_document_classification",
+                    ) as get_classification,
+                    self.assertLogs(
+                        "paperless.workflows.ai",
+                        level="WARNING",
+                    ) as cm,
+                ):
+                    changed = apply_ai_suggestions_to_document(action, self.doc)
+
+                self.assertEqual(changed, [])
+                get_classification.assert_not_called()
+                self.assertIn("has no content", "".join(cm.output))
+                self.doc.refresh_from_db()
+                self.assertEqual(self.doc.title, "original.pdf")
 
     def test_invalid_configuration_leaves_document_untouched(self) -> None:
         """

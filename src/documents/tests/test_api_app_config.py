@@ -35,7 +35,8 @@ class TestApiAppConfig(DirectoriesMixin, APITestCase):
         THEN:
             - Existing config
         """
-        response = self.client.get(self.ENDPOINT, format="json")
+        with patch.dict("os.environ", {}, clear=True):
+            response = self.client.get(self.ENDPOINT, format="json")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -45,6 +46,7 @@ class TestApiAppConfig(DirectoriesMixin, APITestCase):
             response.data[0],
             {
                 "id": 1,
+                "externally_configured_variables": [],
                 "output_type": None,
                 "pages": None,
                 "language": None,
@@ -76,7 +78,7 @@ class TestApiAppConfig(DirectoriesMixin, APITestCase):
                 "remote_ocr_api_key": None,
                 "remote_ocr_endpoint": None,
                 "remote_ocr_mode": None,
-                "ai_enabled": False,
+                "ai_enabled": None,
                 "llm_embedding_backend": None,
                 "llm_embedding_model": None,
                 "llm_embedding_endpoint": None,
@@ -90,6 +92,31 @@ class TestApiAppConfig(DirectoriesMixin, APITestCase):
                 "llm_request_timeout": None,
             },
         )
+
+    def test_api_get_config_reports_external_configuration_without_values(self) -> None:
+        with patch.dict(
+            "os.environ",
+            {
+                "PAPERLESS_OCR_LANGUAGE": "eng",
+                "PAPERLESS_REMOTE_OCR_API_KEY": "secret-value",
+                "PAPERLESS_FUTURE_SETTING": "future-value",
+                "UNRELATED_SETTING": "unrelated-value",
+            },
+            clear=True,
+        ):
+            response = self.client.get(self.ENDPOINT, format="json")
+
+        self.assertCountEqual(
+            response.data[0]["externally_configured_variables"],
+            [
+                "PAPERLESS_FUTURE_SETTING",
+                "PAPERLESS_OCR_LANGUAGE",
+                "PAPERLESS_REMOTE_OCR_API_KEY",
+            ],
+        )
+        self.assertNotContains(response, "secret-value")
+        self.assertNotContains(response, "future-value")
+        self.assertNotContains(response, "UNRELATED_SETTING")
 
     def test_api_get_ui_settings_with_config(self) -> None:
         """
@@ -166,6 +193,70 @@ class TestApiAppConfig(DirectoriesMixin, APITestCase):
         self.assertEqual(config.user_args, None)
         self.assertEqual(config.language, None)
         self.assertEqual(config.barcode_tag_mapping, None)
+
+    def test_api_update_config_json_objects(self) -> None:
+        """
+        GIVEN:
+            - API request to update app config with JSON objects for the
+              user_args and barcode_tag_mapping JSONFields
+        WHEN:
+            - API is called
+        THEN:
+            - Correct HTTP response
+            - Both objects are stored as sent
+        """
+        user_args = {"unpaper_args": "--pre-rotate 90", "jobs": 2}
+        barcode_tag_mapping = {"TAG:(.*)": "\\g<1>", "ASN12.*": ""}
+        response = self.client.patch(
+            f"{self.ENDPOINT}1/",
+            json.dumps(
+                {
+                    "user_args": json.dumps(user_args),
+                    "barcode_tag_mapping": json.dumps(barcode_tag_mapping),
+                },
+            ),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        config = ApplicationConfiguration.objects.first()
+        assert config is not None
+        self.assertEqual(config.user_args, user_args)
+        self.assertEqual(config.barcode_tag_mapping, barcode_tag_mapping)
+
+    def test_api_update_config_rejects_invalid_json_objects(self) -> None:
+        """
+        GIVEN:
+            - API request to update app config with a JSON-encoded value that
+              is not an object for user_args or barcode_tag_mapping, or a
+              barcode_tag_mapping with a non-string substitute
+        WHEN:
+            - API is called
+        THEN:
+            - Request is rejected with a 400 naming the problem
+            - Config is not updated
+        """
+        not_objects = (True, 1, [1, 2, 3], "not a dict")
+        cases = [
+            (field, value, b"must be a JSON object")
+            for field in ("user_args", "barcode_tag_mapping")
+            for value in not_objects
+        ]
+        cases += [
+            ("barcode_tag_mapping", {"TAG:(.*)": 5}, b"values must be strings"),
+            ("barcode_tag_mapping", {"TAG:(.*)": None}, b"values must be strings"),
+        ]
+        for field, value, expected_message in cases:
+            with self.subTest(field=field, value=value):
+                response = self.client.patch(
+                    f"{self.ENDPOINT}1/",
+                    json.dumps({field: json.dumps(value)}),
+                    content_type="application/json",
+                )
+                self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+                self.assertIn(expected_message, response.content)
+                config = ApplicationConfiguration.objects.first()
+                assert config is not None
+                self.assertIsNone(getattr(config, field))
 
     def test_api_replace_app_logo(self) -> None:
         """
@@ -948,6 +1039,26 @@ class TestApiAppConfig(DirectoriesMixin, APITestCase):
                 content_type="application/json",
             )
             mock_update.assert_called_once()
+
+    @override_settings(AI_ENABLED=True, LLM_EMBEDDING_BACKEND=None)
+    def test_external_ai_setting_triggers_index_update(self) -> None:
+        config = ApplicationConfiguration.objects.first()
+        assert config is not None
+        config.ai_enabled = None
+        config.llm_embedding_backend = None
+        config.save()
+
+        with (
+            patch("documents.tasks.llmindex_index.apply_async") as mock_update,
+            patch("paperless.views.llm_index_exists", return_value=False),
+        ):
+            self.client.patch(
+                f"{self.ENDPOINT}1/",
+                json.dumps({"llm_embedding_backend": "openai-like"}),
+                content_type="application/json",
+            )
+
+        mock_update.assert_called_once()
 
     def test_update_llm_embedding_chunk_size_triggers_rebuild(self) -> None:
         config = ApplicationConfiguration.objects.first()

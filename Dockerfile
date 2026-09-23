@@ -30,7 +30,7 @@ RUN set -eux \
 # Purpose: Installs s6-overlay and rootfs
 # Comments:
 #  - Don't leave anything extra in here either
-FROM ghcr.io/astral-sh/uv:0.12.9-python3.14-trixie-slim AS s6-overlay-base
+FROM ghcr.io/astral-sh/uv:0.12.16-python3.14-trixie-slim AS s6-overlay-base
 
 WORKDIR /usr/src/s6
 
@@ -199,10 +199,6 @@ RUN set -eux \
       --index https://download.pytorch.org/whl/cpu \
       --index-strategy unsafe-best-match \
       --requirements requirements.txt \
-  && echo "Installing NLTK data" \
-    && python3 -W ignore::RuntimeWarning -m nltk.downloader -d "/usr/share/nltk_data" snowball_data \
-    && python3 -W ignore::RuntimeWarning -m nltk.downloader -d "/usr/share/nltk_data" stopwords \
-    && python3 -W ignore::RuntimeWarning -m nltk.downloader -d "/usr/share/nltk_data" punkt_tab \
   && echo "Cleaning up image" \
     && apt-get --yes purge ${BUILD_PACKAGES} \
     && apt-get --yes autoremove --purge \

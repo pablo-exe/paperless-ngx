@@ -10,7 +10,6 @@ from pathlib import Path
 from typing import Final
 from urllib.parse import urlparse
 
-from compression_middleware.middleware import CompressionMiddleware
 from django.core.exceptions import ImproperlyConfigured
 from django.utils.translation import gettext_lazy as _
 from dotenv import load_dotenv
@@ -74,8 +73,6 @@ SHARE_LINK_BUNDLE_DIR = MEDIA_ROOT / "documents" / "share_link_bundles"
 
 DATA_DIR = get_path_from_env("PAPERLESS_DATA_DIR", BASE_DIR.parent / "data")
 
-NLTK_DIR = get_path_from_env("PAPERLESS_NLTK_DIR", "/usr/share/nltk_data")
-
 # Check deprecated setting first
 EMPTY_TRASH_DIR = (
     get_path_from_env("PAPERLESS_TRASH_DIR", os.getenv("PAPERLESS_EMPTY_TRASH_DIR"))
@@ -95,6 +92,17 @@ ADVANCED_FUZZY_SEARCH_THRESHOLD: float | None = get_float_from_env(
 MODEL_FILE = get_path_from_env(
     "PAPERLESS_MODEL_FILE",
     DATA_DIR / "classification_model.pickle",
+)
+
+# Minimum confidence (0.0-1.0) for the ML classifier to assign a correspondent,
+# document type, or storage path. 0.0 disables the threshold.
+CLASSIFIER_MATCH_THRESHOLD: Final[float] = get_float_from_env(
+    "PAPERLESS_CLASSIFIER_MATCH_THRESHOLD",
+    0.3,
+)
+MATCH_REGEX_TIMEOUT_SECONDS: Final[float] = get_float_from_env(
+    "PAPERLESS_MATCH_REGEX_TIMEOUT_SECONDS",
+    0.1,
 )
 LLM_INDEX_DIR = DATA_DIR / "llm_index"
 LLM_INDEX_LOCK = LLM_INDEX_DIR / "index.lock"
@@ -194,22 +202,10 @@ MIDDLEWARE = [
     "allauth.account.middleware.AccountMiddleware",
 ]
 
-# Optional to enable compression
+# Optional to enable compression. The subclass leaves server-sent events
+# uncompressed; see paperless.middleware.StreamAwareCompressionMiddleware.
 if get_bool_from_env("PAPERLESS_ENABLE_COMPRESSION", "yes"):  # pragma: no cover
-    MIDDLEWARE.insert(0, "compression_middleware.middleware.CompressionMiddleware")
-
-# Workaround to not compress streaming responses (e.g. chat).
-# See https://github.com/friedelwolff/django-compression-middleware/pull/7
-original_process_response = CompressionMiddleware.process_response
-
-
-def patched_process_response(self, request, response):
-    if getattr(request, "compress_exempt", False):
-        return response
-    return original_process_response(self, request, response)
-
-
-CompressionMiddleware.process_response = patched_process_response
+    MIDDLEWARE.insert(0, "paperless.middleware.StreamAwareCompressionMiddleware")
 
 ROOT_URLCONF = "paperless.urls"
 
@@ -701,6 +697,9 @@ CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 CELERY_BROKER_TRANSPORT_OPTIONS = {
     "global_keyprefix": _REDIS_KEY_PREFIX,
 }
+CELERY_RESULT_BACKEND_TRANSPORT_OPTIONS = {
+    "global_keyprefix": _REDIS_KEY_PREFIX,
+}
 
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT: Final[int] = get_int_from_env("PAPERLESS_WORKER_TIMEOUT", 1800)
@@ -1066,39 +1065,30 @@ APP_LOGO = os.getenv("PAPERLESS_APP_LOGO", None)
 ###############################################################################
 
 
-def _get_nltk_language_setting(ocr_lang: str) -> str | None:
+CLASSIFIER_LANGUAGES: Final[dict[str, str]] = {
+    "dan": "danish",
+    "nld": "dutch",
+    "eng": "english",
+    "fin": "finnish",
+    "fra": "french",
+    "deu": "german",
+    "ita": "italian",
+    "nor": "norwegian",
+    "por": "portuguese",
+    "rus": "russian",
+    "spa": "spanish",
+    "swe": "swedish",
+}
+
+
+def _get_classifier_language_setting(ocr_lang: str) -> str | None:
     """
-    Maps an ISO-639-1 language code supported by Tesseract into
-    an optional NLTK language name.  This is the set of common supported
-    languages for all the NLTK data used.
+    Maps the primary Tesseract language to the classifier's stemming
+    language, or None if unsupported.
 
     Assumption: The primary language is first
-
-    NLTK Languages:
-      - https://www.nltk.org/api/nltk.stem.snowball.html#nltk.stem.snowball.SnowballStemmer
-      - https://raw.githubusercontent.com/nltk/nltk_data/gh-pages/packages/tokenizers/punkt.zip
-      - https://raw.githubusercontent.com/nltk/nltk_data/gh-pages/packages/corpora/stopwords.zip
-
-    The common intersection between all languages in those 3 is handled here
-
     """
-    ocr_lang = ocr_lang.split("+", maxsplit=1)[0]
-    iso_code_to_nltk = {
-        "dan": "danish",
-        "nld": "dutch",
-        "eng": "english",
-        "fin": "finnish",
-        "fra": "french",
-        "deu": "german",
-        "ita": "italian",
-        "nor": "norwegian",
-        "por": "portuguese",
-        "rus": "russian",
-        "spa": "spanish",
-        "swe": "swedish",
-    }
-
-    return iso_code_to_nltk.get(ocr_lang)
+    return CLASSIFIER_LANGUAGES.get(ocr_lang.split("+", maxsplit=1)[0])
 
 
 def _get_search_language_setting(ocr_lang: str) -> str | None:
@@ -1144,9 +1134,7 @@ def _get_search_language_setting(ocr_lang: str) -> str | None:
     return _ocr_to_search.get(primary)
 
 
-NLTK_ENABLED: Final[bool] = get_bool_from_env("PAPERLESS_ENABLE_NLTK", "yes")
-
-NLTK_LANGUAGE: str | None = _get_nltk_language_setting(OCR_LANGUAGE)
+CLASSIFIER_LANGUAGE: str | None = _get_classifier_language_setting(OCR_LANGUAGE)
 
 SEARCH_LANGUAGE: str | None = _get_search_language_setting(OCR_LANGUAGE)
 

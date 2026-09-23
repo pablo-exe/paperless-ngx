@@ -6,12 +6,19 @@ from django.test import TestCase
 from documents import bulk_edit
 from documents.models import Document
 from documents.models import Folder
+from documents.models import SavedViewFilterRule
 from documents.models import get_default_folder
 from documents.signals.handlers import set_folder
 from documents.tests.utils import DirectoriesMixin
 
 
 class TestFolderModel(DirectoriesMixin, TestCase):
+    def test_folder_filter_rule_ids_do_not_collide_with_duplicates(self) -> None:
+        choices = dict(SavedViewFilterRule._meta.get_field("rule_type").choices)
+        self.assertEqual(len(choices), len(SavedViewFilterRule.RULE_TYPES))
+        self.assertEqual(str(choices[50]), "folder is")
+        self.assertEqual(str(choices[53]), "has duplicates")
+
     def test_default_folder_created_on_demand(self) -> None:
         """
         GIVEN:

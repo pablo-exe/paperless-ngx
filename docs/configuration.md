@@ -413,18 +413,12 @@ details.
 
     Defaults to `PAPERLESS_DATA_DIR/log/`.
 
-#### [`PAPERLESS_NLTK_DIR=<path>`](#PAPERLESS_NLTK_DIR) {#PAPERLESS_NLTK_DIR}
+#### ~~[`PAPERLESS_NLTK_DIR`](#PAPERLESS_NLTK_DIR)~~ {#PAPERLESS_NLTK_DIR}
 
-: This is where paperless will search for the data required for NLTK
-processing, if you are using it. If you are using the Docker image,
-this should not be changed, as the data is included in the image
-already.
+!!! failure "Removed in v3.2"
 
-Previously, the location defaulted to `PAPERLESS_DATA_DIR/nltk`.
-Unless you are using this in a bare metal install or other setup,
-this folder is no longer needed and can be removed manually.
-
-Defaults to `/usr/share/nltk_data`
+    Removed and ignored. Any previously downloaded NLTK data folder can be
+    deleted.
 
 #### [`PAPERLESS_MODEL_FILE=<path>`](#PAPERLESS_MODEL_FILE) {#PAPERLESS_MODEL_FILE}
 
@@ -1190,15 +1184,31 @@ for details on how to set it.
 
     Defaults to UTC.
 
-#### [`PAPERLESS_ENABLE_NLTK=<bool>`](#PAPERLESS_ENABLE_NLTK) {#PAPERLESS_ENABLE_NLTK}
+#### ~~[`PAPERLESS_ENABLE_NLTK`](#PAPERLESS_ENABLE_NLTK)~~ {#PAPERLESS_ENABLE_NLTK}
 
-: Enables or disables the advanced natural language processing
-used during automatic classification. If disabled, paperless will
-still perform some basic text pre-processing before matching.
+!!! failure "Removed in v3.2"
 
-: See also `PAPERLESS_NLTK_DIR`.
+    Removed and ignored. Automatic classification always removes stop words
+    and stems words when the primary OCR language is Danish, Dutch, English,
+    Finnish, French, German, Italian, Norwegian, Portuguese, Russian, Spanish
+    or Swedish. Other languages are only lowercased and split into words.
 
-    Defaults to true, enabling the feature.
+#### [`PAPERLESS_CLASSIFIER_MATCH_THRESHOLD=<float>`](#PAPERLESS_CLASSIFIER_MATCH_THRESHOLD) {#PAPERLESS_CLASSIFIER_MATCH_THRESHOLD}
+
+: Sets the minimum confidence score (0.0-1.0) required for the automatic
+classifier to assign a correspondent, document type, or storage path to a
+document. Predictions below this threshold are discarded and the field is
+left unassigned, preventing low-confidence guesses from being applied.
+
+    Defaults to 0.3.
+
+#### [`PAPERLESS_MATCH_REGEX_TIMEOUT_SECONDS=<float>`](#PAPERLESS_MATCH_REGEX_TIMEOUT_SECONDS) {#PAPERLESS_MATCH_REGEX_TIMEOUT_SECONDS}
+
+: Sets the timeout, in seconds, for regular expression matching. Increase this
+value if date parsing or user-defined matching rules time out when processing
+long documents, especially on slower hardware.
+
+    Defaults to 0.1 seconds.
 
 #### [`PAPERLESS_DATE_PARSER_LANGUAGES=<lang>`](#PAPERLESS_DATE_PARSER_LANGUAGES) {#PAPERLESS_DATE_PARSER_LANGUAGES}
 
@@ -1268,6 +1278,8 @@ Tantivy stemmer equivalent, stemming is disabled.
 : When set to a float value, approximate/fuzzy matching is applied alongside exact
 matching. Fuzzy results rank below exact matches. A value of `0.5` is a reasonable
 starting point. Leave unset to disable fuzzy matching entirely.
+
+    Words of a single character are not fuzzy-matched, since a single-character approximate match would match nearly every term in the index.
 
     Defaults to unset (disabled).
 
