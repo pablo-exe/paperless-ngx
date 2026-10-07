@@ -8,7 +8,7 @@ from rest_framework.test import APITestCase
 from documents.models import Document
 from documents.models import Folder
 from documents.models import get_default_folder
-from documents.tests.utils import DirectoriesMixin
+from paperless_testing.dirs import DirectoriesMixin
 
 
 class TestApiFolders(DirectoriesMixin, APITestCase):

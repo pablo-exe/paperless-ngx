@@ -9,7 +9,7 @@ from documents.models import Folder
 from documents.models import SavedViewFilterRule
 from documents.models import get_default_folder
 from documents.signals.handlers import set_folder
-from documents.tests.utils import DirectoriesMixin
+from paperless_testing.dirs import DirectoriesMixin
 
 
 class TestFolderModel(DirectoriesMixin, TestCase):
