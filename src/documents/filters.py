@@ -179,6 +179,7 @@ class ObjectFilter(Filter):
         return qs
 
 
+@extend_schema_field(serializers.CharField)
 class FolderTreeFilter(Filter):
     """Match selected folders and their current descendants without changing permissions."""
 

@@ -49,8 +49,7 @@ class TestApiFolders(DirectoriesMixin, APITestCase):
     def test_recursive_folder_saved_view_rules(self):
         root = Folder.objects.create(name="Saved tree")
         rules = [
-            {"rule_type": rule_type, "value": str(root.pk)}
-            for rule_type in (54, 55)
+            {"rule_type": rule_type, "value": str(root.pk)} for rule_type in (54, 55)
         ]
         response = self.client.post(
             "/api/saved_views/",
@@ -61,7 +60,10 @@ class TestApiFolders(DirectoriesMixin, APITestCase):
         response = self.client.get(f"/api/saved_views/{response.data['id']}/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(
-            [(rule["rule_type"], rule["value"]) for rule in response.data["filter_rules"]],
+            [
+                (rule["rule_type"], rule["value"])
+                for rule in response.data["filter_rules"]
+            ],
             [(rule["rule_type"], rule["value"]) for rule in rules],
         )
 
