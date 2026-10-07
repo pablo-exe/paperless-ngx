@@ -29,6 +29,9 @@ export const FILTER_STORAGE_PATH = 25
 export const FILTER_HAS_STORAGE_PATH_ANY = 30
 export const FILTER_DOES_NOT_HAVE_STORAGE_PATH = 31
 
+export const FILTER_HAS_FOLDER_TREE_ANY = 54
+export const FILTER_DOES_NOT_HAVE_FOLDER_TREE = 55
+
 export const FILTER_FOLDER = 50
 export const FILTER_HAS_FOLDER_ANY = 51
 export const FILTER_DOES_NOT_HAVE_FOLDER = 52
@@ -140,6 +143,18 @@ export const FILTER_RULE_TYPES: FilterRuleType[] = [
     id: FILTER_DOES_NOT_HAVE_STORAGE_PATH,
     filtervar: 'storage_path__id__none',
     datatype: DataType.StoragePath,
+    multi: true,
+  },
+  {
+    id: FILTER_HAS_FOLDER_TREE_ANY,
+    filtervar: 'folder__id__in_with_descendants',
+    datatype: DataType.Folder,
+    multi: true,
+  },
+  {
+    id: FILTER_DOES_NOT_HAVE_FOLDER_TREE,
+    filtervar: 'folder__id__none_with_descendants',
+    datatype: DataType.Folder,
     multi: true,
   },
   {

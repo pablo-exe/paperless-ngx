@@ -57,9 +57,11 @@ import {
   FILTER_DOES_NOT_HAVE_CORRESPONDENT,
   FILTER_DOES_NOT_HAVE_DOCUMENT_TYPE,
   FILTER_DOES_NOT_HAVE_FOLDER,
+  FILTER_DOES_NOT_HAVE_FOLDER_TREE,
   FILTER_DOES_NOT_HAVE_STORAGE_PATH,
   FILTER_DOES_NOT_HAVE_TAG,
   FILTER_FOLDER,
+  FILTER_HAS_FOLDER_TREE_ANY,
   FILTER_FULLTEXT_MORELIKE,
   FILTER_FULLTEXT_QUERY,
   FILTER_HAS_ANY_TAG,
@@ -336,6 +338,7 @@ export class FilterEditorComponent
           }
 
         case FILTER_FOLDER:
+        case FILTER_HAS_FOLDER_TREE_ANY:
         case FILTER_HAS_FOLDER_ANY:
           if (rule.value) {
             return $localize`Folder: ${
@@ -454,6 +457,7 @@ export class FilterEditorComponent
   correspondentSelectionModel = new FilterableDropdownSelectionModel()
   documentTypeSelectionModel = new FilterableDropdownSelectionModel()
   storagePathSelectionModel = new FilterableDropdownSelectionModel()
+  folderIncludeSubfolders = false
   folderSelectionModel = new FilterableDropdownSelectionModel()
   customFieldQueriesModel = new CustomFieldQueriesModel()
   folderFilterText: string = ''
@@ -496,6 +500,7 @@ export class FilterEditorComponent
 
     this.documentTypeSelectionModel.clear(false)
     this.storagePathSelectionModel.clear(false)
+    this.folderIncludeSubfolders = false
     this.folderSelectionModel.clear(false)
     this.tagSelectionModel.clear(false)
     this.correspondentSelectionModel.clear(false)
@@ -755,7 +760,10 @@ export class FilterEditorComponent
             false
           )
           break
+        case FILTER_HAS_FOLDER_TREE_ANY:
         case FILTER_HAS_FOLDER_ANY:
+          this.folderIncludeSubfolders ||=
+            rule.rule_type === FILTER_HAS_FOLDER_TREE_ANY
           this.folderSelectionModel.logicalOperator = LogicalOperator.Or
           this.folderSelectionModel.intersection = Intersection.Include
           this.folderSelectionModel.set(
@@ -764,7 +772,10 @@ export class FilterEditorComponent
             false
           )
           break
+        case FILTER_DOES_NOT_HAVE_FOLDER_TREE:
         case FILTER_DOES_NOT_HAVE_FOLDER:
+          this.folderIncludeSubfolders ||=
+            rule.rule_type === FILTER_DOES_NOT_HAVE_FOLDER_TREE
           this.folderSelectionModel.intersection = Intersection.Exclude
           this.folderSelectionModel.set(
             rule.value ? +rule.value : null,
@@ -1116,7 +1127,9 @@ export class FilterEditorComponent
       }
       this.folderSelectionModel.getSelectedItems().forEach((folder) => {
         filterRules.push({
-          rule_type: FILTER_HAS_FOLDER_ANY,
+          rule_type: this.folderIncludeSubfolders
+            ? FILTER_HAS_FOLDER_TREE_ANY
+            : FILTER_HAS_FOLDER_ANY,
           value: folder.id?.toString(),
         })
       })
@@ -1125,7 +1138,9 @@ export class FilterEditorComponent
         .filter((folder) => folder.id > 0)
         .forEach((folder) => {
           filterRules.push({
-            rule_type: FILTER_DOES_NOT_HAVE_FOLDER,
+            rule_type: this.folderIncludeSubfolders
+              ? FILTER_DOES_NOT_HAVE_FOLDER_TREE
+              : FILTER_DOES_NOT_HAVE_FOLDER,
             value: folder.id?.toString(),
           })
         })

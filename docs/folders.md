@@ -167,6 +167,50 @@ Estos IDs están registrados en `SavedViewFilterRule.RULE_TYPES` y en la migraci
 
 `DocumentViewSet._get_selection_data_for_queryset()` y `SelectionDataView` devuelven `selected_folders`, que alimenta los contadores del dropdown de carpetas.
 
+### Opción de subcarpetas (desplegada el 2026-10-07)
+
+El interruptor `Include subfolders` / `Incluir subcarpetas` aparece debajo de
+Include/Exclude en el filtro de Documents. Por defecto está desactivado para
+conservar los filtros existentes. Activado, incluye o excluye la carpeta
+seleccionada y todos sus descendientes, incluso con varias carpetas elegidas.
+No modifica la vista del explorador `/folders` ni mueve documentos.
+
+Las reglas guardadas `54` y `55` corresponden a
+`folder__id__in_with_descendants` y `folder__id__none_with_descendants`.
+La migración `0028_folder_descendant_filter_rules` añade únicamente opciones
+al campo de reglas; no transforma documentos ni reglas existentes. Los IDs
+`50–53` conservan su significado. El backend resuelve el árbol en cada
+consulta, de modo que las nuevas subcarpetas se incorporan automáticamente.
+El filtrado se aplica al queryset existente y conserva sus permisos.
+
+Validación aislada del 2026-10-07: 30 pruebas de backend y 105 del editor
+de filtros pasadas, migraciones coherentes con el modelo y compilación del
+frontend en español correcta. Imagen desplegada:
+`paperless-local:v3.2.1-folders-subfolders-20261007`. Contenedor healthy,
+migración 0028 aplicada, frontend español verificado por HTTP y filtros
+probados con datos existentes: carpeta 2, 0 documentos directos y 140 con
+subcarpetas; exclusión recursiva devuelve los otros 10. Se conservan 153
+filas de documentos (150 activos y 3 en papelera), 45 carpetas y las 2
+reglas guardadas previas. PostgreSQL y Redis no se recrearon.
+
+Para desplegar: validar frontend y backend en aislamiento, construir una
+imagen etiquetada, comprobar el backup recuperable de PostgreSQL, conservar
+la imagen y Compose anteriores y recrear únicamente el webserver con la
+nueva imagen. Verificar salud y consultas exactas/recursivas de solo lectura.
+Rollback de aplicación: cambiar en Compose la imagen a
+`paperless-local:v3.2.1-folders-de400b7fa` y recrear únicamente webserver con
+`compose paperless up -d --no-deps --no-build --wait webserver` después de
+cargar `scripts/backups/lib.sh`. Si ya se han guardado vistas recursivas,
+exportarlas primero y desactivar esta opción en ellas antes de volver a la
+imagen anterior; sus reglas 54/55 pasarán a 51/52 y perderán la recursividad.
+La migración 0028 no cambia el esquema SQL y puede permanecer aplicada.
+No se requiere mover archivos ni recrear PostgreSQL o Redis.
+
+Backup previo: `datos/backups/paperless/paperless-20261007T095322.sql.gz`,
+creado con el automatismo existente y restaurado con ON_ERROR_STOP en un
+PostgreSQL 18 aislado, sin red, puertos ni volúmenes productivos. Resultado:
+153 documentos y 45 carpetas. Sigue sujeto a la retención habitual.
+
 ### Serializer — detalle de mantenimiento
 
 `FolderSerializer` **desactiva** los validadores auto-generados de `unique_together`:

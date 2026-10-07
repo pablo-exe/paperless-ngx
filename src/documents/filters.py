@@ -179,6 +179,29 @@ class ObjectFilter(Filter):
         return qs
 
 
+class FolderTreeFilter(Filter):
+    """Match selected folders and their current descendants without changing permissions."""
+
+    def filter(self, qs, value):
+        if not value:
+            return qs
+        try:
+            selected = {int(item) for item in value.split(",")}
+        except ValueError:
+            return qs
+        children = {}
+        for folder_id, parent_id in Folder.objects.values_list("id", "parent_id"):
+            children.setdefault(parent_id, []).append(folder_id)
+        pending = list(selected)
+        while pending:
+            for child in children.get(pending.pop(), []):
+                if child not in selected:
+                    selected.add(child)
+                    pending.append(child)
+        method = qs.exclude if self.exclude else qs.filter
+        return method(folder_id__in=selected)
+
+
 @extend_schema_field(serializers.BooleanField)
 class InboxFilter(Filter):
     def filter(self, qs, value):
@@ -830,6 +853,8 @@ class DocumentFilterSet(FilterSet):
     storage_path__id__none = ObjectFilter(field_name="storage_path", exclude=True)
 
     folder__id__none = ObjectFilter(field_name="folder", exclude=True)
+    folder__id__in_with_descendants = FolderTreeFilter()
+    folder__id__none_with_descendants = FolderTreeFilter(exclude=True)
 
     is_in_inbox = InboxFilter()
 

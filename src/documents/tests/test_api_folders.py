@@ -19,6 +19,52 @@ class TestApiFolders(DirectoriesMixin, APITestCase):
         self.user = User.objects.create_superuser(username="temp_admin")
         self.client.force_authenticate(user=self.user)
 
+    def test_document_folder_descendants(self):
+        root = Folder.objects.create(name="Tree root")
+        child = Folder.objects.create(name="Child", parent=root)
+        grandchild = Folder.objects.create(name="Grandchild", parent=child)
+        other = Folder.objects.create(name="Other")
+        docs = [
+            Document.objects.create(title=f"Synthetic {folder.pk}", folder=folder)
+            for folder in (root, child, grandchild, other)
+        ]
+        cases = [
+            ("folder__id__in", str(root.pk), docs[:1]),
+            ("folder__id__none", str(root.pk), docs[1:]),
+            ("folder__id__in_with_descendants", str(root.pk), docs[:3]),
+            ("folder__id__none_with_descendants", str(root.pk), docs[3:]),
+            ("folder__id__in_with_descendants", f"{root.pk},{child.pk}", docs[:3]),
+            ("folder__id__in_with_descendants", f"{child.pk},{other.pk}", docs[1:]),
+            ("folder__id__in_with_descendants", "999999", []),
+        ]
+        for parameter, value, expected in cases:
+            with self.subTest(parameter=parameter, value=value):
+                response = self.client.get("/api/documents/", {parameter: value})
+                self.assertEqual(response.status_code, status.HTTP_200_OK)
+                self.assertCountEqual(
+                    [item["id"] for item in response.data["results"]],
+                    [doc.pk for doc in expected],
+                )
+
+    def test_recursive_folder_saved_view_rules(self):
+        root = Folder.objects.create(name="Saved tree")
+        rules = [
+            {"rule_type": rule_type, "value": str(root.pk)}
+            for rule_type in (54, 55)
+        ]
+        response = self.client.post(
+            "/api/saved_views/",
+            {"name": "Synthetic tree", "filter_rules": rules},
+            format="json",
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        response = self.client.get(f"/api/saved_views/{response.data['id']}/")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            [(rule["rule_type"], rule["value"]) for rule in response.data["filter_rules"]],
+            [(rule["rule_type"], rule["value"]) for rule in rules],
+        )
+
     def test_create_folder(self) -> None:
         """
         WHEN:

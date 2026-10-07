@@ -45,6 +45,7 @@ import {
   FILTER_DOES_NOT_HAVE_CORRESPONDENT,
   FILTER_DOES_NOT_HAVE_DOCUMENT_TYPE,
   FILTER_DOES_NOT_HAVE_FOLDER,
+  FILTER_DOES_NOT_HAVE_FOLDER_TREE,
   FILTER_DOES_NOT_HAVE_STORAGE_PATH,
   FILTER_DOES_NOT_HAVE_TAG,
   FILTER_FOLDER,
@@ -57,6 +58,7 @@ import {
   FILTER_HAS_DOCUMENT_TYPE_ANY,
   FILTER_HAS_DUPLICATES,
   FILTER_HAS_FOLDER_ANY,
+  FILTER_HAS_FOLDER_TREE_ANY,
   FILTER_HAS_STORAGE_PATH_ANY,
   FILTER_HAS_TAGS_ALL,
   FILTER_HAS_TAGS_ANY,
@@ -1821,6 +1823,26 @@ describe('FilterEditorComponent', () => {
         value: NEGATIVE_NULL_FILTER_VALUE.toString(),
       },
     ])
+  })
+
+  it('should preserve recursive folder rules and reset to exact folders', () => {
+    for (const ruleType of [
+      FILTER_HAS_FOLDER_TREE_ANY,
+      FILTER_DOES_NOT_HAVE_FOLDER_TREE,
+    ]) {
+      const rules = [{ rule_type: ruleType, value: folders[0].id.toString() }]
+      component.filterRules = rules
+      expect(component.folderIncludeSubfolders).toBe(true)
+      expect(component.filterRules).toEqual(rules)
+      component.folderIncludeSubfolders = false
+      expect(component.filterRules[0].rule_type).toBe(
+        ruleType === FILTER_HAS_FOLDER_TREE_ANY
+          ? FILTER_HAS_FOLDER_ANY
+          : FILTER_DOES_NOT_HAVE_FOLDER
+      )
+    }
+    component.filterRules = []
+    expect(component.folderIncludeSubfolders).toBe(false)
   })
 
   it('should show folders and convert a folder selection to a filter rule', () => {

@@ -14678,6 +14678,10 @@
         </context-group>
         <target state="translated">Fin</target>
       </trans-unit>
-    </body>
+      <trans-unit id="folderIncludeSubfolders" datatype="html">
+    <source>Include subfolders</source>
+    <target>Incluir subcarpetas</target>
+  </trans-unit>
+</body>
   </file>
 </xliff>

@@ -878,6 +878,8 @@ class SavedViewFilterRule(models.Model):
         (51, _("has folder in")),
         (52, _("does not have folder in")),
         (53, _("has duplicates")),
+        (54, _("has folder or subfolder in")),
+        (55, _("does not have folder or subfolder in")),
     ]
 
     saved_view = models.ForeignKey(
