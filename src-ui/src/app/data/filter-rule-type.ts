@@ -29,6 +29,10 @@ export const FILTER_STORAGE_PATH = 25
 export const FILTER_HAS_STORAGE_PATH_ANY = 30
 export const FILTER_DOES_NOT_HAVE_STORAGE_PATH = 31
 
+export const FILTER_FOLDER = 50
+export const FILTER_HAS_FOLDER_ANY = 51
+export const FILTER_DOES_NOT_HAVE_FOLDER = 52
+
 export const FILTER_CREATED_BEFORE = 8
 export const FILTER_CREATED_AFTER = 9
 export const FILTER_CREATED_YEAR = 10
@@ -49,7 +53,7 @@ export const FILTER_MODIFIED_AFTER = 16
 export const FILTER_TITLE_CONTENT = 19 // Deprecated in favor of Tantivy-backed `text` filtervar. Keep for now for existing saved views
 export const FILTER_SIMPLE_TITLE = 48
 export const FILTER_SIMPLE_TEXT = 49
-export const FILTER_HAS_DUPLICATES = 50
+export const FILTER_HAS_DUPLICATES = 53
 export const FILTER_FULLTEXT_QUERY = 20
 export const FILTER_FULLTEXT_MORELIKE = 21
 
@@ -136,6 +140,25 @@ export const FILTER_RULE_TYPES: FilterRuleType[] = [
     id: FILTER_DOES_NOT_HAVE_STORAGE_PATH,
     filtervar: 'storage_path__id__none',
     datatype: DataType.StoragePath,
+    multi: true,
+  },
+  {
+    id: FILTER_FOLDER,
+    filtervar: 'folder__id',
+    isnull_filtervar: 'folder__isnull',
+    datatype: DataType.Folder,
+    multi: false,
+  },
+  {
+    id: FILTER_HAS_FOLDER_ANY,
+    filtervar: 'folder__id__in',
+    datatype: DataType.Folder,
+    multi: true,
+  },
+  {
+    id: FILTER_DOES_NOT_HAVE_FOLDER,
+    filtervar: 'folder__id__none',
+    datatype: DataType.Folder,
     multi: true,
   },
   {

@@ -9,7 +9,6 @@ jobs:
   generate-translate-strings:
     name: Generate Translation Strings
     runs-on: ubuntu-latest
-    environment: translation-sync
     permissions:
       contents: write
     steps:
@@ -18,9 +17,9 @@ jobs:
         env:
           GH_REF: ${{ github.ref }} # sonar rule:githubactions:S7630 - avoid injection
         with:
-          token: ${{ secrets.PNGX_BOT_PAT }}
+          token: ${{ github.token }}
           ref: ${{ env.GH_REF }}
-          persist-credentials: true # for pushing translation branch
+          persist-credentials: true # for pushing generated translation files
       - name: Set up Python
         id: setup-python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0

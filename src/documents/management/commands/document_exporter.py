@@ -47,6 +47,7 @@ from documents.models import CustomFieldInstance
 from documents.models import Document
 from documents.models import DocumentBarcode
 from documents.models import DocumentType
+from documents.models import Folder
 from documents.models import Note
 from documents.models import SavedView
 from documents.models import SavedViewFilterRule
@@ -330,6 +331,7 @@ class Command(CryptMixin, PaperlessCommand):
             "tags": Tag.objects.all(),
             "document_types": DocumentType.objects.all(),
             "storage_paths": StoragePath.objects.all(),
+            "folders": Folder.objects.all(),
             "mail_accounts": MailAccount.objects.all(),
             "mail_rules": MailRule.objects.all(),
             "saved_views": SavedView.objects.all(),

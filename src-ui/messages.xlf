@@ -13229,6 +13229,290 @@
           <context context-type="linenumber">474</context>
         </context-group>
       </trans-unit>
+    <trans-unit id="1205037876874222931" datatype="html">
+        <source>Folders</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/app-frame/app-frame.component.html</context>
+          <context context-type="linenumber">110</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/app-frame/app-frame.component.html</context>
+          <context context-type="linenumber">112</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.html</context>
+          <context context-type="linenumber">106,107</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/folders/folders.component.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit>
+<trans-unit id="2217137485843441000" datatype="html">
+        <source>Parent folder</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/common/edit-dialog/folder-edit-dialog/folder-edit-dialog.component.html</context>
+          <context context-type="linenumber">28,29</context>
+        </context-group>
+      </trans-unit>
+<trans-unit id="8256611004695418495" datatype="html">
+        <source>Leave empty to keep this folder at the root level.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/common/edit-dialog/folder-edit-dialog/folder-edit-dialog.component.html</context>
+          <context context-type="linenumber">34,35</context>
+        </context-group>
+      </trans-unit>
+<trans-unit id="2330577642930707695" datatype="html">
+        <source> Cancel </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/common/edit-dialog/folder-edit-dialog/folder-edit-dialog.component.html</context>
+          <context context-type="linenumber">57,58</context>
+        </context-group>
+      </trans-unit>
+<trans-unit id="3620188369327429839" datatype="html">
+        <source> Save </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/common/edit-dialog/folder-edit-dialog/folder-edit-dialog.component.html</context>
+          <context context-type="linenumber">65,66</context>
+        </context-group>
+      </trans-unit>
+<trans-unit id="733390306799768951" datatype="html">
+        <source>Create new folder</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/common/edit-dialog/folder-edit-dialog/folder-edit-dialog.component.ts</context>
+          <context context-type="linenumber">48</context>
+        </context-group>
+      </trans-unit>
+<trans-unit id="2984288320707600950" datatype="html">
+        <source>Edit folder</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/common/edit-dialog/folder-edit-dialog/folder-edit-dialog.component.ts</context>
+          <context context-type="linenumber">52</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/folders/folders.component.html</context>
+          <context context-type="linenumber">120</context>
+        </context-group>
+      </trans-unit>
+<trans-unit id="5700628356844396417" datatype="html">
+        <source>{VAR_PLURAL, plural, =1 {1 existing value suggested below} other {<x id="INTERPOLATION"/> existing values suggested below}}</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/common/suggestions-dropdown/suggestions-dropdown.component.html</context>
+          <context context-type="linenumber">53</context>
+        </context-group>
+      </trans-unit>
+<trans-unit id="3625297624562643882" datatype="html">
+        <source>Search folders</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.html</context>
+          <context context-type="linenumber">162,163</context>
+        </context-group>
+      </trans-unit>
+<trans-unit id="1918603297826248431" datatype="html">
+        <source> Expand all </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.html</context>
+          <context context-type="linenumber">184</context>
+        </context-group>
+      </trans-unit>
+<trans-unit id="3392062750241531265" datatype="html">
+        <source> Collapse all </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.html</context>
+          <context context-type="linenumber">193</context>
+        </context-group>
+      </trans-unit>
+<trans-unit id="521948756144449431" datatype="html">
+        <source> No folders match your search. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.html</context>
+          <context context-type="linenumber">259</context>
+        </context-group>
+      </trans-unit>
+<trans-unit id="4920817831159369077" datatype="html">
+        <source>Expand branches or search by folder name/path.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.html</context>
+          <context context-type="linenumber">265,266</context>
+        </context-group>
+      </trans-unit>
+<trans-unit id="1667797136364545449" datatype="html">
+        <source>Folder: <x id="PH" equiv-text="this.folderSelectionModel.items.find((f) =&gt; f.id == +rule.value)
+                ?.name"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.ts</context>
+          <context context-type="linenumber">341,344</context>
+        </context-group>
+      </trans-unit>
+<trans-unit id="390080593034340940" datatype="html">
+        <source>Without folder</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/document-list/filter-editor/filter-editor.component.ts</context>
+          <context context-type="linenumber">346</context>
+        </context-group>
+      </trans-unit>
+<trans-unit id="276577335650445066" datatype="html">
+        <source>New folder</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/folders/folders.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+<trans-unit id="1548613926621438743" datatype="html">
+        <source>All folders</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/folders/folders.component.html</context>
+          <context context-type="linenumber">28,29</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/folders/folders.component.html</context>
+          <context context-type="linenumber">93,94</context>
+        </context-group>
+      </trans-unit>
+<trans-unit id="7265276423149818853" datatype="html">
+        <source>This will move any documents in this folder (and its subfolders) to the parent folder. Continue?</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/folders/folders.component.html</context>
+          <context context-type="linenumber">129,130</context>
+        </context-group>
+      </trans-unit>
+<trans-unit id="7173418716427245373" datatype="html">
+        <source> Clear selection </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/folders/folders.component.html</context>
+          <context context-type="linenumber">146</context>
+        </context-group>
+      </trans-unit>
+<trans-unit id="8944125999227454362" datatype="html">
+        <source>Move <x id="INTERPOLATION" equiv-text="{{ selected.size }}"/> selected to…</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/folders/folders.component.html</context>
+          <context context-type="linenumber">155,156</context>
+        </context-group>
+      </trans-unit>
+<trans-unit id="6570448273548588867" datatype="html">
+        <source>Find destination folder</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/folders/folders.component.html</context>
+          <context context-type="linenumber">163,164</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/folders/folders.component.html</context>
+          <context context-type="linenumber">165,166</context>
+        </context-group>
+      </trans-unit>
+<trans-unit id="7807197122637748017" datatype="html">
+        <source> No matching folders. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/folders/folders.component.html</context>
+          <context context-type="linenumber">191</context>
+        </context-group>
+      </trans-unit>
+<trans-unit id="7590140473265271835" datatype="html">
+        <source><x id="INTERPOLATION" equiv-text="{{ documentsCount }}"/> documents · <x id="INTERPOLATION_1" equiv-text="{{ selected.size }}"/> selected</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/folders/folders.component.html</context>
+          <context context-type="linenumber">237,239</context>
+        </context-group>
+      </trans-unit>
+<trans-unit id="7342317378910302481" datatype="html">
+        <source>Moving documents…</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/folders/folders.component.html</context>
+          <context context-type="linenumber">240,241</context>
+        </context-group>
+      </trans-unit>
+<trans-unit id="8987136258432961315" datatype="html">
+        <source>Select documents to move them, or drag them onto a folder.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/folders/folders.component.html</context>
+          <context context-type="linenumber">243,244</context>
+        </context-group>
+      </trans-unit>
+<trans-unit id="8798294971890835873" datatype="html">
+        <source>Select all movable documents on this page</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/folders/folders.component.html</context>
+          <context context-type="linenumber">262,263</context>
+        </context-group>
+      </trans-unit>
+<trans-unit id="4697709876006905596" datatype="html">
+        <source><x id="INTERPOLATION" equiv-text="{{ documentsCount }}"/> documents</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/folders/folders.component.html</context>
+          <context context-type="linenumber">307,308</context>
+        </context-group>
+      </trans-unit>
+<trans-unit id="6641316732085362970" datatype="html">
+        <source>This folder is empty.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/folders/folders.component.html</context>
+          <context context-type="linenumber">323,324</context>
+        </context-group>
+      </trans-unit>
+<trans-unit id="4512901874654273362" datatype="html">
+        <source>No folders yet. Create one to get started.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/folders/folders.component.html</context>
+          <context context-type="linenumber">329,330</context>
+        </context-group>
+      </trans-unit>
+<trans-unit id="6653565976312939485" datatype="html">
+        <source>Error loading folders</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/folders/folders.component.ts</context>
+          <context context-type="linenumber">171</context>
+        </context-group>
+      </trans-unit>
+<trans-unit id="6453128633687195079" datatype="html">
+        <source>Error loading documents</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/folders/folders.component.ts</context>
+          <context context-type="linenumber">238</context>
+        </context-group>
+      </trans-unit>
+<trans-unit id="8780021313338317802" datatype="html">
+        <source>Folder created.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/folders/folders.component.ts</context>
+          <context context-type="linenumber">259</context>
+        </context-group>
+      </trans-unit>
+<trans-unit id="3893227831474185841" datatype="html">
+        <source>Folder updated.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/folders/folders.component.ts</context>
+          <context context-type="linenumber">272</context>
+        </context-group>
+      </trans-unit>
+<trans-unit id="1870855594322813499" datatype="html">
+        <source>Folder deleted. Its documents were moved to the parent folder.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/folders/folders.component.ts</context>
+          <context context-type="linenumber">281</context>
+        </context-group>
+      </trans-unit>
+<trans-unit id="8318468910178251068" datatype="html">
+        <source>Error deleting folder</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/folders/folders.component.ts</context>
+          <context context-type="linenumber">289</context>
+        </context-group>
+      </trans-unit>
+<trans-unit id="1360834673073784905" datatype="html">
+        <source>Moved <x id="PH" equiv-text="docIds.length"/> document(s) to <x id="PH_1" equiv-text="destination"/>.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/folders/folders.component.ts</context>
+          <context context-type="linenumber">383</context>
+        </context-group>
+      </trans-unit>
+<trans-unit id="1176438413016714585" datatype="html">
+        <source>Error moving documents</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/folders/folders.component.ts</context>
+          <context context-type="linenumber">391</context>
+        </context-group>
+      </trans-unit>
     </body>
   </file>
 </xliff>

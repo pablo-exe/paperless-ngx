@@ -123,9 +123,7 @@ msgid "is inbox tag"
 msgstr ""
 
 #: documents/models.py:112
-msgid ""
-"Marks this tag as an inbox tag: All newly consumed documents will be tagged "
-"with inbox tags."
+msgid "Marks this tag as an inbox tag: All newly consumed documents will be tagged with inbox tags."
 msgstr ""
 
 #: documents/models.py:118
@@ -173,9 +171,7 @@ msgid "content"
 msgstr ""
 
 #: documents/models.py:194
-msgid ""
-"The raw, text-only data of the document. This field is primarily used for "
-"searching."
+msgid "The raw, text-only data of the document. This field is primarily used for searching."
 msgstr ""
 
 #: documents/models.py:208
@@ -1195,9 +1191,7 @@ msgid "filter path"
 msgstr ""
 
 #: documents/models.py:1500
-msgid ""
-"Only consume documents with a path that matches this if specified. Wildcards "
-"specified as * are allowed. Case insensitive."
+msgid "Only consume documents with a path that matches this if specified. Wildcards specified as * are allowed. Case insensitive."
 msgstr ""
 
 #: documents/models.py:1507
@@ -1205,9 +1199,7 @@ msgid "filter filename"
 msgstr ""
 
 #: documents/models.py:1512 paperless_mail/models.py:200
-msgid ""
-"Only consume documents which entirely match this filename if specified. "
-"Wildcards such as *.pdf or *invoice* are allowed. Case insensitive."
+msgid "Only consume documents which entirely match this filename if specified. Wildcards such as *.pdf or *invoice* are allowed. Case insensitive."
 msgstr ""
 
 #: documents/models.py:1523
@@ -1319,8 +1311,7 @@ msgid "email subject"
 msgstr ""
 
 #: documents/models.py:1686
-msgid ""
-"The subject of the email, can include some placeholders, see documentation."
+msgid "The subject of the email, can include some placeholders, see documentation."
 msgstr ""
 
 #: documents/models.py:1692
@@ -1328,9 +1319,7 @@ msgid "email body"
 msgstr ""
 
 #: documents/models.py:1695
-msgid ""
-"The body (message) of the email, can include some placeholders, see "
-"documentation."
+msgid "The body (message) of the email, can include some placeholders, see documentation."
 msgstr ""
 
 #: documents/models.py:1701
@@ -1579,9 +1568,7 @@ msgid "passwords"
 msgstr ""
 
 #: documents/models.py:2043
-msgid ""
-"Passwords to try when removing PDF protection. Separate with commas or new "
-"lines."
+msgid "Passwords to try when removing PDF protection. Separate with commas or new lines."
 msgstr ""
 
 #: documents/models.py:2048
@@ -1597,9 +1584,7 @@ msgid "create missing objects"
 msgstr ""
 
 #: documents/models.py:2060
-msgid ""
-"Create suggested tags, correspondents, document types and storage paths that "
-"do not already exist instead of skipping them."
+msgid "Create suggested tags, correspondents, document types and storage paths that do not already exist instead of skipping them."
 msgstr ""
 
 #: documents/models.py:2066
@@ -1607,9 +1592,7 @@ msgid "overwrite existing values"
 msgstr ""
 
 #: documents/models.py:2069
-msgid ""
-"Apply suggestions even if the document already has a value for that field. "
-"Tags are always added to, never replaced."
+msgid "Apply suggestions even if the document already has a value for that field. Tags are always added to, never replaced."
 msgstr ""
 
 #: documents/models.py:2075
@@ -1678,8 +1661,7 @@ msgid "Custom field with id %(id)s does not exist"
 msgstr ""
 
 #: documents/serialisers.py:2437 documents/serialisers.py:2447
-msgid ""
-"Custom fields must be a list of integers or an object mapping ids to values."
+msgid "Custom fields must be a list of integers or an object mapping ids to values."
 msgstr ""
 
 #: documents/serialisers.py:2442
@@ -1776,9 +1758,7 @@ msgid "Paperless-ngx reset password request"
 msgstr ""
 
 #: documents/templates/account/password_reset.html:9
-msgid ""
-"Enter your email address below, and we'll email instructions for setting a "
-"new one."
+msgid "Enter your email address below, and we'll email instructions for setting a new one."
 msgstr ""
 
 #: documents/templates/account/password_reset.html:12
@@ -1798,9 +1778,7 @@ msgid "Check your inbox."
 msgstr ""
 
 #: documents/templates/account/password_reset_done.html:13
-msgid ""
-"We've emailed you instructions for setting your password. You should receive "
-"the email shortly!"
+msgid "We've emailed you instructions for setting your password. You should receive the email shortly!"
 msgstr ""
 
 #: documents/templates/account/password_reset_from_key.html:5
@@ -1852,9 +1830,7 @@ msgid "Already have an account?"
 msgstr ""
 
 #: documents/templates/account/signup.html:19
-msgid ""
-"Note: This is the first user account for this installation and will be "
-"granted superuser privileges."
+msgid "Note: This is the first user account for this installation and will be granted superuser privileges."
 msgstr ""
 
 #: documents/templates/account/signup.html:23
@@ -1883,9 +1859,7 @@ msgid "Paperless-ngx Two-Factor Authentication"
 msgstr ""
 
 #: documents/templates/mfa/authenticate.html:12
-msgid ""
-"Your account is protected by two-factor authentication. Please enter an "
-"authenticator code:"
+msgid "Your account is protected by two-factor authentication. Please enter an authenticator code:"
 msgstr ""
 
 #: documents/templates/mfa/authenticate.html:17
@@ -1910,9 +1884,7 @@ msgid "Paperless-ngx social account sign in"
 msgstr ""
 
 #: documents/templates/socialaccount/authentication_error.html:10
-msgid ""
-"An error occurred while attempting to login via your social network account. "
-"Back to the"
+msgid "An error occurred while attempting to login via your social network account. Back to the"
 msgstr ""
 
 #: documents/templates/socialaccount/authentication_error.html:10
@@ -1952,9 +1924,7 @@ msgid "Unable to parse URI {value}, missing net location or path"
 msgstr ""
 
 #: documents/validators.py:36
-msgid ""
-"URI scheme '{parts.scheme}' is not allowed. Allowed schemes: {', '."
-"join(allowed_schemes)}"
+msgid "URI scheme '{parts.scheme}' is not allowed. Allowed schemes: {', '.join(allowed_schemes)}"
 msgstr ""
 
 #: documents/validators.py:45
@@ -2448,8 +2418,7 @@ msgid "Advanced settings"
 msgstr ""
 
 #: paperless_mail/admin.py:61
-msgid ""
-"Paperless will only process mails that match ALL of the filters given below."
+msgid "Paperless will only process mails that match ALL of the filters given below."
 msgstr ""
 
 #: paperless_mail/admin.py:78
@@ -2457,9 +2426,7 @@ msgid "Actions"
 msgstr ""
 
 #: paperless_mail/admin.py:81
-msgid ""
-"The action applied to the mail. This action is only performed when the mail "
-"body or attachments were consumed from the mail."
+msgid "The action applied to the mail. This action is only performed when the mail body or attachments were consumed from the mail."
 msgstr ""
 
 #: paperless_mail/admin.py:89
@@ -2467,10 +2434,7 @@ msgid "Metadata"
 msgstr ""
 
 #: paperless_mail/admin.py:92
-msgid ""
-"Assign metadata to documents consumed from this rule automatically. If you "
-"do not assign tags, types or correspondents here, paperless will still "
-"process all matching rules that you have defined."
+msgid "Assign metadata to documents consumed from this rule automatically. If you do not assign tags, types or correspondents here, paperless will still process all matching rules that you have defined."
 msgstr ""
 
 #: paperless_mail/apps.py:8
@@ -2518,9 +2482,7 @@ msgid "IMAP port"
 msgstr ""
 
 #: paperless_mail/models.py:32
-msgid ""
-"This is usually 143 for unencrypted and STARTTLS connections, and 993 for "
-"SSL connections."
+msgid "This is usually 143 for unencrypted and STARTTLS connections, and 993 for SSL connections."
 msgstr ""
 
 #: paperless_mail/models.py:38
@@ -2544,9 +2506,7 @@ msgid "character set"
 msgstr ""
 
 #: paperless_mail/models.py:54
-msgid ""
-"The character set to use when communicating with the mail server, such as "
-"'UTF-8' or 'US-ASCII'."
+msgid "The character set to use when communicating with the mail server, such as 'UTF-8' or 'US-ASCII'."
 msgstr ""
 
 #: paperless_mail/models.py:60
@@ -2582,9 +2542,7 @@ msgid "Process full Mail (with embedded attachments in file) as .eml"
 msgstr ""
 
 #: paperless_mail/models.py:109
-msgid ""
-"Process full Mail (with embedded attachments in file) as .eml + process "
-"attachments as separate documents"
+msgid "Process full Mail (with embedded attachments in file) as .eml + process attachments as separate documents"
 msgstr ""
 
 #: paperless_mail/models.py:116
@@ -2668,9 +2626,7 @@ msgid "folder"
 msgstr ""
 
 #: paperless_mail/models.py:161
-msgid ""
-"Subfolders must be separated by a delimiter, often a dot ('.') or slash "
-"('/'), but it varies by mail server."
+msgid "Subfolders must be separated by a delimiter, often a dot ('.') or slash ('/'), but it varies by mail server."
 msgstr ""
 
 #: paperless_mail/models.py:167
@@ -2698,9 +2654,7 @@ msgid "filter attachment filename exclusive"
 msgstr ""
 
 #: paperless_mail/models.py:212
-msgid ""
-"Do not consume documents which entirely match this filename if specified. "
-"Wildcards such as *.pdf or *invoice* are allowed. Case insensitive."
+msgid "Do not consume documents which entirely match this filename if specified. Wildcards such as *.pdf or *invoice* are allowed. Case insensitive."
 msgstr ""
 
 #: paperless_mail/models.py:219
@@ -2716,9 +2670,7 @@ msgid "attachment type"
 msgstr ""
 
 #: paperless_mail/models.py:229
-msgid ""
-"Inline attachments include embedded images, so it's best to combine this "
-"option with a filename filter."
+msgid "Inline attachments include embedded images, so it's best to combine this option with a filename filter."
 msgstr ""
 
 #: paperless_mail/models.py:235
@@ -2738,9 +2690,7 @@ msgid "action parameter"
 msgstr ""
 
 #: paperless_mail/models.py:258
-msgid ""
-"Additional parameter for the action selected above, i.e., the target folder "
-"of the move to folder action. Subfolders must be separated by dots."
+msgid "Additional parameter for the action selected above, i.e., the target folder of the move to folder action. Subfolders must be separated by dots."
 msgstr ""
 
 #: paperless_mail/models.py:266
@@ -2760,9 +2710,7 @@ msgid "Stop processing further rules"
 msgstr ""
 
 #: paperless_mail/models.py:308
-msgid ""
-"If True, no further rules will be processed after this one if any document "
-"is queued."
+msgid "If True, no further rules will be processed after this one if any document is queued."
 msgstr ""
 
 #: paperless_mail/models.py:334
@@ -2791,4 +2739,39 @@ msgstr ""
 
 #: paperless_mail/models.py:379
 msgid "error"
+msgstr ""
+
+#: documents/migrations/0023_add_folder_saved_view_filter_rules.py:67
+#: documents/models.py:867
+msgid "folder is"
+msgstr ""
+
+#: documents/migrations/0023_add_folder_saved_view_filter_rules.py:68
+#: documents/models.py:868
+msgid "has folder in"
+msgstr ""
+
+#: documents/migrations/0023_add_folder_saved_view_filter_rules.py:69
+#: documents/models.py:869
+msgid "does not have folder in"
+msgstr ""
+
+#: documents/models.py:182
+msgid "parent folder"
+msgstr ""
+
+#: documents/models.py:186
+msgid "is default folder"
+msgstr ""
+
+#: documents/models.py:189
+msgid "Marks this folder as the default folder. Newly consumed or unclassified documents are placed here."
+msgstr ""
+
+#: documents/models.py:197
+msgid "folders"
+msgstr ""
+
+#: documents/models.py:308
+msgid "The folder this document is organized into. Every document should belong to a folder; unclassified documents fall back to the default folder."
 msgstr ""

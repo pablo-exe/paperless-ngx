@@ -36,6 +36,7 @@ from documents.models import CustomField
 from documents.models import CustomFieldInstance
 from documents.models import Document
 from documents.models import DocumentType
+from documents.models import Folder
 from documents.models import MatchingModel
 from documents.models import Note
 from documents.models import SavedView
@@ -1585,6 +1586,7 @@ class TestDocumentApi(DirectoriesMixin, ConsumeTaskMixin, APITestCase):
         correspondent = Correspondent.objects.create(name="c1")
         doc_type = DocumentType.objects.create(name="dt1")
         storage_path = StoragePath.objects.create(name="sp1")
+        folder = Folder.objects.create(name="folder1")
         tag = Tag.objects.create(name="tag")
 
         matching_doc = Document.objects.create(
@@ -1592,6 +1594,7 @@ class TestDocumentApi(DirectoriesMixin, ConsumeTaskMixin, APITestCase):
             correspondent=correspondent,
             document_type=doc_type,
             storage_path=storage_path,
+            folder=folder,
         )
         matching_doc.tags.add(tag)
 
@@ -1625,11 +1628,17 @@ class TestDocumentApi(DirectoriesMixin, ConsumeTaskMixin, APITestCase):
             for item in response.data["selection_data"]["selected_storage_paths"]
             if item["id"] == storage_path.id
         )
+        selected_folder = next(
+            item
+            for item in response.data["selection_data"]["selected_folders"]
+            if item["id"] == folder.id
+        )
 
         self.assertEqual(selected_correspondent["document_count"], 1)
         self.assertEqual(selected_tag["document_count"], 1)
         self.assertEqual(selected_type["document_count"], 1)
         self.assertEqual(selected_storage_path["document_count"], 1)
+        self.assertEqual(selected_folder["document_count"], 1)
 
     def test_selection_data_document_counts_per_tag(self) -> None:
         """

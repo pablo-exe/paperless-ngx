@@ -137,6 +137,7 @@ from documents.filters import DocumentFilterSet
 from documents.filters import DocumentsOrderingFilter
 from documents.filters import DocumentTypeFilterSet
 from documents.filters import EffectiveContentFilter
+from documents.filters import FolderFilterSet
 from documents.filters import PaperlessTaskFilterSet
 from documents.filters import PermittedObjectsFilter
 from documents.filters import ShareLinkBundleFilterSet
@@ -155,6 +156,7 @@ from documents.models import CustomField
 from documents.models import CustomFieldInstance
 from documents.models import Document
 from documents.models import DocumentType
+from documents.models import Folder
 from documents.models import Note
 from documents.models import PaperlessTask
 from documents.models import SavedView
@@ -166,6 +168,7 @@ from documents.models import UiSettings
 from documents.models import Workflow
 from documents.models import WorkflowAction
 from documents.models import WorkflowTrigger
+from documents.models import get_default_folder
 from documents.permissions import AcknowledgeTasksPermissions
 from documents.permissions import PaperlessAdminPermissions
 from documents.permissions import PaperlessNotePermissions
@@ -201,6 +204,7 @@ from documents.serialisers import DocumentVersionLabelSerializer
 from documents.serialisers import DocumentVersionSerializer
 from documents.serialisers import EditPdfDocumentsSerializer
 from documents.serialisers import EmailSerializer
+from documents.serialisers import FolderSerializer
 from documents.serialisers import MergeDocumentsAsVersionsSerializer
 from documents.serialisers import MergeDocumentsSerializer
 from documents.serialisers import NotesSerializer
@@ -1078,6 +1082,13 @@ class DocumentViewSet(
                 distinct=True,
             ),
         )
+        folders = Folder.objects.annotate(
+            document_count=Count(
+                "documents",
+                filter=Q(documents__id__in=document_ids),
+                distinct=True,
+            ),
+        )
         # Tag and CustomField reach Document through an M2M/through-model table;
         # a plain Count(filter=...) there is a much more expensive plan than the
         # FK relations above once the bridge table is large -- see
@@ -1106,6 +1117,9 @@ class DocumentViewSet(
             ],
             "selected_storage_paths": [
                 {"id": t.id, "document_count": t.document_count} for t in storage_paths
+            ],
+            "selected_folders": [
+                {"id": t.id, "document_count": t.document_count} for t in folders
             ],
             "selected_custom_fields": [
                 {"id": t.id, "document_count": t.document_count} for t in custom_fields
@@ -3635,6 +3649,12 @@ class SelectionDataView(DocumentSelectionMixin, GenericAPIView[Any]):
             ),
         )
 
+        folders = Folder.objects.annotate(
+            document_count=Count(
+                Case(When(documents__id__in=ids, then=1), output_field=IntegerField()),
+            ),
+        )
+
         custom_fields = CustomField.objects.annotate(
             document_count=Count(
                 Case(
@@ -3662,6 +3682,9 @@ class SelectionDataView(DocumentSelectionMixin, GenericAPIView[Any]):
                 "selected_storage_paths": [
                     {"id": t.id, "document_count": t.document_count}
                     for t in storage_paths
+                ],
+                "selected_folders": [
+                    {"id": t.id, "document_count": t.document_count} for t in folders
                 ],
                 "selected_custom_fields": [
                     {"id": t.id, "document_count": t.document_count}
@@ -4234,6 +4257,57 @@ class StoragePathViewSet(PermissionsAwareDocumentCountMixin, ModelViewSet[Storag
             result_path = Path(result)
             result = str(result_path.with_name(f"{result_path.name}{extension}"))
         return Response(result)
+
+
+@extend_schema_view(**generate_object_with_permissions_schema(FolderSerializer))
+class FolderViewSet(PermissionsAwareDocumentCountMixin, ModelViewSet[Folder]):
+    model = Folder
+
+    queryset = Folder.objects.select_related("owner").order_by(Lower("name"))
+    serializer_class = FolderSerializer
+    pagination_class = StandardPagination
+    permission_classes = (IsAuthenticated, PaperlessObjectPermissions)
+    filter_backends = (
+        DjangoFilterBackend,
+        OrderingFilter,
+        PermittedObjectsFilter,
+    )
+    filterset_class = FolderFilterSet
+    ordering_fields = ("name", "document_count")
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["document_count_filter"] = self.get_document_count_filter()
+        if hasattr(self, "_folder_children_map"):
+            context["folder_children_map"] = self._folder_children_map
+        return context
+
+    def _build_children_map(self, request):
+        base_qs = self.get_queryset()
+        visible = PermittedObjectsFilter().filter_queryset(request, base_qs, self)
+        ordering = OrderingFilter().get_ordering(request, visible, self) or (
+            Lower("name"),
+        )
+        children_map = {}
+        for folder in visible.order_by(*ordering):
+            children_map.setdefault(folder.parent_id, []).append(folder)
+        return children_map
+
+    def list(self, request, *args, **kwargs):
+        self._folder_children_map = self._build_children_map(request)
+        return super().list(request, *args, **kwargs)
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if instance.is_default:
+            return Response(
+                {"error": "The default folder cannot be deleted."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        target = instance.parent or get_default_folder()
+        folder_ids = [instance.pk, *[f.pk for f in instance.get_descendants()]]
+        Document.objects.filter(folder_id__in=folder_ids).update(folder=target)
+        return super().destroy(request, *args, **kwargs)
 
 
 class UiSettingsView(GenericAPIView[Any]):

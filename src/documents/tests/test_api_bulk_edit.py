@@ -12,6 +12,7 @@ from documents.models import CustomField
 from documents.models import CustomFieldInstance
 from documents.models import Document
 from documents.models import DocumentType
+from documents.models import Folder
 from documents.models import StoragePath
 from documents.models import Tag
 from paperless_testing.dirs import DirectoriesMixin
@@ -38,12 +39,15 @@ class TestBulkEditAPI(DirectoriesMixin, APITestCase):
         self.dt2 = DocumentType.objects.create(name="dt2")
         self.t1 = Tag.objects.create(name="t1")
         self.t2 = Tag.objects.create(name="t2")
+        self.f1 = Folder.objects.create(name="f1")
+        self.f2 = Folder.objects.create(name="f2")
         self.doc1 = Document.objects.create(checksum="A", title="A")
         self.doc2 = Document.objects.create(
             checksum="B",
             title="B",
             correspondent=self.c1,
             document_type=self.dt1,
+            folder=self.f1,
             page_count=5,
         )
         self.doc3 = Document.objects.create(
@@ -51,6 +55,7 @@ class TestBulkEditAPI(DirectoriesMixin, APITestCase):
             title="C",
             correspondent=self.c2,
             document_type=self.dt2,
+            folder=self.f2,
         )
         self.doc4 = Document.objects.create(checksum="D", title="D")
         self.doc5 = Document.objects.create(checksum="E", title="E")
@@ -1104,6 +1109,7 @@ class TestBulkEditAPI(DirectoriesMixin, APITestCase):
             ("selected_correspondents", Correspondent),
             ("selected_tags", Tag),
             ("selected_document_types", DocumentType),
+            ("selected_folders", Folder),
         ]:
             self.assertEqual(len(response.data[field]), Entity.objects.count())
             for correspondent in response.data[field]:
@@ -1144,6 +1150,18 @@ class TestBulkEditAPI(DirectoriesMixin, APITestCase):
                 {"id": self.c2.id, "document_count": 0},
             ],
         )
+        selected_folder_1 = next(
+            item
+            for item in response.data["selected_folders"]
+            if item["id"] == self.f1.id
+        )
+        selected_folder_2 = next(
+            item
+            for item in response.data["selected_folders"]
+            if item["id"] == self.f2.id
+        )
+        self.assertEqual(selected_folder_1["document_count"], 1)
+        self.assertEqual(selected_folder_2["document_count"], 0)
 
     def test_api_selection_data_with_excluded_documents(self) -> None:
         response = self.client.post(

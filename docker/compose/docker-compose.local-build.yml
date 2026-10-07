@@ -1,0 +1,9 @@
+services:
+  webserver:
+    image: paperless-local:test
+    build:
+      context: ../..
+      dockerfile: Dockerfile
+    environment:
+      # Local fallback only. Set PAPERLESS_SECRET_KEY when using this outside development.
+      PAPERLESS_SECRET_KEY: ${PAPERLESS_SECRET_KEY:-paperless-local-development-only}

@@ -44,8 +44,10 @@ import {
   FILTER_DOCUMENT_TYPE,
   FILTER_DOES_NOT_HAVE_CORRESPONDENT,
   FILTER_DOES_NOT_HAVE_DOCUMENT_TYPE,
+  FILTER_DOES_NOT_HAVE_FOLDER,
   FILTER_DOES_NOT_HAVE_STORAGE_PATH,
   FILTER_DOES_NOT_HAVE_TAG,
+  FILTER_FOLDER,
   FILTER_FULLTEXT_MORELIKE,
   FILTER_FULLTEXT_QUERY,
   FILTER_HAS_ANY_TAG,
@@ -54,6 +56,7 @@ import {
   FILTER_HAS_CUSTOM_FIELDS_ANY,
   FILTER_HAS_DOCUMENT_TYPE_ANY,
   FILTER_HAS_DUPLICATES,
+  FILTER_HAS_FOLDER_ANY,
   FILTER_HAS_STORAGE_PATH_ANY,
   FILTER_HAS_TAGS_ALL,
   FILTER_HAS_TAGS_ANY,
@@ -70,6 +73,7 @@ import {
   FILTER_TITLE_CONTENT,
   NEGATIVE_NULL_FILTER_VALUE,
 } from 'src/app/data/filter-rule-type'
+import { Folder } from 'src/app/data/folder'
 import { StoragePath } from 'src/app/data/storage-path'
 import { Tag } from 'src/app/data/tag'
 import { User } from 'src/app/data/user'
@@ -84,6 +88,7 @@ import { CorrespondentService } from 'src/app/services/rest/correspondent.servic
 import { CustomFieldsService } from 'src/app/services/rest/custom-fields.service'
 import { DocumentTypeService } from 'src/app/services/rest/document-type.service'
 import { DocumentService } from 'src/app/services/rest/document.service'
+import { FolderService } from 'src/app/services/rest/folder.service'
 import { SearchService } from 'src/app/services/rest/search.service'
 import { StoragePathService } from 'src/app/services/rest/storage-path.service'
 import { TagService } from 'src/app/services/rest/tag.service'
@@ -153,6 +158,23 @@ const storage_paths: StoragePath[] = [
   {
     id: 33,
     name: 'StoragePath33',
+  },
+]
+
+const folders: Folder[] = [
+  {
+    id: 52,
+    name: 'Inbox',
+    full_path: 'Inbox',
+    children: [
+      {
+        id: 53,
+        name: 'Taxes',
+        full_path: 'Inbox/Taxes',
+        parent: 52,
+        children: [],
+      },
+    ],
   },
 ]
 
@@ -241,6 +263,12 @@ describe('FilterEditorComponent', () => {
           },
         },
         {
+          provide: FolderService,
+          useValue: {
+            getTree: () => of({ results: folders }),
+          },
+        },
+        {
           provide: CustomFieldsService,
           useValue: {
             listAll: () => of({ results: custom_fields }),
@@ -299,6 +327,9 @@ describe('FilterEditorComponent', () => {
     )
     httpTestingController.expectNone(
       `${environment.apiBaseUrl}documents/storage_paths/`
+    )
+    httpTestingController.expectNone(
+      `${environment.apiBaseUrl}documents/folders/`
     )
   })
 
@@ -1029,6 +1060,41 @@ describe('FilterEditorComponent', () => {
     ]
   })
 
+  it('should ingest folder filter rules', () => {
+    component.filterRules = [
+      {
+        rule_type: FILTER_FOLDER,
+        value: '52',
+      },
+    ]
+    expect(component.folderSelectionModel.intersection).toEqual(
+      Intersection.Include
+    )
+    expect(component.folderSelectionModel.getSelectedItems()[0].id).toEqual(52)
+
+    component.filterRules = [
+      {
+        rule_type: FILTER_HAS_FOLDER_ANY,
+        value: '53',
+      },
+    ]
+    expect(component.folderSelectionModel.logicalOperator).toEqual(
+      LogicalOperator.Or
+    )
+    expect(component.folderSelectionModel.getSelectedItems()[0].id).toEqual(53)
+
+    component.filterRules = [
+      {
+        rule_type: FILTER_DOES_NOT_HAVE_FOLDER,
+        value: '52',
+      },
+    ]
+    expect(component.folderSelectionModel.intersection).toEqual(
+      Intersection.Exclude
+    )
+    expect(component.folderSelectionModel.getExcludedItems()[0].id).toEqual(52)
+  })
+
   it('should ingest filter rules for custom fields all', () => {
     expect(component.customFieldQueriesModel.isEmpty()).toBeTruthy()
     component.filterRules = [
@@ -1757,6 +1823,28 @@ describe('FilterEditorComponent', () => {
     ])
   })
 
+  it('should show folders and convert a folder selection to a filter rule', () => {
+    const folderDropdown = fixture.debugElement.query(
+      By.css('.folder-filter-dropdown')
+    )
+    expect(folderDropdown).toBeTruthy()
+    expect(folderDropdown.nativeElement.textContent).toContain('Folders')
+
+    component.toggleFolderFilterSelection(
+      component.folderSelectionModel.items.find(
+        (folder) => folder.id === folders[0].id
+      )
+    )
+    fixture.detectChanges()
+
+    expect(component.filterRules).toEqual([
+      {
+        rule_type: FILTER_HAS_FOLDER_ANY,
+        value: folders[0].id.toString(),
+      },
+    ])
+  })
+
   it('should convert user input to correct filter rules on custom field selections', () => {
     const customFieldsQueryDropdown = fixture.debugElement.queryAll(
       By.directive(CustomFieldsQueryDropdownComponent)
@@ -2220,6 +2308,22 @@ describe('FilterEditorComponent', () => {
       },
     ]
     expect(component.generateFilterName()).toEqual('Without storage path')
+
+    component.filterRules = [
+      {
+        rule_type: FILTER_HAS_FOLDER_ANY,
+        value: '52',
+      },
+    ]
+    expect(component.generateFilterName()).toEqual(`Folder: ${folders[0].name}`)
+
+    component.filterRules = [
+      {
+        rule_type: FILTER_FOLDER,
+        value: null,
+      },
+    ]
+    expect(component.generateFilterName()).toEqual('Without folder')
 
     component.filterRules = [
       {

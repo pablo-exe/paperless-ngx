@@ -33,6 +33,8 @@ repos:
     hooks:
       - id: codespell
         additional_dependencies: [tomli]
+        # The folder maintainer guide is in Spanish; codespell uses English.
+        exclude: '^docs/folders\.md$'
         exclude_types:
           - pofile
           - json

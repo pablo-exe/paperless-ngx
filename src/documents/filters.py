@@ -45,6 +45,7 @@ from documents.models import CustomField
 from documents.models import CustomFieldInstance
 from documents.models import Document
 from documents.models import DocumentType
+from documents.models import Folder
 from documents.models import PaperlessTask
 from documents.models import ShareLink
 from documents.models import ShareLinkBundle
@@ -129,6 +130,24 @@ class StoragePathFilterSet(FilterSet):
             "id": ID_KWARGS,
             "name": CHAR_KWARGS,
             "path": CHAR_KWARGS,
+        }
+
+
+class FolderFilterSet(FilterSet):
+    is_root = BooleanFilter(
+        label="Is root folder",
+        field_name="parent",
+        lookup_expr="isnull",
+    )
+
+    class Meta:
+        model = Folder
+        fields = {
+            "id": ID_KWARGS,
+            "name": CHAR_KWARGS,
+            "parent": ["isnull"],
+            "parent__id": ID_KWARGS,
+            "is_default": ["exact"],
         }
 
 
@@ -810,6 +829,8 @@ class DocumentFilterSet(FilterSet):
 
     storage_path__id__none = ObjectFilter(field_name="storage_path", exclude=True)
 
+    folder__id__none = ObjectFilter(field_name="folder", exclude=True)
+
     is_in_inbox = InboxFilter()
 
     # Deprecated, but keep for now for existing saved views
@@ -910,6 +931,9 @@ class DocumentFilterSet(FilterSet):
             "storage_path": ["isnull"],
             "storage_path__id": ID_KWARGS,
             "storage_path__name": CHAR_KWARGS,
+            "folder": ["isnull"],
+            "folder__id": ID_KWARGS,
+            "folder__name": CHAR_KWARGS,
             "owner": ["isnull"],
             "owner__id": ID_KWARGS,
             "custom_fields": ["icontains"],
