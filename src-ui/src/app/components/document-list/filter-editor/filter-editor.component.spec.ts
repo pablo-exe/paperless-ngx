@@ -517,6 +517,22 @@ describe('FilterEditorComponent', () => {
     expect(component.textFilter).toBeNull()
   })
 
+  it('should ingest title filter rules alongside a fulltext query with date created', () => {
+    component.filterRules = [
+      {
+        rule_type: FILTER_SIMPLE_TITLE,
+        value: 'foo',
+      },
+      {
+        rule_type: FILTER_FULLTEXT_QUERY,
+        value: 'created:[-1 week to now]',
+      },
+    ]
+    expect(component.dateCreatedRelativeDate).toEqual(1) // RELATIVE_DATE_QUERYSTRINGS['-1 week to now']
+    expect(component.textFilter).toEqual('foo')
+    expect(component.textFilterTarget).toEqual('title') // TEXT_FILTER_TARGET_TITLE
+  })
+
   it('should ingest text filter rules for fulltext query that include date added', () => {
     expect(component.dateAddedRelativeDate).toBeNull()
     component.filterRules = [
@@ -1955,7 +1971,7 @@ describe('FilterEditorComponent', () => {
     ])
   })
 
-  it('should carry over text filtering on date created with relative date', () => {
+  it('should keep text filtering separate from date created relative date', () => {
     component.textFilter = 'foo'
     const dateCreatedDropdown = fixture.debugElement.queryAll(
       By.directive(DatesDropdownComponent)
@@ -1966,13 +1982,17 @@ describe('FilterEditorComponent', () => {
     tick(400)
     expect(component.filterRules).toEqual([
       {
+        rule_type: FILTER_SIMPLE_TEXT,
+        value: 'foo',
+      },
+      {
         rule_type: FILTER_FULLTEXT_QUERY,
-        value: 'foo,created:[-1 week to now]',
+        value: 'created:[-1 week to now]',
       },
     ])
   })
 
-  it('should carry over text filtering once with created and added relative dates', () => {
+  it('should keep text filtering separate from created and added relative dates', () => {
     component.textFilter = 'foo'
     const datesDropdown = fixture.debugElement.query(
       By.directive(DatesDropdownComponent)
@@ -1984,13 +2004,17 @@ describe('FilterEditorComponent', () => {
     tick(400)
     expect(component.filterRules).toEqual([
       {
+        rule_type: FILTER_SIMPLE_TEXT,
+        value: 'foo',
+      },
+      {
         rule_type: FILTER_FULLTEXT_QUERY,
-        value: 'foo,created:[-1 week to now],added:[-1 month to now]',
+        value: 'created:[-1 week to now],added:[-1 month to now]',
       },
     ])
   })
 
-  it('should convert legacy title filters into full text query when adding a created relative date', () => {
+  it('should keep legacy title filters as a title search when adding a created relative date', () => {
     component.filterRules = [
       {
         rule_type: FILTER_TITLE,
@@ -2006,13 +2030,17 @@ describe('FilterEditorComponent', () => {
     tick(400)
     expect(component.filterRules).toEqual([
       {
+        rule_type: FILTER_SIMPLE_TITLE,
+        value: 'foo',
+      },
+      {
         rule_type: FILTER_FULLTEXT_QUERY,
-        value: 'foo,created:[-1 week to now]',
+        value: 'created:[-1 week to now]',
       },
     ])
   })
 
-  it('should convert simple title filters into full text query when adding a created relative date', () => {
+  it('should keep simple title filters as a title search when adding a created relative date', () => {
     component.filterRules = [
       {
         rule_type: FILTER_SIMPLE_TITLE,
@@ -2028,8 +2056,12 @@ describe('FilterEditorComponent', () => {
     tick(400)
     expect(component.filterRules).toEqual([
       {
+        rule_type: FILTER_SIMPLE_TITLE,
+        value: 'foo',
+      },
+      {
         rule_type: FILTER_FULLTEXT_QUERY,
-        value: 'foo,created:[-1 week to now]',
+        value: 'created:[-1 week to now]',
       },
     ])
   })
@@ -2115,7 +2147,7 @@ describe('FilterEditorComponent', () => {
     ])
   })
 
-  it('should carry over text filtering on date added with relative date', () => {
+  it('should keep text filtering separate from date added relative date', () => {
     component.textFilter = 'foo'
     const datesDropdown = fixture.debugElement.query(
       By.directive(DatesDropdownComponent)
@@ -2126,8 +2158,12 @@ describe('FilterEditorComponent', () => {
     tick(400)
     expect(component.filterRules).toEqual([
       {
+        rule_type: FILTER_SIMPLE_TEXT,
+        value: 'foo',
+      },
+      {
         rule_type: FILTER_FULLTEXT_QUERY,
-        value: 'foo,added:[-1 week to now]',
+        value: 'added:[-1 week to now]',
       },
     ])
   })

@@ -293,6 +293,7 @@ logger = logging.getLogger("paperless.api")
 # clauses efficiently, so this threshold mainly protects SQLite users.
 _TANTIVY_INTERSECT_THRESHOLD = 5_000
 _TANTIVY_SEARCH_PARAM_NAMES = ("text", "title_search", "query", "more_like_id")
+_TANTIVY_COMBINABLE_SEARCH_PARAMS = ({"text", "query"}, {"title_search", "query"})
 
 # whoosh-compat's fieldname tagger (used only for SearchMode.QUERY, via the
 # whoosh grammar in parse_user_query) is O(n^2) in plain word characters:
@@ -312,6 +313,18 @@ _TANTIVY_SEARCH_PARAM_NAMES = ("text", "title_search", "query", "more_like_id")
 _MAX_QUERY_LENGTH: Final[int] = 4096
 
 
+def _validate_tantivy_search_params(active: list[str]) -> None:
+    # may also have a filter query alongside a simple search e.g. relative dates
+    if len(active) > 1 and set(active) not in _TANTIVY_COMBINABLE_SEARCH_PARAMS:
+        raise ValidationError(
+            {
+                "detail": _(
+                    "Specify only one of text, title_search, query, or more_like_id.",
+                ),
+            },
+        )
+
+
 def _get_tantivy_query_and_mode(params):
     from documents.search import QueryTooLongError
     from documents.search import SearchMode
@@ -325,17 +338,24 @@ def _get_tantivy_query_and_mode(params):
     else:
         return None  # pragma: no cover
 
-    if len(raw) > _MAX_QUERY_LENGTH:
-        raise QueryTooLongError(len(raw), _MAX_QUERY_LENGTH)
-    return raw, mode
+    filter_query = (
+        str(params["query"])
+        if mode is not SearchMode.QUERY and "query" in params
+        else None
+    )
+    for value in (raw, filter_query):
+        if value is not None and len(value) > _MAX_QUERY_LENGTH:
+            raise QueryTooLongError(len(value), _MAX_QUERY_LENGTH)
+    return raw, mode, filter_query
 
 
 def _get_more_like_id(query_params: dict[str, Any], user: User | None) -> int:
     try:
         more_like_doc_id = int(query_params["more_like_id"])
-        more_like_doc = Document.objects.select_related("owner").get(
-            pk=more_like_doc_id,
-        )
+        more_like_doc = Document.objects.select_related(
+            "owner",
+            "root_document__owner",
+        ).get(pk=more_like_doc_id)
     except (TypeError, ValueError, Document.DoesNotExist):
         raise PermissionDenied(_("Invalid more_like_id"))
 
@@ -346,7 +366,8 @@ def _get_more_like_id(query_params: dict[str, Any], user: User | None) -> int:
     ):
         raise PermissionDenied(_("Insufficient permissions."))
 
-    return more_like_doc_id
+    # Only root documents are indexed, a version stands for its root
+    return more_like_doc.root_document_id or more_like_doc.pk
 
 
 class SearchParams(NamedTuple):
@@ -1564,7 +1585,10 @@ class DocumentViewSet(
     )
     def suggestions(self, request, pk=None):
         doc = get_object_or_404(
-            Document.objects.select_related("owner").prefetch_related("versions"),
+            Document.objects.select_related(
+                "owner",
+                "root_document__owner",
+            ).prefetch_related("versions"),
             pk=pk,
         )
         if request.user is not None and not has_perms_owner_aware(
@@ -1624,7 +1648,10 @@ class DocumentViewSet(
     @method_decorator(cache_control(no_cache=True))
     def ai_suggestions(self, request, pk=None):
         doc = get_object_or_404(
-            Document.objects.select_related("owner").prefetch_related("versions"),
+            Document.objects.select_related(
+                "owner",
+                "root_document__owner",
+            ).prefetch_related("versions"),
             pk=pk,
         )
         if request.user is not None and not has_perms_owner_aware(
@@ -1870,9 +1897,14 @@ class DocumentViewSet(
         currentUser = request.user
         try:
             doc = (
-                Document.objects.select_related("owner")
+                Document.objects.select_related("owner", "root_document__owner")
                 .prefetch_related("notes")
-                .only("pk", "owner__id")
+                .only(
+                    "pk",
+                    "owner__id",
+                    "root_document__id",
+                    "root_document__owner__id",
+                )
                 .get(pk=pk)
             )
             if currentUser is not None and not has_perms_owner_aware(
@@ -1987,7 +2019,9 @@ class DocumentViewSet(
     def share_links(self, request, pk=None):
         currentUser = request.user
         try:
-            doc = Document.objects.select_related("owner").get(pk=pk)
+            doc = Document.objects.select_related("owner", "root_document__owner").get(
+                pk=pk,
+            )
             if currentUser is not None and not has_perms_owner_aware(
                 currentUser,
                 "change_document",
@@ -2022,10 +2056,11 @@ class DocumentViewSet(
         if not settings.AUDIT_LOG_ENABLED:
             return HttpResponseBadRequest("Audit log is disabled")
         try:
-            doc = Document.objects.get(pk=pk)
+            doc = Document.objects.select_related("root_document__owner").get(pk=pk)
+            root_doc = get_root_document(doc)
             if not request.user.has_perm("auditlog.view_logentry") or (
-                doc.owner is not None
-                and doc.owner != request.user
+                root_doc.owner is not None
+                and root_doc.owner != request.user
                 and not request.user.is_superuser
             ):
                 return HttpResponseForbidden(
@@ -2116,9 +2151,7 @@ class DocumentViewSet(
         documents = Document.objects.filter(pk__in=document_ids)
         if (
             request.user is not None
-            and documents.exclude(
-                pk__in=permitted_document_ids(request.user),
-            ).exists()
+            and documents.exclude(id__in=permitted_document_ids(request.user)).exists()
         ):
             return HttpResponseForbidden("Insufficient permissions")
 
@@ -2444,11 +2477,17 @@ class ChatStreamingView(GenericAPIView[Any]):
 
         if doc_id:
             try:
-                document = Document.objects.get(id=doc_id)
+                document = Document.objects.select_related(
+                    "root_document__owner",
+                ).get(id=doc_id)
             except Document.DoesNotExist:
                 return HttpResponseBadRequest("Document not found")
 
-            if not has_perms_owner_aware(request.user, "view_document", document):
+            if not has_perms_owner_aware(
+                request.user,
+                "view_document",
+                document,
+            ):
                 return HttpResponseForbidden("Insufficient permissions")
 
             documents = Document.objects.filter(pk=document.pk)
@@ -2560,15 +2599,9 @@ class UnifiedSearchViewSet(DocumentViewSet):
 
         def parse_search_params() -> SearchParams:
             """Extract query string, search mode, and ordering from request."""
-            active = self._get_active_search_params(request)
-            if len(active) > 1:
-                raise ValidationError(
-                    {
-                        "detail": _(
-                            "Specify only one of text, title_search, query, or more_like_id.",
-                        ),
-                    },
-                )
+            _validate_tantivy_search_params(
+                self._get_active_search_params(request),
+            )
 
             ordering_param = request.query_params.get("ordering", "")
             sort_reverse = ordering_param.startswith("-")
@@ -2630,7 +2663,9 @@ class UnifiedSearchViewSet(DocumentViewSet):
             filtered_qs: QuerySet[Document],
         ) -> SearchResultPage:
             """Handle text/title/query search: IDs, ORM intersection, page highlights."""
-            query_str, search_mode = _get_tantivy_query_and_mode(request.query_params)
+            query_str, search_mode, filter_query = _get_tantivy_query_and_mode(
+                request.query_params,
+            )
 
             # "score" is not a real Tantivy sort field — it means relevance order,
             # which is Tantivy's default when no sort field is specified.
@@ -2643,6 +2678,7 @@ class UnifiedSearchViewSet(DocumentViewSet):
                 ),
                 sort_reverse=sort_reverse,
                 search_mode=search_mode,
+                filter_query=filter_query,
             )
             ordered_ids = intersect_and_order(
                 all_ids,
@@ -2877,14 +2913,7 @@ class DocumentSelectionMixin:
         ]
         if not search_filters:
             return None
-        if len(search_filters) > 1:
-            raise ValidationError(
-                {
-                    "detail": _(
-                        "Specify only one of text, title_search, query, or more_like_id.",
-                    ),
-                },
-            )
+        _validate_tantivy_search_params(search_filters)
 
         from documents.search import SearchQueryError
         from documents.search import get_backend
@@ -2903,11 +2932,14 @@ class DocumentSelectionMixin:
                     user=search_user,
                 )
             else:
-                query_str, search_mode = _get_tantivy_query_and_mode(filters)
+                query_str, search_mode, filter_query = _get_tantivy_query_and_mode(
+                    filters,
+                )
                 search_ids = backend.search_ids(
                     query_str,
                     user=search_user,
                     search_mode=search_mode,
+                    filter_query=filter_query,
                 )
         except SearchQueryError as e:
             # Same user-fixable-query mapping as the search list endpoint:
@@ -3004,12 +3036,8 @@ class DocumentOperationPermissionMixin(PassUserMixin, DocumentSelectionMixin):
             user.has_perm(
                 "documents.change_document",
             )
-            and not Document.global_objects.filter(
-                pk__in=[doc.pk for doc in root_docs],
-            )
-            .exclude(
-                pk__in=permitted_document_ids(user, perm="change_document"),
-            )
+            and not Document.global_objects.filter(pk__in=documents)
+            .exclude(pk__in=permitted_document_ids(user, perm="change_document"))
             .exists()
         )
 
@@ -3619,10 +3647,11 @@ class SelectionDataView(DocumentSelectionMixin, GenericAPIView[Any]):
             user=request.user,
             validated_data=serializer.validated_data,
         )
-        permitted_documents = Document.objects.filter(
-            id__in=permitted_document_ids(request.user),
-        )
-        if permitted_documents.filter(pk__in=ids).count() != len(ids):
+        documents = Document.objects.filter(pk__in=ids)
+        if (
+            documents.count() != len(ids)
+            or documents.exclude(id__in=permitted_document_ids(request.user)).exists()
+        ):
             return HttpResponseForbidden("Insufficient permissions")
 
         correspondents = Correspondent.objects.annotate(
@@ -3926,7 +3955,12 @@ class GlobalSearchView(PassUserMixin):
             "request": request,
         }
 
-        docs_serializer = DocumentSerializer(docs, many=True, context=context)
+        docs_serializer = DocumentSerializer(
+            docs,
+            many=True,
+            context=context,
+            fields=("id", "title", "created"),
+        )
         saved_views_serializer = SavedViewSerializer(
             saved_views,
             many=True,
@@ -4127,21 +4161,16 @@ class BulkDownloadView(DocumentSelectionMixin, GenericAPIView[Any]):
             validated_data=serializer.validated_data,
         )
         documents = Document.objects.filter(pk__in=ids)
-        versioned_documents = []
         compression = serializer.validated_data.get("compression")
         content = serializer.validated_data.get("content")
         follow_filename_format = serializer.validated_data.get("follow_formatting")
 
-        permitted_ids = set(permitted_document_ids(request.user))
-        for document in documents:
-            root_doc = get_root_document(document)
-            if root_doc.pk not in permitted_ids:
-                return HttpResponseForbidden("Insufficient permissions")
-            versioned_documents.append(
-                get_latest_version_for_root(
-                    root_doc,
-                ),
-            )
+        if documents.exclude(id__in=permitted_document_ids(request.user)).exists():
+            return HttpResponseForbidden("Insufficient permissions")
+        versioned_documents = [
+            get_latest_version_for_root(get_root_document(document))
+            for document in documents
+        ]
 
         if content == "both":
             strategy_class = OriginalAndArchiveStrategy
@@ -4864,19 +4893,23 @@ class ShareLinkBundleViewSet(PassUserMixin, ModelViewSet[ShareLinkBundle]):
                 },
             )
 
-        documents = list(documents_qs)
-        permitted_ids = set(permitted_document_ids(request.user))
-        for document in documents:
-            if document.pk not in permitted_ids:
-                raise ValidationError(
-                    {
-                        "document_ids": _(
-                            "Insufficient permissions to share document %(id)s.",
-                        )
-                        % {"id": document.pk},
-                    },
-                )
+        denied_id = (
+            documents_qs.exclude(id__in=permitted_document_ids(request.user))
+            .order_by("pk")
+            .values_list("pk", flat=True)
+            .first()
+        )
+        if denied_id is not None:
+            raise ValidationError(
+                {
+                    "document_ids": _(
+                        "Insufficient permissions to share document %(id)s.",
+                    )
+                    % {"id": denied_id},
+                },
+            )
 
+        documents = list(documents_qs)
         document_map = {document.pk: document for document in documents}
         ordered_documents = [document_map[doc_id] for doc_id in document_ids]
 
@@ -4957,7 +4990,7 @@ class SharedLinkView(View):
                 share_link.expiration is not None
                 and share_link.expiration < timezone.now()
             ):
-                return HttpResponseRedirect("/accounts/login/?sharelink_expired=1")
+                return HttpResponseRedirect(f"{settings.LOGIN_URL}?sharelink_expired=1")
             try:
                 return serve_file(
                     doc=share_link.document,
@@ -4966,14 +4999,16 @@ class SharedLinkView(View):
                     disposition="inline",
                 )
             except FileNotFoundError:
-                return HttpResponseRedirect("/accounts/login/?sharelink_notfound=1")
+                return HttpResponseRedirect(
+                    f"{settings.LOGIN_URL}?sharelink_notfound=1",
+                )
 
         bundle = ShareLinkBundle.objects.filter(slug=slug).first()
         if bundle is None:
-            return HttpResponseRedirect("/accounts/login/?sharelink_notfound=1")
+            return HttpResponseRedirect(f"{settings.LOGIN_URL}?sharelink_notfound=1")
 
         if bundle.expiration is not None and bundle.expiration < timezone.now():
-            return HttpResponseRedirect("/accounts/login/?sharelink_expired=1")
+            return HttpResponseRedirect(f"{settings.LOGIN_URL}?sharelink_expired=1")
 
         if bundle.status in {
             ShareLinkBundle.Status.PENDING,
@@ -5660,6 +5695,7 @@ class TrashView(ListModelMixin, PassUserMixin):
 
     class _TrashPermittedObjectsFilter(PermittedObjectsFilter):
         include_granted = False
+        parent_field = "root_document"
 
     filter_backends = (_TrashPermittedObjectsFilter,)
     pagination_class = StandardPagination
@@ -5691,7 +5727,7 @@ class TrashView(ListModelMixin, PassUserMixin):
             else self.filter_queryset(self.get_queryset()).all()
         )
         if docs.exclude(
-            pk__in=permitted_document_ids(
+            id__in=permitted_document_ids(
                 request.user,
                 perm="delete_document",
                 include_deleted=True,

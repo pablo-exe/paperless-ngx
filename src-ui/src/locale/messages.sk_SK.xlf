@@ -17,7 +17,7 @@
           <context context-type="linenumber">386,393</context>
         </context-group>
         <note priority="1" from="description">Currently selected slide number read by screen reader</note>
-        <target state="needs-translation"> Slide <x id="INTERPOLATION" equiv-text="xt(source?: Ngb"/> of <x id="INTERPOLATION_1" equiv-text="this._cycleToSe"/> </target>
+        <target state="translated">Smímka <x id="INTERPOLATION" equiv-text="xt(source?: Ngb"/> z <x id="INTERPOLATION_1" equiv-text="this._cycleToSe"/> </target>
       </trans-unit>
       <trans-unit id="ngb.carousel.previous" datatype="html">
         <source>Previous</source>
@@ -293,15 +293,15 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/dashboard/widgets/saved-view-widget/saved-view-widget.component.html</context>
-          <context context-type="linenumber">63</context>
+          <context context-type="linenumber">65</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/dashboard/widgets/saved-view-widget/saved-view-widget.component.html</context>
-          <context context-type="linenumber">66</context>
+          <context context-type="linenumber">68</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/dashboard/widgets/saved-view-widget/saved-view-widget.component.html</context>
-          <context context-type="linenumber">69</context>
+          <context context-type="linenumber">71</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/dashboard/widgets/upload-file-widget/upload-file-widget.component.html</context>
@@ -389,19 +389,19 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">151</context>
+          <context context-type="linenumber">153</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">151</context>
+          <context context-type="linenumber">153</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">151</context>
+          <context context-type="linenumber">153</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">151</context>
+          <context context-type="linenumber">153</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/share-links/share-link-bundle-list/share-link-bundle-list.component.html</context>
@@ -957,19 +957,19 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">52</context>
+          <context context-type="linenumber">54</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">52</context>
+          <context context-type="linenumber">54</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">52</context>
+          <context context-type="linenumber">54</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">52</context>
+          <context context-type="linenumber">54</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/mail/mail.component.html</context>
@@ -1985,7 +1985,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/common/suggestions-dropdown/suggestions-dropdown.component.html</context>
-          <context context-type="linenumber">35</context>
+          <context context-type="linenumber">34</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/dashboard/widgets/statistics-widget/statistics-widget.component.html</context>
@@ -2245,7 +2245,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
-          <context context-type="linenumber">54</context>
+          <context context-type="linenumber">58</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/common/custom-fields-query-dropdown/custom-fields-query-dropdown.component.html</context>
@@ -2293,7 +2293,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
-          <context context-type="linenumber">219</context>
+          <context context-type="linenumber">224</context>
         </context-group>
         <target state="translated">Všetky typy</target>
       </trans-unit>
@@ -2305,7 +2305,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
-          <context context-type="linenumber">231</context>
+          <context context-type="linenumber">236</context>
         </context-group>
         <target state="translated">Všetky zdroje</target>
       </trans-unit>
@@ -2345,11 +2345,31 @@
         </context-group>
         <target state="translated">Zrušiť filtre</target>
       </trans-unit>
+      <trans-unit id="4963055357149711042" datatype="html">
+        <source><x id="INTERPOLATION" equiv-text="{{tasks.length}}"/> of <x id="INTERPOLATION_1" equiv-text="{{count}}"/> tasks</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.html</context>
+          <context context-type="linenumber">126,127</context>
+        </context-group>
+        <target state="needs-translation"><x id="INTERPOLATION" equiv-text="{{tasks.length}}"/> of <x id="INTERPOLATION_1" equiv-text="{{count}}"/> tasks</target>
+      </trans-unit>
+      <trans-unit id="2946624699882754313" datatype="html">
+        <source>Show all</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.html</context>
+          <context context-type="linenumber">128</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/dashboard/widgets/saved-view-widget/saved-view-widget.component.html</context>
+          <context context-type="linenumber">14,17</context>
+        </context-group>
+        <target state="translated">Zobraziť všetko</target>
+      </trans-unit>
       <trans-unit id="3387705505469073896" datatype="html">
         <source>{VAR_PLURAL, plural, =1 {1 task} other {<x id="INTERPOLATION"/> tasks}}</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.html</context>
-          <context context-type="linenumber">122</context>
+          <context context-type="linenumber">131,132</context>
         </context-group>
         <target state="translated">{VAR_PLURAL, plural, =1 {1 task} other {<x id="INTERPOLATION"/> tasks}}</target>
       </trans-unit>
@@ -2357,11 +2377,11 @@
         <source>Name</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.html</context>
-          <context context-type="linenumber">144,145</context>
+          <context context-type="linenumber">153,154</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
-          <context context-type="linenumber">49</context>
+          <context context-type="linenumber">53</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/trash/trash.component.html</context>
@@ -2437,19 +2457,19 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">38,39</context>
+          <context context-type="linenumber">40,41</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">38,39</context>
+          <context context-type="linenumber">40,41</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">38,39</context>
+          <context context-type="linenumber">40,41</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">38,39</context>
+          <context context-type="linenumber">40,41</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/mail/mail.component.html</context>
@@ -2469,7 +2489,7 @@
         <source>Created</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.html</context>
-          <context context-type="linenumber">145,146</context>
+          <context context-type="linenumber">154,155</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/common/dates-dropdown/dates-dropdown.component.html</context>
@@ -2505,7 +2525,7 @@
         <source>Results</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.html</context>
-          <context context-type="linenumber">147,148</context>
+          <context context-type="linenumber">156,157</context>
         </context-group>
         <target state="translated">Výsledky</target>
       </trans-unit>
@@ -2513,7 +2533,7 @@
         <source>Info</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.html</context>
-          <context context-type="linenumber">149,150</context>
+          <context context-type="linenumber">158,159</context>
         </context-group>
         <target state="translated">Info</target>
       </trans-unit>
@@ -2521,7 +2541,7 @@
         <source>Actions</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.html</context>
-          <context context-type="linenumber">150,151</context>
+          <context context-type="linenumber">159,160</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/trash/trash.component.html</context>
@@ -2569,35 +2589,35 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">44,45</context>
+          <context context-type="linenumber">46,47</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">44,45</context>
+          <context context-type="linenumber">46,47</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">44,45</context>
+          <context context-type="linenumber">46,47</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">44,45</context>
+          <context context-type="linenumber">46,47</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">116</context>
+          <context context-type="linenumber">118</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">116</context>
+          <context context-type="linenumber">118</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">116</context>
+          <context context-type="linenumber">118</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">116</context>
+          <context context-type="linenumber">118</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/mail/mail.component.html</context>
@@ -2641,7 +2661,7 @@
         <source>click for full output</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.html</context>
-          <context context-type="linenumber">201</context>
+          <context context-type="linenumber">209</context>
         </context-group>
         <target state="translated">kliknite pre celý výstup</target>
       </trans-unit>
@@ -2649,7 +2669,7 @@
         <source>View task details</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.html</context>
-          <context context-type="linenumber">207</context>
+          <context context-type="linenumber">215</context>
         </context-group>
         <target state="translated">Zobraziť podrobnosti úlohy</target>
       </trans-unit>
@@ -2657,15 +2677,15 @@
         <source>Dismiss</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.html</context>
-          <context context-type="linenumber">214</context>
+          <context context-type="linenumber">222</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
-          <context context-type="linenumber">321</context>
+          <context context-type="linenumber">326</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
-          <context context-type="linenumber">355</context>
+          <context context-type="linenumber">360</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.ts</context>
@@ -2681,7 +2701,7 @@
         <source>Open Document</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.html</context>
-          <context context-type="linenumber">219</context>
+          <context context-type="linenumber">227</context>
         </context-group>
         <target state="translated">Otvoriť dokument</target>
       </trans-unit>
@@ -2689,7 +2709,7 @@
         <source>Result message</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.html</context>
-          <context context-type="linenumber">232,233</context>
+          <context context-type="linenumber">240,241</context>
         </context-group>
         <target state="translated">Výsledná správa</target>
       </trans-unit>
@@ -2697,7 +2717,7 @@
         <source>Duplicate</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.html</context>
-          <context context-type="linenumber">239,240</context>
+          <context context-type="linenumber">247,248</context>
         </context-group>
         <target state="translated">Duplikovať</target>
       </trans-unit>
@@ -2705,7 +2725,7 @@
         <source>Open</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.html</context>
-          <context context-type="linenumber">247</context>
+          <context context-type="linenumber">255</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/app-frame/global-search/global-search.component.html</context>
@@ -2737,7 +2757,7 @@
         <source>Input data</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.html</context>
-          <context context-type="linenumber">257,258</context>
+          <context context-type="linenumber">265,266</context>
         </context-group>
         <target state="translated">Vstupné dáta</target>
       </trans-unit>
@@ -2745,7 +2765,7 @@
         <source>Result data</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.html</context>
-          <context context-type="linenumber">263,264</context>
+          <context context-type="linenumber">271,272</context>
         </context-group>
         <target state="translated">Výsledné dáta</target>
       </trans-unit>
@@ -2753,7 +2773,7 @@
         <source>No tasks match the current filters.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.html</context>
-          <context context-type="linenumber">285,287</context>
+          <context context-type="linenumber">293,295</context>
         </context-group>
         <target state="translated">Žiadne úlohy nezodpovedajú aktuálnym filtrom.</target>
       </trans-unit>
@@ -2761,7 +2781,7 @@
         <source>Result</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
-          <context context-type="linenumber">50</context>
+          <context context-type="linenumber">54</context>
         </context-group>
         <target state="translated">Výsledok</target>
       </trans-unit>
@@ -2769,7 +2789,7 @@
         <source>Needs attention</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
-          <context context-type="linenumber">55</context>
+          <context context-type="linenumber">59</context>
         </context-group>
         <target state="translated">Vyžaduje pozornosť</target>
       </trans-unit>
@@ -2777,7 +2797,7 @@
         <source>In progress</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
-          <context context-type="linenumber">56</context>
+          <context context-type="linenumber">60</context>
         </context-group>
         <target state="translated">Prebieha</target>
       </trans-unit>
@@ -2785,7 +2805,7 @@
         <source>Recently completed</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
-          <context context-type="linenumber">57</context>
+          <context context-type="linenumber">61</context>
         </context-group>
         <target state="translated">Nedávno dokončené</target>
       </trans-unit>
@@ -2793,7 +2813,7 @@
         <source>Consume File</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
-          <context context-type="linenumber">66</context>
+          <context context-type="linenumber">70</context>
         </context-group>
         <target state="translated">Spracovať Súbor </target>
       </trans-unit>
@@ -2801,7 +2821,7 @@
         <source>Train Classifier</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
-          <context context-type="linenumber">70</context>
+          <context context-type="linenumber">74</context>
         </context-group>
         <target state="translated">Trénovací klasifikátor</target>
       </trans-unit>
@@ -2809,7 +2829,7 @@
         <source>Sanity Check</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
-          <context context-type="linenumber">74</context>
+          <context context-type="linenumber">78</context>
         </context-group>
         <target state="translated">Kontrola zdravia</target>
       </trans-unit>
@@ -2817,7 +2837,7 @@
         <source>Mail Fetch</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
-          <context context-type="linenumber">76</context>
+          <context context-type="linenumber">80</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/common/edit-dialog/workflow-edit-dialog/workflow-edit-dialog.component.ts</context>
@@ -2829,7 +2849,7 @@
         <source>LLM Index</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
-          <context context-type="linenumber">77</context>
+          <context context-type="linenumber">81</context>
         </context-group>
         <target state="translated">LLM Index</target>
       </trans-unit>
@@ -2837,7 +2857,7 @@
         <source>Empty Trash</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
-          <context context-type="linenumber">80</context>
+          <context context-type="linenumber">84</context>
         </context-group>
         <target state="translated">Vyprázdniť kôš</target>
       </trans-unit>
@@ -2845,7 +2865,7 @@
         <source>Check Workflows</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
-          <context context-type="linenumber">84</context>
+          <context context-type="linenumber">88</context>
         </context-group>
         <target state="translated">Skontrolovať pracovné postupy</target>
       </trans-unit>
@@ -2853,7 +2873,7 @@
         <source>Bulk Update</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
-          <context context-type="linenumber">88</context>
+          <context context-type="linenumber">92</context>
         </context-group>
         <target state="translated">Hromadná aktualizácia</target>
       </trans-unit>
@@ -2861,7 +2881,7 @@
         <source>Reprocess Document</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
-          <context context-type="linenumber">92</context>
+          <context context-type="linenumber">96</context>
         </context-group>
         <target state="translated">Znovu spracovať dokument</target>
       </trans-unit>
@@ -2869,7 +2889,7 @@
         <source>Build Share Link</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
-          <context context-type="linenumber">96</context>
+          <context context-type="linenumber">100</context>
         </context-group>
         <target state="translated">Vytvoriť odkaz na zdieľanie</target>
       </trans-unit>
@@ -2877,7 +2897,7 @@
         <source>Bulk Delete</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
-          <context context-type="linenumber">100</context>
+          <context context-type="linenumber">104</context>
         </context-group>
         <target state="translated">Hromadné zmazanie</target>
       </trans-unit>
@@ -2885,7 +2905,7 @@
         <source>Apply AI Suggestions</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
-          <context context-type="linenumber">104</context>
+          <context context-type="linenumber">108</context>
         </context-group>
         <target state="translated">Použiť návrhy umelej inteligencie</target>
       </trans-unit>
@@ -2893,7 +2913,7 @@
         <source>Scheduled</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
-          <context context-type="linenumber">114</context>
+          <context context-type="linenumber">118</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/common/edit-dialog/workflow-edit-dialog/workflow-edit-dialog.component.ts</context>
@@ -2905,7 +2925,7 @@
         <source>Web UI</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
-          <context context-type="linenumber">116</context>
+          <context context-type="linenumber">120</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/common/edit-dialog/workflow-edit-dialog/workflow-edit-dialog.component.ts</context>
@@ -2917,7 +2937,7 @@
         <source>API Upload</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
-          <context context-type="linenumber">119</context>
+          <context context-type="linenumber">123</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/common/edit-dialog/workflow-edit-dialog/workflow-edit-dialog.component.ts</context>
@@ -2929,7 +2949,7 @@
         <source>Folder Consume</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
-          <context context-type="linenumber">123</context>
+          <context context-type="linenumber">127</context>
         </context-group>
         <target state="translated">Konzumovať priečinok</target>
       </trans-unit>
@@ -2937,7 +2957,7 @@
         <source>Email Consume</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
-          <context context-type="linenumber">127</context>
+          <context context-type="linenumber">131</context>
         </context-group>
         <target state="translated">Konzumovať Email</target>
       </trans-unit>
@@ -2945,7 +2965,7 @@
         <source>System</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
-          <context context-type="linenumber">129</context>
+          <context context-type="linenumber">133</context>
         </context-group>
         <target state="translated">Systém</target>
       </trans-unit>
@@ -2953,7 +2973,7 @@
         <source>Manual</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
-          <context context-type="linenumber">130</context>
+          <context context-type="linenumber">134</context>
         </context-group>
         <target state="translated">Návod</target>
       </trans-unit>
@@ -2961,7 +2981,7 @@
         <source>Dismiss selected</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
-          <context context-type="linenumber">243</context>
+          <context context-type="linenumber">248</context>
         </context-group>
         <target state="translated">Odstrániť vybrané</target>
       </trans-unit>
@@ -2969,7 +2989,7 @@
         <source>Dismiss visible</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
-          <context context-type="linenumber">244</context>
+          <context context-type="linenumber">249</context>
         </context-group>
         <target state="translated">Odstrániť viditeľné</target>
       </trans-unit>
@@ -2977,7 +2997,7 @@
         <source>Confirm Dismiss</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
-          <context context-type="linenumber">318</context>
+          <context context-type="linenumber">323</context>
         </context-group>
         <target state="translated">Potvrdenie odstránenia</target>
       </trans-unit>
@@ -2985,7 +3005,7 @@
         <source>Dismiss <x id="PH" equiv-text="tasks.size"/> tasks?</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
-          <context context-type="linenumber">319</context>
+          <context context-type="linenumber">324</context>
         </context-group>
         <target state="translated">Odstrániť <x id="PH" equiv-text="tasks.size"/> úlohy?</target>
       </trans-unit>
@@ -2993,11 +3013,11 @@
         <source>Error dismissing tasks</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
-          <context context-type="linenumber">330</context>
+          <context context-type="linenumber">335</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
-          <context context-type="linenumber">364</context>
+          <context context-type="linenumber">369</context>
         </context-group>
         <target state="translated">Chyba pri odstraňovaní úloh</target>
       </trans-unit>
@@ -3005,7 +3025,7 @@
         <source>Error dismissing task</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
-          <context context-type="linenumber">342</context>
+          <context context-type="linenumber">347</context>
         </context-group>
         <target state="translated">Chyba pri odstraňovaní úlohy</target>
       </trans-unit>
@@ -3013,7 +3033,7 @@
         <source>Confirm Dismiss All</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
-          <context context-type="linenumber">352</context>
+          <context context-type="linenumber">357</context>
         </context-group>
         <target state="translated">Potvrdiť odstránenie všetkých</target>
       </trans-unit>
@@ -3021,7 +3041,7 @@
         <source>Dismiss all <x id="PH" equiv-text="this.totalTasks()"/> tasks?</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
-          <context context-type="linenumber">353</context>
+          <context context-type="linenumber">358</context>
         </context-group>
         <target state="translated">Odstrániť všetky <x id="PH" equiv-text="this.totalTasks()"/> úlohy?</target>
       </trans-unit>
@@ -3029,7 +3049,7 @@
         <source>Success. New document id <x id="PH" equiv-text="documentId"/> created</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
-          <context context-type="linenumber">412</context>
+          <context context-type="linenumber">417</context>
         </context-group>
         <target state="translated">Úspešné. Vytvorené nové ID dokumentu <x id="PH" equiv-text="documentId"/>.</target>
       </trans-unit>
@@ -3037,11 +3057,11 @@
         <source>Duplicate of document #<x id="PH" equiv-text="duplicateOf"/></source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
-          <context context-type="linenumber">422</context>
+          <context context-type="linenumber">427</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
-          <context context-type="linenumber">456</context>
+          <context context-type="linenumber">461</context>
         </context-group>
         <target state="translated">Kópia dokumentu č. <x id="PH" equiv-text="duplicateOf"/></target>
       </trans-unit>
@@ -3209,35 +3229,35 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">121,122</context>
+          <context context-type="linenumber">123,124</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">121,122</context>
+          <context context-type="linenumber">123,124</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">121,122</context>
+          <context context-type="linenumber">123,124</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">121,122</context>
+          <context context-type="linenumber">123,124</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">140</context>
+          <context context-type="linenumber">142</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">140</context>
+          <context context-type="linenumber">142</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">140</context>
+          <context context-type="linenumber">142</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">140</context>
+          <context context-type="linenumber">142</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.ts</context>
@@ -3321,11 +3341,11 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/users-groups/users-groups.component.ts</context>
-          <context context-type="linenumber">145</context>
+          <context context-type="linenumber">146</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/users-groups/users-groups.component.ts</context>
-          <context context-type="linenumber">198</context>
+          <context context-type="linenumber">199</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/custom-fields/custom-fields.component.ts</context>
@@ -3533,35 +3553,35 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">120,121</context>
+          <context context-type="linenumber">122,123</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">120,121</context>
+          <context context-type="linenumber">122,123</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">120,121</context>
+          <context context-type="linenumber">122,123</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">120,121</context>
+          <context context-type="linenumber">122,123</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">137</context>
+          <context context-type="linenumber">139</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">137</context>
+          <context context-type="linenumber">139</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">137</context>
+          <context context-type="linenumber">139</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">137</context>
+          <context context-type="linenumber">139</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/mail/mail.component.html</context>
@@ -3621,7 +3641,7 @@
         <source>Saved user &quot;<x id="PH" equiv-text="newUser.username"/>&quot;.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/users-groups/users-groups.component.ts</context>
-          <context context-type="linenumber">125</context>
+          <context context-type="linenumber">126</context>
         </context-group>
         <target state="translated">Uložený používateľ <x id="PH" equiv-text="newUser.username"/>.</target>
       </trans-unit>
@@ -3629,7 +3649,7 @@
         <source>Error saving user.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/users-groups/users-groups.component.ts</context>
-          <context context-type="linenumber">135</context>
+          <context context-type="linenumber">136</context>
         </context-group>
         <target state="translated">Chyba pri ukladaní používateľa.</target>
       </trans-unit>
@@ -3637,7 +3657,7 @@
         <source>Confirm delete user account</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/users-groups/users-groups.component.ts</context>
-          <context context-type="linenumber">143</context>
+          <context context-type="linenumber">144</context>
         </context-group>
         <target state="translated">Potvrdenie odstránenia účtu</target>
       </trans-unit>
@@ -3645,7 +3665,7 @@
         <source>This operation will permanently delete this user account.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/users-groups/users-groups.component.ts</context>
-          <context context-type="linenumber">144</context>
+          <context context-type="linenumber">145</context>
         </context-group>
         <target state="translated">Táto operácia trvalo odstráni používateľský účet.</target>
       </trans-unit>
@@ -3653,11 +3673,11 @@
         <source>Proceed</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/users-groups/users-groups.component.ts</context>
-          <context context-type="linenumber">147</context>
+          <context context-type="linenumber">148</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/users-groups/users-groups.component.ts</context>
-          <context context-type="linenumber">200</context>
+          <context context-type="linenumber">201</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.ts</context>
@@ -3709,7 +3729,7 @@
         <source>Deleted user &quot;<x id="PH" equiv-text="user.username"/>&quot;</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/users-groups/users-groups.component.ts</context>
-          <context context-type="linenumber">153</context>
+          <context context-type="linenumber">154</context>
         </context-group>
         <target state="translated">Používateľ odstránený "<x id="PH" equiv-text="user.username"/>"</target>
       </trans-unit>
@@ -3717,7 +3737,7 @@
         <source>Error deleting user &quot;<x id="PH" equiv-text="user.username"/>&quot;.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/users-groups/users-groups.component.ts</context>
-          <context context-type="linenumber">160</context>
+          <context context-type="linenumber">161</context>
         </context-group>
         <target state="translated">Chyba pri odstraňovaní používateľa „<x id="PH" equiv-text="user.username"/>“.</target>
       </trans-unit>
@@ -3725,7 +3745,7 @@
         <source>Saved group &quot;<x id="PH" equiv-text="newGroup.name"/>&quot;.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/users-groups/users-groups.component.ts</context>
-          <context context-type="linenumber">180</context>
+          <context context-type="linenumber">181</context>
         </context-group>
         <target state="translated">Uložená skupina <x id="PH" equiv-text="newGroup.name"/>.</target>
       </trans-unit>
@@ -3733,7 +3753,7 @@
         <source>Error saving group.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/users-groups/users-groups.component.ts</context>
-          <context context-type="linenumber">188</context>
+          <context context-type="linenumber">189</context>
         </context-group>
         <target state="translated">Chyba pri ukladaní skupiny.</target>
       </trans-unit>
@@ -3741,7 +3761,7 @@
         <source>Confirm delete user group</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/users-groups/users-groups.component.ts</context>
-          <context context-type="linenumber">196</context>
+          <context context-type="linenumber">197</context>
         </context-group>
         <target state="translated">Potvrdenie odstránenia skupiny</target>
       </trans-unit>
@@ -3749,7 +3769,7 @@
         <source>This operation will permanently delete this user group.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/users-groups/users-groups.component.ts</context>
-          <context context-type="linenumber">197</context>
+          <context context-type="linenumber">198</context>
         </context-group>
         <target state="translated">Táto operácia trvalo odstráni skupinu.</target>
       </trans-unit>
@@ -3757,7 +3777,7 @@
         <source>Deleted group &quot;<x id="PH" equiv-text="group.name"/>&quot;</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/users-groups/users-groups.component.ts</context>
-          <context context-type="linenumber">206</context>
+          <context context-type="linenumber">207</context>
         </context-group>
         <target state="translated">Skupina odstránená "<x id="PH" equiv-text="group.name"/>"</target>
       </trans-unit>
@@ -3765,7 +3785,7 @@
         <source>Error deleting group &quot;<x id="PH" equiv-text="group.name"/>&quot;.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/admin/users-groups/users-groups.component.ts</context>
-          <context context-type="linenumber">213</context>
+          <context context-type="linenumber">214</context>
         </context-group>
         <target state="translated">Chyba pri mazaní skupiny "<x id="PH" equiv-text="group.name"/>".</target>
       </trans-unit>
@@ -3869,7 +3889,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/common/suggestions-dropdown/suggestions-dropdown.component.html</context>
-          <context context-type="linenumber">47</context>
+          <context context-type="linenumber">46</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/dashboard/widgets/statistics-widget/statistics-widget.component.html</context>
@@ -4073,7 +4093,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/dashboard/widgets/saved-view-widget/saved-view-widget.component.html</context>
-          <context context-type="linenumber">123</context>
+          <context context-type="linenumber">125</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/document-detail/document-detail.component.html</context>
@@ -4309,7 +4329,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/dashboard/widgets/saved-view-widget/saved-view-widget.component.html</context>
-          <context context-type="linenumber">103</context>
+          <context context-type="linenumber">105</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/document-list/document-list.component.html</context>
@@ -4879,7 +4899,7 @@
           <context context-type="sourcefile">src/app/components/common/dates-dropdown/dates-dropdown.component.html</context>
           <context context-type="linenumber">61</context>
         </context-group>
-        <target state="needs-translation">Clear created to date</target>
+        <target state="translated">Vymazať dátumu vytvorenia do</target>
       </trans-unit>
       <trans-unit id="1640609344969975994" datatype="html">
         <source>To</source>
@@ -5451,7 +5471,7 @@
           <context context-type="sourcefile">src/app/components/common/edit-dialog/mail-rule-edit-dialog/mail-rule-edit-dialog.component.html</context>
           <context context-type="linenumber">32,33</context>
         </context-group>
-        <target state="needs-translation">Paperless will only process mails that match <x id="START_EMPHASISED_TEXT" ctype="x-em" equiv-text="&lt;em&gt;"/>all<x id="CLOSE_EMPHASISED_TEXT" ctype="x-em" equiv-text="&lt;/em&gt;"/> of the criteria specified below.</target>
+        <target state="translated">Paperless spracuje iba tie e-maily, ktoré spĺňajú <x id="START_EMPHASISED_TEXT" ctype="x-em" equiv-text="&lt;em&gt;"/>všetky<x id="CLOSE_EMPHASISED_TEXT" ctype="x-em" equiv-text="&lt;/em&gt;"/> nižšie uvedené kritériá.</target>
       </trans-unit>
       <trans-unit id="7046259383943324039" datatype="html">
         <source>Folder</source>
@@ -5563,7 +5583,7 @@
           <context context-type="sourcefile">src/app/components/common/edit-dialog/mail-rule-edit-dialog/mail-rule-edit-dialog.component.html</context>
           <context context-type="linenumber">53</context>
         </context-group>
-        <target state="needs-translation">Optional. Wildcards e.g. *.pdf or *invoice* allowed. Can be comma-separated list. Case insensitive.</target>
+        <target state="translated">Voliteľné. Povolené sú zástupné znaky, napr. *.pdf alebo *invoice*. Možno zadať zoznam oddelený čiarkami. Nerozlišujú sa malé a veľké písmená.</target>
       </trans-unit>
       <trans-unit id="1546332577833742677" datatype="html">
         <source>Exclude files matching</source>
@@ -5588,7 +5608,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/edit-dialog/mail-rule-edit-dialog/mail-rule-edit-dialog.component.html</context>
           <context context-type="linenumber">59</context>
         </context-group>
-        <target state="needs-translation">Only performed if the mail is processed.</target>
+        <target state="translated">Vykoná sa len v prípade, že sa spracuje pošta.</target>
       </trans-unit>
       <trans-unit id="1261794314435932203" datatype="html">
         <source>Action parameter</source>
@@ -5612,7 +5632,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/edit-dialog/mail-rule-edit-dialog/mail-rule-edit-dialog.component.html</context>
           <context context-type="linenumber">64</context>
         </context-group>
-        <target state="needs-translation">Assign owner from rule</target>
+        <target state="translated">Priradiť vlastníka na základe pravidla</target>
       </trans-unit>
       <trans-unit id="6695990587380209737" datatype="html">
         <source>Assign document type</source>
@@ -5816,7 +5836,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/edit-dialog/mail-rule-edit-dialog/mail-rule-edit-dialog.component.ts</context>
           <context context-type="linenumber">120</context>
         </context-group>
-        <target state="needs-translation">Do not assign title from this rule</target>
+        <target state="translated">Nepriradzovať názov na základe tohto pravidla</target>
       </trans-unit>
       <trans-unit id="1568902914205618549" datatype="html">
         <source>Do not assign a correspondent</source>
@@ -5912,7 +5932,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/edit-dialog/storage-path-edit-dialog/storage-path-edit-dialog.component.html</context>
           <context context-type="linenumber">13</context>
         </context-group>
-        <target state="needs-translation">See &lt;a target='_blank' href='https://docs.paperless-ngx.com/advanced_usage/#file-name-handling'&gt;the documentation&lt;/a&gt;.</target>
+        <target state="translated">Pozrite si &lt;a target='_blank' href='https://docs.paperless-ngx.com/advanced_usage/#file-name-handling'&gt;dokumentáciu&lt;/a&gt;.</target>
       </trans-unit>
       <trans-unit id="1295614462098694869" datatype="html">
         <source>Preview</source>
@@ -5932,7 +5952,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/edit-dialog/storage-path-edit-dialog/storage-path-edit-dialog.component.html</context>
           <context context-type="linenumber">30,31</context>
         </context-group>
-        <target state="needs-translation">Path test failed</target>
+        <target state="translated">Test cesty zlyhal</target>
       </trans-unit>
       <trans-unit id="9116034231465034307" datatype="html">
         <source>No document selected</source>
@@ -5940,7 +5960,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/edit-dialog/storage-path-edit-dialog/storage-path-edit-dialog.component.html</context>
           <context context-type="linenumber">32,33</context>
         </context-group>
-        <target state="needs-translation">No document selected</target>
+        <target state="translated">Nebol vybraný žiadny dokument</target>
       </trans-unit>
       <trans-unit id="2083498114116917092" datatype="html">
         <source>Search for a document</source>
@@ -6108,7 +6128,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/edit-dialog/user-edit-dialog/user-edit-dialog.component.html</context>
           <context context-type="linenumber">26</context>
         </context-group>
-        <target state="needs-translation">Access system status, logs, Django backend</target>
+        <target state="translated">Prístup k stavu systému, záznamom a backendu Django</target>
       </trans-unit>
       <trans-unit id="1808271538028523977" datatype="html">
         <source>Superuser</source>
@@ -6184,7 +6204,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/edit-dialog/user-edit-dialog/user-edit-dialog.component.ts</context>
           <context context-type="linenumber">135</context>
         </context-group>
-        <target state="needs-translation">Totp deactivated</target>
+        <target state="translated">TOTP deaktivované</target>
       </trans-unit>
       <trans-unit id="6439190193788239059" datatype="html">
         <source>Totp deactivation failed</source>
@@ -6196,7 +6216,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/edit-dialog/user-edit-dialog/user-edit-dialog.component.ts</context>
           <context context-type="linenumber">143</context>
         </context-group>
-        <target state="needs-translation">Totp deactivation failed</target>
+        <target state="translated">Deaktivácia TOTP zlyhala.</target>
       </trans-unit>
       <trans-unit id="8419515490539218007" datatype="html">
         <source>Sort order</source>
@@ -6228,7 +6248,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/edit-dialog/workflow-edit-dialog/workflow-edit-dialog.component.html</context>
           <context context-type="linenumber">31,32</context>
         </context-group>
-        <target state="needs-translation">Trigger Workflow On:</target>
+        <target state="translated">Spustiť pracovný postup na:</target>
       </trans-unit>
       <trans-unit id="3901427285052969410" datatype="html">
         <source>Add Trigger</source>
@@ -6268,7 +6288,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/edit-dialog/workflow-edit-dialog/workflow-edit-dialog.component.html</context>
           <context context-type="linenumber">125,126</context>
         </context-group>
-        <target state="needs-translation">Set scheduled trigger offset and which date field to use.</target>
+        <target state="translated">Nastavte posun plánovaného spúšťača a ktoré pole dátumu sa má použiť.</target>
       </trans-unit>
       <trans-unit id="4779176004576564638" datatype="html">
         <source>Offset days</source>
@@ -6276,7 +6296,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/edit-dialog/workflow-edit-dialog/workflow-edit-dialog.component.html</context>
           <context context-type="linenumber">130,131</context>
         </context-group>
-        <target state="needs-translation">Offset days</target>
+        <target state="translated">Posun dní</target>
       </trans-unit>
       <trans-unit id="7715068346263636924" datatype="html">
         <source>Positive values will trigger after the date, negative values before.</source>
@@ -6284,7 +6304,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/edit-dialog/workflow-edit-dialog/workflow-edit-dialog.component.html</context>
           <context context-type="linenumber">134,135</context>
         </context-group>
-        <target state="needs-translation">Positive values will trigger after the date, negative values before.</target>
+        <target state="translated">Kladné hodnoty sa aktivujú po tomto dátume, záporné pred ním.</target>
       </trans-unit>
       <trans-unit id="3726450101884717309" datatype="html">
         <source>Relative to</source>
@@ -6308,7 +6328,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/edit-dialog/workflow-edit-dialog/workflow-edit-dialog.component.html</context>
           <context context-type="linenumber">143</context>
         </context-group>
-        <target state="needs-translation">Custom field to use for date.</target>
+        <target state="translated">Vlastné pole, ktoré sa má použiť pre dátum.</target>
       </trans-unit>
       <trans-unit id="1011433830042635014" datatype="html">
         <source>Recurring</source>
@@ -6324,7 +6344,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/edit-dialog/workflow-edit-dialog/workflow-edit-dialog.component.html</context>
           <context context-type="linenumber">149</context>
         </context-group>
-        <target state="needs-translation">Trigger is recurring.</target>
+        <target state="translated">Spúšťač sa opakuje.</target>
       </trans-unit>
       <trans-unit id="5937989815294159481" datatype="html">
         <source>Recurring interval days</source>
@@ -6332,7 +6352,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/edit-dialog/workflow-edit-dialog/workflow-edit-dialog.component.html</context>
           <context context-type="linenumber">153</context>
         </context-group>
-        <target state="needs-translation">Recurring interval days</target>
+        <target state="translated">Opakujúce intervale dní</target>
       </trans-unit>
       <trans-unit id="722765958672682251" datatype="html">
         <source>Repeat the trigger every n days.</source>
@@ -6340,7 +6360,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/edit-dialog/workflow-edit-dialog/workflow-edit-dialog.component.html</context>
           <context context-type="linenumber">153</context>
         </context-group>
-        <target state="needs-translation">Repeat the trigger every n days.</target>
+        <target state="translated">Spúšťač sa opakujte každých n dní.</target>
       </trans-unit>
       <trans-unit id="8727727835543352574" datatype="html">
         <source>Trigger for documents that match <x id="START_EMPHASISED_TEXT" ctype="x-em" equiv-text="&lt;em&gt;"/>all<x id="CLOSE_EMPHASISED_TEXT" ctype="x-em" equiv-text="&lt;/em&gt;"/> filters specified below.</source>
@@ -6348,7 +6368,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/edit-dialog/workflow-edit-dialog/workflow-edit-dialog.component.html</context>
           <context context-type="linenumber">158,159</context>
         </context-group>
-        <target state="needs-translation">Trigger for documents that match <x id="START_EMPHASISED_TEXT" ctype="x-em" equiv-text="&lt;em&gt;"/>all<x id="CLOSE_EMPHASISED_TEXT" ctype="x-em" equiv-text="&lt;/em&gt;"/> filters specified below.</target>
+        <target state="translated">Spustiť pre dokumenty, ktoré zodpovedajú <x id="START_EMPHASISED_TEXT" ctype="x-em" equiv-text="&lt;em&gt;"/>všetkým<x id="CLOSE_EMPHASISED_TEXT" ctype="x-em" equiv-text="&lt;/em&gt;"/> filtrom uvedeným nižšie.</target>
       </trans-unit>
       <trans-unit id="7467799586957602479" datatype="html">
         <source>Filter filename</source>
@@ -6364,7 +6384,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/edit-dialog/workflow-edit-dialog/workflow-edit-dialog.component.html</context>
           <context context-type="linenumber">161</context>
         </context-group>
-        <target state="needs-translation">Apply to documents that match this filename. Wildcards such as *.pdf or *invoice* are allowed. Case insensitive.</target>
+        <target state="translated">Použiť na dokumenty, ktoré sa zhodujú s týmto názvom súboru. Zástupné znaky ako *.pdf alebo *faktúra* sú povolené. Nerozlišujú sa malé a veľké písmená.</target>
       </trans-unit>
       <trans-unit id="1473412958770421458" datatype="html">
         <source>Filter sources</source>
@@ -6388,7 +6408,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/edit-dialog/workflow-edit-dialog/workflow-edit-dialog.component.html</context>
           <context context-type="linenumber">164</context>
         </context-group>
-        <target state="needs-translation">Apply to documents that match this path. Wildcards specified as * are allowed. Case-normalized.</target>
+        <target state="translated">Použiť na dokumenty, ktoré zodpovedajú tejto ceste úložiska. Zástupné znaky označené ako * sú povolené. malé / veľké písmená normalizované</target>
       </trans-unit>
       <trans-unit id="7468453896129193641" datatype="html">
         <source>Filter mail rule</source>
@@ -6404,7 +6424,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/edit-dialog/workflow-edit-dialog/workflow-edit-dialog.component.html</context>
           <context context-type="linenumber">165</context>
         </context-group>
-        <target state="needs-translation">Apply to documents consumed via this mail rule.</target>
+        <target state="translated">Použiť na dokumenty spracované prostredníctvom tohto pravidla pre poštu.</target>
       </trans-unit>
       <trans-unit id="6840369584127435743" datatype="html">
         <source>Content matching algorithm</source>
@@ -6420,7 +6440,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/edit-dialog/workflow-edit-dialog/workflow-edit-dialog.component.html</context>
           <context context-type="linenumber">170</context>
         </context-group>
-        <target state="needs-translation">Content matching pattern</target>
+        <target state="translated">Vzor zhody obsahu</target>
       </trans-unit>
       <trans-unit id="7123490720096247063" datatype="html">
         <source>Advanced Filters</source>
@@ -6444,7 +6464,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/edit-dialog/workflow-edit-dialog/workflow-edit-dialog.component.html</context>
           <context context-type="linenumber">195,196</context>
         </context-group>
-        <target state="needs-translation">No advanced workflow filters defined.</target>
+        <target state="translated">Nie sú definované žiadne pokročilé filtre pracovného postupu.</target>
       </trans-unit>
       <trans-unit id="6892734625735572404" datatype="html">
         <source> Complete the custom field query configuration. </source>
@@ -6452,7 +6472,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/edit-dialog/workflow-edit-dialog/workflow-edit-dialog.component.html</context>
           <context context-type="linenumber">225</context>
         </context-group>
-        <target state="needs-translation"> Complete the custom field query configuration. </target>
+        <target state="translated">Dokončite konfiguráciu dopytu pre vlastné pole.</target>
       </trans-unit>
       <trans-unit id="6417103744331194518" datatype="html">
         <source>Action type</source>
@@ -6476,7 +6496,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/edit-dialog/workflow-edit-dialog/workflow-edit-dialog.component.html</context>
           <context context-type="linenumber">263</context>
         </context-group>
-        <target state="needs-translation">Can include some placeholders, see &lt;a target='_blank' href='https://docs.paperless-ngx.com/usage/#workflows'&gt;documentation&lt;/a&gt;.</target>
+        <target state="translated">Môže obsahovať niektoré zástupné symboly, pozrite si &lt;a target='_blank' href='https://docs.paperless-ngx.com/usage/#workflows'&gt;dokumentáciu&lt;/a&gt;.</target>
       </trans-unit>
       <trans-unit id="6528897010417701530" datatype="html">
         <source>Assign tags</source>
@@ -6652,7 +6672,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/edit-dialog/workflow-edit-dialog/workflow-edit-dialog.component.html</context>
           <context context-type="linenumber">409</context>
         </context-group>
-        <target state="needs-translation">Email recipients</target>
+        <target state="translated">Príjemcovia e-mailov</target>
       </trans-unit>
       <trans-unit id="7916910101279824329" datatype="html">
         <source>Attach document</source>
@@ -6676,7 +6696,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/edit-dialog/workflow-edit-dialog/workflow-edit-dialog.component.html</context>
           <context context-type="linenumber">420</context>
         </context-group>
-        <target state="needs-translation">Use parameters for webhook body</target>
+        <target state="translated">Použite parametre pre telo webhooku</target>
       </trans-unit>
       <trans-unit id="4078214298308732810" datatype="html">
         <source>Send webhook payload as JSON</source>
@@ -6684,7 +6704,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/edit-dialog/workflow-edit-dialog/workflow-edit-dialog.component.html</context>
           <context context-type="linenumber">421</context>
         </context-group>
-        <target state="needs-translation">Send webhook payload as JSON</target>
+        <target state="translated">Odoslať payload webhooku vo formáte JSON</target>
       </trans-unit>
       <trans-unit id="6806149889743731985" datatype="html">
         <source>Webhook params</source>
@@ -6700,7 +6720,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/edit-dialog/workflow-edit-dialog/workflow-edit-dialog.component.html</context>
           <context context-type="linenumber">426</context>
         </context-group>
-        <target state="needs-translation">Webhook body</target>
+        <target state="translated">Telo webhooku</target>
       </trans-unit>
       <trans-unit id="3829826512656746316" datatype="html">
         <source>Webhook headers</source>
@@ -6708,7 +6728,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/edit-dialog/workflow-edit-dialog/workflow-edit-dialog.component.html</context>
           <context context-type="linenumber">428</context>
         </context-group>
-        <target state="needs-translation">Webhook headers</target>
+        <target state="translated">Hlavičky webhooku</target>
       </trans-unit>
       <trans-unit id="2114525789021600887" datatype="html">
         <source>Include document</source>
@@ -6716,7 +6736,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/edit-dialog/workflow-edit-dialog/workflow-edit-dialog.component.html</context>
           <context context-type="linenumber">429</context>
         </context-group>
-        <target state="needs-translation">Include document</target>
+        <target state="translated">Priložiť dokument</target>
       </trans-unit>
       <trans-unit id="32686762098259088" datatype="html">
         <source> One password per line. The workflow will try them in order until one succeeds. </source>
@@ -6724,7 +6744,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/edit-dialog/workflow-edit-dialog/workflow-edit-dialog.component.html</context>
           <context context-type="linenumber">437</context>
         </context-group>
-        <target state="needs-translation"> One password per line. The workflow will try them in order until one succeeds. </target>
+        <target state="translated">Jedno heslo na riadok. Pracovný postup ich bude skúšať v poradí, kým jeden neuspeje.</target>
       </trans-unit>
       <trans-unit id="3853121441237751087" datatype="html">
         <source>Passwords</source>
@@ -6740,7 +6760,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/edit-dialog/workflow-edit-dialog/workflow-edit-dialog.component.html</context>
           <context context-type="linenumber">445,446</context>
         </context-group>
-        <target state="needs-translation">Passwords are stored in plain text. Use with caution.</target>
+        <target state="translated">Heslá sa ukladajú v čitateľnom texte. Používajte opatrne.</target>
       </trans-unit>
       <trans-unit id="7902569198692046993" datatype="html">
         <source>The document will be moved to the trash at the end of the workflow run.</source>
@@ -6748,7 +6768,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/edit-dialog/workflow-edit-dialog/workflow-edit-dialog.component.html</context>
           <context context-type="linenumber">454,455</context>
         </context-group>
-        <target state="needs-translation">The document will be moved to the trash at the end of the workflow run.</target>
+        <target state="translated">Dokument sa na konci pracovného postupu presunie do koša.</target>
       </trans-unit>
       <trans-unit id="7532958562244845095" datatype="html">
         <source>The document will be sent to the configured remote OCR service. May incur costs.</source>
@@ -6756,7 +6776,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/edit-dialog/workflow-edit-dialog/workflow-edit-dialog.component.html</context>
           <context context-type="linenumber">461,462</context>
         </context-group>
-        <target state="needs-translation">The document will be sent to the configured remote OCR service. May incur costs.</target>
+        <target state="translated">Dokument sa odošle do nakonfigurovanej vzdialenej služby OCR. Môže to spôsobiť náklady.</target>
       </trans-unit>
       <trans-unit id="4231754882471903566" datatype="html">
         <source>The document will be sent to the configured AI service for suggestions. Consider costs and privacy.</source>
@@ -6764,7 +6784,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/edit-dialog/workflow-edit-dialog/workflow-edit-dialog.component.html</context>
           <context context-type="linenumber">468,469</context>
         </context-group>
-        <target state="needs-translation">The document will be sent to the configured AI service for suggestions. Consider costs and privacy.</target>
+        <target state="translated">Dokument sa odošle do nakonfigurovanej služby AI na návrhy. Zvážte náklady a súkromie.</target>
       </trans-unit>
       <trans-unit id="7160869275743386191" datatype="html">
         <source>This action runs in the background, so the suggestions may be applied after the other actions of this workflow have finished.</source>
@@ -6772,7 +6792,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/edit-dialog/workflow-edit-dialog/workflow-edit-dialog.component.html</context>
           <context context-type="linenumber">469,470</context>
         </context-group>
-        <target state="needs-translation">This action runs in the background, so the suggestions may be applied after the other actions of this workflow have finished.</target>
+        <target state="translated">Táto akcia beží na pozadí, takže návrhy môžu byť použité po dokončení ostatných akcií tohto pracovného postupu.</target>
       </trans-unit>
       <trans-unit id="3473589590476379802" datatype="html">
         <source>Apply suggestions for</source>
@@ -6788,7 +6808,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/edit-dialog/workflow-edit-dialog/workflow-edit-dialog.component.html</context>
           <context context-type="linenumber">477,478</context>
         </context-group>
-        <target state="needs-translation">Suggestions for fields that are not selected are discarded.</target>
+        <target state="translated">Návrhy pre nevybrané polia sa zahadzujú.</target>
       </trans-unit>
       <trans-unit id="1137167921211640884" datatype="html">
         <source>Create missing items</source>
@@ -6804,7 +6824,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/edit-dialog/workflow-edit-dialog/workflow-edit-dialog.component.html</context>
           <context context-type="linenumber">489,490</context>
         </context-group>
-        <target state="needs-translation">Create suggested tags, correspondents and document types that do not exist yet.</target>
+        <target state="translated">Vytvorte navrhované štítky, korešpondentov a typy dokumentov, ktoré ešte neexistujú.</target>
       </trans-unit>
       <trans-unit id="5192325026233872238" datatype="html">
         <source>Overwrite existing values</source>
@@ -6812,7 +6832,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/edit-dialog/workflow-edit-dialog/workflow-edit-dialog.component.html</context>
           <context context-type="linenumber">497,498</context>
         </context-group>
-        <target state="needs-translation">Overwrite existing values</target>
+        <target state="translated">Prepísať existujúce hodnoty</target>
       </trans-unit>
       <trans-unit id="9010697250406492150" datatype="html">
         <source>Apply suggestions even if the document already has a value. Tags are always added, never replaced.</source>
@@ -6820,7 +6840,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/edit-dialog/workflow-edit-dialog/workflow-edit-dialog.component.html</context>
           <context context-type="linenumber">499,500</context>
         </context-group>
-        <target state="needs-translation">Apply suggestions even if the document already has a value. Tags are always added, never replaced.</target>
+        <target state="translated">Použiť návrhy, aj keď dokument už má hodnotu. Štítky sa vždy pridávajú, nikdy sa nenahrádzajú.</target>
       </trans-unit>
       <trans-unit id="4626030417479279989" datatype="html">
         <source>Consume Folder</source>
@@ -7080,7 +7100,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/edit-dialog/workflow-edit-dialog/workflow-edit-dialog.component.ts</context>
           <context context-type="linenumber">348</context>
         </context-group>
-        <target state="needs-translation">Matches custom field query</target>
+        <target state="translated">Zhoduje sa s dopytom na vlastné pole</target>
       </trans-unit>
       <trans-unit id="8793459894792420810" datatype="html">
         <source>Some workflow options could not be loaded.</source>
@@ -7088,7 +7108,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/edit-dialog/workflow-edit-dialog/workflow-edit-dialog.component.ts</context>
           <context context-type="linenumber">570</context>
         </context-group>
-        <target state="needs-translation">Some workflow options could not be loaded.</target>
+        <target state="translated">Niektoré možnosti pracovného postupu sa nepodarilo načítať.</target>
       </trans-unit>
       <trans-unit id="3138206142174978019" datatype="html">
         <source>Create new workflow</source>
@@ -7096,7 +7116,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/edit-dialog/workflow-edit-dialog/workflow-edit-dialog.component.ts</context>
           <context context-type="linenumber">592</context>
         </context-group>
-        <target state="needs-translation">Create new workflow</target>
+        <target state="translated">Vytvoriť nový pracovný postup</target>
       </trans-unit>
       <trans-unit id="5996779210524133604" datatype="html">
         <source>Edit workflow</source>
@@ -7112,7 +7132,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/email-document-dialog/email-document-dialog.component.html</context>
           <context context-type="linenumber">3,5</context>
         </context-group>
-        <target state="needs-translation">{VAR_PLURAL, plural, =1 {Email Document} other {Email <x id="INTERPOLATION"/> Documents}}</target>
+        <target state="translated">{VAR_PLURAL, plural, =1 {Email Dokument} other {Email <x id="INTERPOLATION"/> Dokumenty}}</target>
       </trans-unit>
       <trans-unit id="7376342558017986274" datatype="html">
         <source>Email address(es)</source>
@@ -7140,7 +7160,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/email-document-dialog/email-document-dialog.component.html</context>
           <context context-type="linenumber">27,28</context>
         </context-group>
-        <target state="needs-translation">Use archive version</target>
+        <target state="translated">Použiť archivovanú verziu</target>
       </trans-unit>
       <trans-unit id="4312183290449350804" datatype="html">
         <source>Send email</source>
@@ -7156,7 +7176,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/email-document-dialog/email-document-dialog.component.html</context>
           <context context-type="linenumber">37</context>
         </context-group>
-        <target state="needs-translation">Some email servers may reject messages with large attachments.</target>
+        <target state="translated">Niektoré e-mailové servery môžu odmietnuť správy s veľkými prílohami.</target>
       </trans-unit>
       <trans-unit id="9049148856403142491" datatype="html">
         <source>Email sent</source>
@@ -7313,7 +7333,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/input/color/color.component.html</context>
           <context context-type="linenumber">7</context>
         </context-group>
-        <target state="needs-translation">Open color picker</target>
+        <target state="translated">Otvoriť výber farby</target>
       </trans-unit>
       <trans-unit id="5160950092313963851" datatype="html">
         <source>Choose a random color</source>
@@ -7441,7 +7461,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/input/entries/entries.component.html</context>
           <context context-type="linenumber">16</context>
         </context-group>
-        <target state="needs-translation">Remove entry</target>
+        <target state="translated">Odstrániť záznam</target>
       </trans-unit>
       <trans-unit id="6932865105766151309" datatype="html">
         <source>Upload</source>
@@ -7526,7 +7546,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/input/select/select.component.ts</context>
           <context context-type="linenumber">113</context>
         </context-group>
-        <target state="needs-translation">No items found</target>
+        <target state="translated">Nenašli sa žiadne položky</target>
       </trans-unit>
       <trans-unit id="6541407358060244620" datatype="html">
         <source>Note: value has not yet been set and will not apply until explicitly changed</source>
@@ -7534,7 +7554,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/input/switch/switch.component.html</context>
           <context context-type="linenumber">39,40</context>
         </context-group>
-        <target state="needs-translation">Note: value has not yet been set and will not apply until explicitly changed</target>
+        <target state="translated">Poznámka: Hodnota ešte nebola nastavená a neuplatní sa, kým nebude výslovne zmenená.</target>
       </trans-unit>
       <trans-unit id="6560126119609945418" datatype="html">
         <source>Add tag</source>
@@ -7634,7 +7654,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/pdf-editor/pdf-editor.component.html</context>
           <context context-type="linenumber">12</context>
         </context-group>
-        <target state="needs-translation">Deselect all pages</target>
+        <target state="translated">Zrušiť výber všetkých strán</target>
       </trans-unit>
       <trans-unit id="2530246103796817298" datatype="html">
         <source>Rotate selected pages counter-clockwise</source>
@@ -7642,7 +7662,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/pdf-editor/pdf-editor.component.html</context>
           <context context-type="linenumber">17</context>
         </context-group>
-        <target state="needs-translation">Rotate selected pages counter-clockwise</target>
+        <target state="translated">Otočiť vybrané strany proti smeru hodinových ručičiek</target>
       </trans-unit>
       <trans-unit id="4787219034890830544" datatype="html">
         <source>Rotate selected pages clockwise</source>
@@ -7650,7 +7670,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/pdf-editor/pdf-editor.component.html</context>
           <context context-type="linenumber">20</context>
         </context-group>
-        <target state="needs-translation">Rotate selected pages clockwise</target>
+        <target state="translated">Otočiť vybrané strany v smere hodinových ručičiek</target>
       </trans-unit>
       <trans-unit id="3441043765105475130" datatype="html">
         <source>Delete selected pages</source>
@@ -7658,7 +7678,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/pdf-editor/pdf-editor.component.html</context>
           <context context-type="linenumber">23</context>
         </context-group>
-        <target state="needs-translation">Delete selected pages</target>
+        <target state="translated">Vymazať označené strany</target>
       </trans-unit>
       <trans-unit id="3873740163706409154" datatype="html">
         <source>Rotate page counter-clockwise</source>
@@ -7666,7 +7686,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/pdf-editor/pdf-editor.component.html</context>
           <context context-type="linenumber">33</context>
         </context-group>
-        <target state="needs-translation">Rotate page counter-clockwise</target>
+        <target state="translated">Otočiť stranu proti smeru hodinových ručičiek</target>
       </trans-unit>
       <trans-unit id="3450236521040548507" datatype="html">
         <source>Rotate page clockwise</source>
@@ -7674,7 +7694,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/pdf-editor/pdf-editor.component.html</context>
           <context context-type="linenumber">36</context>
         </context-group>
-        <target state="needs-translation">Rotate page clockwise</target>
+        <target state="translated">Otočiť stránku v smere hodinových ručičiek</target>
       </trans-unit>
       <trans-unit id="7647925464077975347" datatype="html">
         <source>Delete page</source>
@@ -7682,7 +7702,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/pdf-editor/pdf-editor.component.html</context>
           <context context-type="linenumber">41</context>
         </context-group>
-        <target state="needs-translation">Delete page</target>
+        <target state="translated">Vymazať stranu</target>
       </trans-unit>
       <trans-unit id="2480952115552020422" datatype="html">
         <source>Add / remove document split here</source>
@@ -7690,7 +7710,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/pdf-editor/pdf-editor.component.html</context>
           <context context-type="linenumber">44</context>
         </context-group>
-        <target state="needs-translation">Add / remove document split here</target>
+        <target state="translated">Tu pridajte alebo odstráňte rozdelenie dokumentu.</target>
       </trans-unit>
       <trans-unit id="35277754987868961" datatype="html">
         <source>Split here</source>
@@ -7698,7 +7718,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/pdf-editor/pdf-editor.component.html</context>
           <context context-type="linenumber">70</context>
         </context-group>
-        <target state="needs-translation">Split here</target>
+        <target state="translated">Rozdeliť tu</target>
       </trans-unit>
       <trans-unit id="7248454234750442816" datatype="html">
         <source>Copy metadata</source>
@@ -7706,7 +7726,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/pdf-editor/pdf-editor.component.html</context>
           <context context-type="linenumber">94,95</context>
         </context-group>
-        <target state="needs-translation">Copy metadata</target>
+        <target state="translated">Kopírovať metadáta</target>
       </trans-unit>
       <trans-unit id="6684403463658676119" datatype="html">
         <source>Delete original</source>
@@ -7714,7 +7734,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/pdf-editor/pdf-editor.component.html</context>
           <context context-type="linenumber">98,99</context>
         </context-group>
-        <target state="needs-translation">Delete original</target>
+        <target state="translated">Vymazať originál</target>
       </trans-unit>
       <trans-unit id="7940755769131903278" datatype="html">
         <source>Merge with existing permissions</source>
@@ -7722,7 +7742,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/permissions-dialog/permissions-dialog.component.html</context>
           <context context-type="linenumber">14</context>
         </context-group>
-        <target state="needs-translation">Merge with existing permissions</target>
+        <target state="translated">Zlúčiť s existujúcimi povoleniami</target>
       </trans-unit>
       <trans-unit id="7062872617520618723" datatype="html">
         <source>Set permissions</source>
@@ -7738,7 +7758,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/permissions-dialog/permissions-dialog.component.ts</context>
           <context context-type="linenumber">62</context>
         </context-group>
-        <target state="needs-translation">Edit permissions for </target>
+        <target state="translated">Upraviť povolenia pre </target>
       </trans-unit>
       <trans-unit id="347498040201588614" datatype="html">
         <source>Existing owner, user and group permissions will be merged with these settings.</source>
@@ -7754,7 +7774,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/permissions-dialog/permissions-dialog.component.ts</context>
           <context context-type="linenumber">102</context>
         </context-group>
-        <target state="needs-translation">Any and all existing owner, user and group permissions will be replaced.</target>
+        <target state="translated">Všetky existujúce povolenia vlastníka, používateľa a skupiny budú nahradené.</target>
       </trans-unit>
       <trans-unit id="5151074932731293042" datatype="html">
         <source>Unowned</source>
@@ -7770,7 +7790,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/permissions-filter-dropdown/permissions-filter-dropdown.component.html</context>
           <context context-type="linenumber">61</context>
         </context-group>
-        <target state="needs-translation">Clear selected users</target>
+        <target state="translated">Zrušiť vybraných používateľov</target>
       </trans-unit>
       <trans-unit id="8999708063434507268" datatype="html">
         <source>Hide unowned</source>
@@ -7818,7 +7838,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/permissions-filter-dropdown/permissions-filter-dropdown.component.ts</context>
           <context context-type="linenumber">128</context>
         </context-group>
-        <target state="needs-translation">Not owned by <x id="PH" equiv-text="usernames.join(', ')"/></target>
+        <target state="translated">Nevlastní to <x id="PH" equiv-text="usernames.join(', ')"/></target>
       </trans-unit>
       <trans-unit id="4647949080250052038" datatype="html">
         <source>Not owned by another user</source>
@@ -7826,7 +7846,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/permissions-filter-dropdown/permissions-filter-dropdown.component.ts</context>
           <context context-type="linenumber">131</context>
         </context-group>
-        <target state="needs-translation">Not owned by another user</target>
+        <target state="translated">Nevlastní ho iný používateľ</target>
       </trans-unit>
       <trans-unit id="8858352775080403297" datatype="html">
         <source>Not owned by selected users</source>
@@ -7834,7 +7854,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/permissions-filter-dropdown/permissions-filter-dropdown.component.ts</context>
           <context context-type="linenumber">132</context>
         </context-group>
-        <target state="needs-translation">Not owned by selected users</target>
+        <target state="translated">Nevlastnia ho vybraní používatelia</target>
       </trans-unit>
       <trans-unit id="175385209536581523" datatype="html">
         <source>Shared by me</source>
@@ -7850,7 +7870,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/permissions-filter-dropdown/permissions-filter-dropdown.component.ts</context>
           <context context-type="linenumber">145</context>
         </context-group>
-        <target state="needs-translation">Shared by <x id="PH" equiv-text="username"/></target>
+        <target state="translated">Zdieľal <x id="PH" equiv-text="username"/></target>
       </trans-unit>
       <trans-unit id="391557549689505150" datatype="html">
         <source>Shared by another user</source>
@@ -7858,7 +7878,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/permissions-filter-dropdown/permissions-filter-dropdown.component.ts</context>
           <context context-type="linenumber">146</context>
         </context-group>
-        <target state="needs-translation">Shared by another user</target>
+        <target state="translated">Zdieľané iným používateľom</target>
       </trans-unit>
       <trans-unit id="941924371433275463" datatype="html">
         <source>Global permissions define what areas of the app and API endpoints users can access.</source>
@@ -7866,7 +7886,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/permissions-select/permissions-select.component.html</context>
           <context context-type="linenumber">8,9</context>
         </context-group>
-        <target state="needs-translation">Global permissions define what areas of the app and API endpoints users can access.</target>
+        <target state="translated">Globálne povolenia definujú, ku ktorým oblastiam aplikácie a koncovým bodom rozhrania API môžu používatelia pristupovať.</target>
       </trans-unit>
       <trans-unit id="8650499415827640724" datatype="html">
         <source>Type</source>
@@ -7906,7 +7926,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/preview-popup/preview-popup.component.html</context>
           <context context-type="linenumber">11,12</context>
         </context-group>
-        <target state="needs-translation">Error loading preview</target>
+        <target state="translated">Chyba pri načítavaní ukážky</target>
       </trans-unit>
       <trans-unit id="3601402187462260332" datatype="html">
         <source>Open preview</source>
@@ -7914,7 +7934,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/preview-popup/preview-popup.component.ts</context>
           <context context-type="linenumber">62</context>
         </context-group>
-        <target state="needs-translation">Open preview</target>
+        <target state="translated">Otvoriť ukážku</target>
       </trans-unit>
       <trans-unit id="2984628903434675339" datatype="html">
         <source>Edit Profile</source>
@@ -7922,7 +7942,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/profile-edit-dialog/profile-edit-dialog.component.html</context>
           <context context-type="linenumber">3,4</context>
         </context-group>
-        <target state="needs-translation">Edit Profile</target>
+        <target state="translated">Upraviť profil</target>
       </trans-unit>
       <trans-unit id="8214169742072920158" datatype="html">
         <source>Confirm Email</source>
@@ -7930,7 +7950,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/profile-edit-dialog/profile-edit-dialog.component.html</context>
           <context context-type="linenumber">15</context>
         </context-group>
-        <target state="needs-translation">Confirm Email</target>
+        <target state="translated">Potvrdiť e-mail</target>
       </trans-unit>
       <trans-unit id="3241357959735682038" datatype="html">
         <source>Confirm Password</source>
@@ -7938,7 +7958,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/profile-edit-dialog/profile-edit-dialog.component.html</context>
           <context context-type="linenumber">25</context>
         </context-group>
-        <target state="needs-translation">Confirm Password</target>
+        <target state="translated">Potvrdiť heslo</target>
       </trans-unit>
       <trans-unit id="7554924397178347823" datatype="html">
         <source>API Auth Token</source>
@@ -7946,7 +7966,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/profile-edit-dialog/profile-edit-dialog.component.html</context>
           <context context-type="linenumber">33,34</context>
         </context-group>
-        <target state="needs-translation">API Auth Token</target>
+        <target state="translated">Autentifikačný token API</target>
       </trans-unit>
       <trans-unit id="4323470180912194028" datatype="html">
         <source>Copy</source>
@@ -7994,7 +8014,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/profile-edit-dialog/profile-edit-dialog.component.html</context>
           <context context-type="linenumber">47,48</context>
         </context-group>
-        <target state="needs-translation">Regenerate auth token</target>
+        <target state="translated">Obnoviť autentifikačný token</target>
       </trans-unit>
       <trans-unit id="4369881772624105142" datatype="html">
         <source>Warning: changing the token cannot be undone</source>
@@ -8002,7 +8022,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/profile-edit-dialog/profile-edit-dialog.component.html</context>
           <context context-type="linenumber">56,57</context>
         </context-group>
-        <target state="needs-translation">Warning: changing the token cannot be undone</target>
+        <target state="translated">Upozornenie: zmenu tokenu nie je možné vrátiť späť.</target>
       </trans-unit>
       <trans-unit id="8935717557476105185" datatype="html">
         <source>Connected social accounts</source>
@@ -8010,7 +8030,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/profile-edit-dialog/profile-edit-dialog.component.html</context>
           <context context-type="linenumber">62,63</context>
         </context-group>
-        <target state="needs-translation">Connected social accounts</target>
+        <target state="translated">Prepojené sociálne účty</target>
       </trans-unit>
       <trans-unit id="8383227756109993898" datatype="html">
         <source>Set a password before disconnecting social account.</source>
@@ -8018,7 +8038,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/profile-edit-dialog/profile-edit-dialog.component.html</context>
           <context context-type="linenumber">66,67</context>
         </context-group>
-        <target state="needs-translation">Set a password before disconnecting social account.</target>
+        <target state="translated">Pred odpojením účtu zo sociálnej siete si nastavte heslo.</target>
       </trans-unit>
       <trans-unit id="2907016025519254862" datatype="html">
         <source>Disconnect</source>
@@ -8026,7 +8046,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/profile-edit-dialog/profile-edit-dialog.component.html</context>
           <context context-type="linenumber">72,73</context>
         </context-group>
-        <target state="needs-translation">Disconnect</target>
+        <target state="translated">Odpojiť</target>
       </trans-unit>
       <trans-unit id="5322995394400578831" datatype="html">
         <source>Disconnect <x id="INTERPOLATION" equiv-text="{{ account.name }}"/> social account</source>
@@ -8034,7 +8054,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/profile-edit-dialog/profile-edit-dialog.component.html</context>
           <context context-type="linenumber">74,75</context>
         </context-group>
-        <target state="needs-translation">Disconnect <x id="INTERPOLATION" equiv-text="{{ account.name }}"/> social account</target>
+        <target state="translated">Odpojiť účet sociálnej siete <x id="INTERPOLATION" equiv-text="{{ account.name }}"/></target>
       </trans-unit>
       <trans-unit id="649824314893051979" datatype="html">
         <source>Warning: disconnecting social accounts cannot be undone</source>
@@ -8042,7 +8062,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/profile-edit-dialog/profile-edit-dialog.component.html</context>
           <context context-type="linenumber">84,85</context>
         </context-group>
-        <target state="needs-translation">Warning: disconnecting social accounts cannot be undone</target>
+        <target state="translated">Upozornenie: Odpojenie účtov na sociálnych sieťach nie je možné vrátiť späť</target>
       </trans-unit>
       <trans-unit id="1375396510511350122" datatype="html">
         <source>Connect new social account</source>
@@ -8050,7 +8070,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/profile-edit-dialog/profile-edit-dialog.component.html</context>
           <context context-type="linenumber">89,90</context>
         </context-group>
-        <target state="needs-translation">Connect new social account</target>
+        <target state="translated">Pripojiť nový účet na sociálnej sieti</target>
       </trans-unit>
       <trans-unit id="4187671210825254690" datatype="html">
         <source>Scan the QR code with your authenticator app and then enter the code below</source>
@@ -8058,7 +8078,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/profile-edit-dialog/profile-edit-dialog.component.html</context>
           <context context-type="linenumber">116</context>
         </context-group>
-        <target state="needs-translation">Scan the QR code with your authenticator app and then enter the code below</target>
+        <target state="translated">Naskenujte QR kód pomocou svojej autentifikačnej aplikácie a potom zadajte kód nižšie</target>
       </trans-unit>
       <trans-unit id="5867169599865838267" datatype="html">
         <source>Authenticator secret</source>
@@ -8066,7 +8086,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/profile-edit-dialog/profile-edit-dialog.component.html</context>
           <context context-type="linenumber">119</context>
         </context-group>
-        <target state="needs-translation">Authenticator secret</target>
+        <target state="translated">Tajný kľúč autentifikátora</target>
       </trans-unit>
       <trans-unit id="5331198279926709145" datatype="html">
         <source>You can store this secret and use it to reinstall your authenticator app at a later time.</source>
@@ -8074,7 +8094,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/profile-edit-dialog/profile-edit-dialog.component.html</context>
           <context context-type="linenumber">120</context>
         </context-group>
-        <target state="needs-translation">You can store this secret and use it to reinstall your authenticator app at a later time.</target>
+        <target state="translated">Teto tajný kľúč si môžete uložiť a neskôr ho použiť na preinštalovanie aplikácie autentifikátora.</target>
       </trans-unit>
       <trans-unit id="8186013988289067040" datatype="html">
         <source>Code</source>
@@ -8082,7 +8102,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/profile-edit-dialog/profile-edit-dialog.component.html</context>
           <context context-type="linenumber">123</context>
         </context-group>
-        <target state="needs-translation">Code</target>
+        <target state="translated">Kód</target>
       </trans-unit>
       <trans-unit id="3176701652604668614" datatype="html">
         <source>Recovery codes will not be shown again, make sure to save them.</source>
@@ -8090,7 +8110,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/profile-edit-dialog/profile-edit-dialog.component.html</context>
           <context context-type="linenumber">142</context>
         </context-group>
-        <target state="needs-translation">Recovery codes will not be shown again, make sure to save them.</target>
+        <target state="translated">Obnovovacie kódy sa už znova nezobrazia; nezabudnite si ich uložiť.</target>
       </trans-unit>
       <trans-unit id="2722512118372958038" datatype="html">
         <source>Copy codes</source>
@@ -8098,7 +8118,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/profile-edit-dialog/profile-edit-dialog.component.html</context>
           <context context-type="linenumber">159,160</context>
         </context-group>
-        <target state="needs-translation">Copy codes</target>
+        <target state="translated">Skopírovať kódy</target>
       </trans-unit>
       <trans-unit id="6141884091799403188" datatype="html">
         <source>Emails must match</source>
@@ -8106,7 +8126,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/profile-edit-dialog/profile-edit-dialog.component.ts</context>
           <context context-type="linenumber">144</context>
         </context-group>
-        <target state="needs-translation">Emails must match</target>
+        <target state="translated">E-mailové adresy sa musia zhodovať.</target>
       </trans-unit>
       <trans-unit id="5281933990298241826" datatype="html">
         <source>Passwords must match</source>
@@ -8114,7 +8134,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/profile-edit-dialog/profile-edit-dialog.component.ts</context>
           <context context-type="linenumber">171</context>
         </context-group>
-        <target state="needs-translation">Passwords must match</target>
+        <target state="translated">Heslá sa musia zhodovať</target>
       </trans-unit>
       <trans-unit id="4219429959475101385" datatype="html">
         <source>Profile updated successfully</source>
@@ -8122,79 +8142,79 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/profile-edit-dialog/profile-edit-dialog.component.ts</context>
           <context context-type="linenumber">207</context>
         </context-group>
-        <target state="needs-translation">Profile updated successfully</target>
+        <target state="translated">Profil bol úspešne aktualizovaný.</target>
       </trans-unit>
       <trans-unit id="3417726855410304962" datatype="html">
         <source>Error saving profile</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/common/profile-edit-dialog/profile-edit-dialog.component.ts</context>
-          <context context-type="linenumber">221</context>
+          <context context-type="linenumber">222</context>
         </context-group>
-        <target state="needs-translation">Error saving profile</target>
+        <target state="translated">Chyba pri ukladaní profilu</target>
       </trans-unit>
       <trans-unit id="154249228726292516" datatype="html">
         <source>Error generating auth token</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/common/profile-edit-dialog/profile-edit-dialog.component.ts</context>
-          <context context-type="linenumber">239</context>
+          <context context-type="linenumber">240</context>
         </context-group>
-        <target state="needs-translation">Error generating auth token</target>
+        <target state="translated">Chyba pri generovaní autentifikačného tokenu</target>
       </trans-unit>
       <trans-unit id="4153637646944982460" datatype="html">
         <source>Error disconnecting social account</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/common/profile-edit-dialog/profile-edit-dialog.component.ts</context>
-          <context context-type="linenumber">266</context>
+          <context context-type="linenumber">267</context>
         </context-group>
-        <target state="needs-translation">Error disconnecting social account</target>
+        <target state="translated">Chyba pri odpájaní účtu sociálnej siete</target>
       </trans-unit>
       <trans-unit id="5939111172212776886" datatype="html">
         <source>Error fetching TOTP settings</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/common/profile-edit-dialog/profile-edit-dialog.component.ts</context>
-          <context context-type="linenumber">285</context>
+          <context context-type="linenumber">286</context>
         </context-group>
-        <target state="needs-translation">Error fetching TOTP settings</target>
+        <target state="translated">Chyba pri načítavaní nastavení TOTP</target>
       </trans-unit>
       <trans-unit id="1030314492414713260" datatype="html">
         <source>TOTP activated successfully</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/common/profile-edit-dialog/profile-edit-dialog.component.ts</context>
-          <context context-type="linenumber">309</context>
+          <context context-type="linenumber">310</context>
         </context-group>
-        <target state="needs-translation">TOTP activated successfully</target>
+        <target state="translated">TOTP úspešne aktivované</target>
       </trans-unit>
       <trans-unit id="3755006064892435830" datatype="html">
         <source>Error activating TOTP</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/common/profile-edit-dialog/profile-edit-dialog.component.ts</context>
-          <context context-type="linenumber">311</context>
+          <context context-type="linenumber">312</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/common/profile-edit-dialog/profile-edit-dialog.component.ts</context>
-          <context context-type="linenumber">317</context>
+          <context context-type="linenumber">318</context>
         </context-group>
-        <target state="needs-translation">Error activating TOTP</target>
+        <target state="translated">Chyba pri aktivácii TOTP</target>
       </trans-unit>
       <trans-unit id="5919827473541889422" datatype="html">
         <source>TOTP deactivated successfully</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/common/profile-edit-dialog/profile-edit-dialog.component.ts</context>
-          <context context-type="linenumber">333</context>
+          <context context-type="linenumber">334</context>
         </context-group>
-        <target state="needs-translation">TOTP deactivated successfully</target>
+        <target state="translated">TOTP úspešne deaktivované</target>
       </trans-unit>
       <trans-unit id="6214722303383624015" datatype="html">
         <source>Error deactivating TOTP</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/common/profile-edit-dialog/profile-edit-dialog.component.ts</context>
-          <context context-type="linenumber">335</context>
+          <context context-type="linenumber">336</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/common/profile-edit-dialog/profile-edit-dialog.component.ts</context>
-          <context context-type="linenumber">340</context>
+          <context context-type="linenumber">341</context>
         </context-group>
-        <target state="needs-translation">Error deactivating TOTP</target>
+        <target state="translated">Chyba pri deaktivácii TOTP</target>
       </trans-unit>
       <trans-unit id="4452415362871534100" datatype="html">
         <source>Selected documents:</source>
@@ -8202,7 +8222,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/share-link-bundle-dialog/share-link-bundle-dialog.component.html</context>
           <context context-type="linenumber">10</context>
         </context-group>
-        <target state="needs-translation">Selected documents:</target>
+        <target state="translated">Vybrané dokumenty:</target>
       </trans-unit>
       <trans-unit id="362958710149056220" datatype="html">
         <source>+ <x id="INTERPOLATION" equiv-text="{{ selectionCount() - documentPreview().length }}"/> more…</source>
@@ -8210,7 +8230,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/share-link-bundle-dialog/share-link-bundle-dialog.component.html</context>
           <context context-type="linenumber">22,23</context>
         </context-group>
-        <target state="needs-translation">+ <x id="INTERPOLATION" equiv-text="{{ selectionCount() - documentPreview().length }}"/> more…</target>
+        <target state="translated">+ <x id="INTERPOLATION" equiv-text="{{ selectionCount() - documentPreview().length }}"/> ďalšie…</target>
       </trans-unit>
       <trans-unit id="8037476586059399916" datatype="html">
         <source>Expires</source>
@@ -8234,7 +8254,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/manage/share-links/share-link-list/share-link-list.component.html</context>
           <context context-type="linenumber">17,18</context>
         </context-group>
-        <target state="needs-translation">Expires</target>
+        <target state="translated">Expiruje</target>
       </trans-unit>
       <trans-unit id="5490987011403825190" datatype="html">
         <source>Share archive version (if available)</source>
@@ -8242,7 +8262,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/share-link-bundle-dialog/share-link-bundle-dialog.component.html</context>
           <context context-type="linenumber">47,48</context>
         </context-group>
-        <target state="needs-translation">Share archive version (if available)</target>
+        <target state="translated">Zdieľať archivovanú verziu (ak je k dispozícii)</target>
       </trans-unit>
       <trans-unit id="7061163970335460956" datatype="html">
         <source>Share link bundle requested</source>
@@ -8250,7 +8270,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/share-link-bundle-dialog/share-link-bundle-dialog.component.html</context>
           <context context-type="linenumber">54,55</context>
         </context-group>
-        <target state="needs-translation">Share link bundle requested</target>
+        <target state="translated">Vyžiadaný balík odkazov na zdieľanie</target>
       </trans-unit>
       <trans-unit id="6015519587423193621" datatype="html">
         <source> You can copy the share link below or open the manager to monitor progress. The link will start working once the bundle is ready. </source>
@@ -8258,7 +8278,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/share-link-bundle-dialog/share-link-bundle-dialog.component.html</context>
           <context context-type="linenumber">56,57</context>
         </context-group>
-        <target state="needs-translation"> You can copy the share link below or open the manager to monitor progress. The link will start working once the bundle is ready. </target>
+        <target state="translated"> Môžete skopírovať odkaz na zdieľanie nižšie alebo otvoriť správcu a sledovať priebeh. Odkaz začne fungovať, keď bude balík pripravený. </target>
       </trans-unit>
       <trans-unit id="5611592591303869712" datatype="html">
         <source>Status</source>
@@ -8290,7 +8310,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/manage/workflows/workflows.component.html</context>
           <context context-type="linenumber">19,20</context>
         </context-group>
-        <target state="needs-translation">Status</target>
+        <target state="translated">Stav</target>
       </trans-unit>
       <trans-unit id="2861306361489095884" datatype="html">
         <source>Slug</source>
@@ -8298,7 +8318,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/share-link-bundle-dialog/share-link-bundle-dialog.component.html</context>
           <context context-type="linenumber">64,65</context>
         </context-group>
-        <target state="needs-translation">Slug</target>
+        <target state="translated">Známka</target>
       </trans-unit>
       <trans-unit id="2981219928115418649" datatype="html">
         <source>Link</source>
@@ -8306,7 +8326,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/share-link-bundle-dialog/share-link-bundle-dialog.component.html</context>
           <context context-type="linenumber">66,67</context>
         </context-group>
-        <target state="needs-translation">Link</target>
+        <target state="translated">Odkaz</target>
       </trans-unit>
       <trans-unit id="4306169234658044987" datatype="html">
         <source>Share link</source>
@@ -8314,7 +8334,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/share-link-bundle-dialog/share-link-bundle-dialog.component.html</context>
           <context context-type="linenumber">68,69</context>
         </context-group>
-        <target state="needs-translation">Share link</target>
+        <target state="translated">Odkaz pre zdieľanie</target>
       </trans-unit>
       <trans-unit id="2618101617221155143" datatype="html">
         <source>Copy link</source>
@@ -8322,7 +8342,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/share-link-bundle-dialog/share-link-bundle-dialog.component.html</context>
           <context context-type="linenumber">82,83</context>
         </context-group>
-        <target state="needs-translation">Copy link</target>
+        <target state="translated">Kopírovať odkaz</target>
       </trans-unit>
       <trans-unit id="8372007266188249803" datatype="html">
         <source>Never</source>
@@ -8342,7 +8362,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/data/share-link.ts</context>
           <context context-type="linenumber">17</context>
         </context-group>
-        <target state="needs-translation">Never</target>
+        <target state="translated">Nikdy</target>
       </trans-unit>
       <trans-unit id="9188799444204871997" datatype="html">
         <source>File version</source>
@@ -8358,7 +8378,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/manage/share-links/share-link-list/share-link-list.component.html</context>
           <context context-type="linenumber">18,19</context>
         </context-group>
-        <target state="needs-translation">File version</target>
+        <target state="translated">Verzia súboru</target>
       </trans-unit>
       <trans-unit id="45739481977493163" datatype="html">
         <source>Size</source>
@@ -8370,7 +8390,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/manage/share-links/share-link-bundle-list/share-link-bundle-list.component.html</context>
           <context context-type="linenumber">18,19</context>
         </context-group>
-        <target state="needs-translation">Size</target>
+        <target state="translated">Veľkosť</target>
       </trans-unit>
       <trans-unit id="1937312492123744642" datatype="html">
         <source>A zip file containing the selected documents will be created for this share link bundle. This process happens in the background and may take some time, especially for large bundles.</source>
@@ -8378,7 +8398,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/share-link-bundle-dialog/share-link-bundle-dialog.component.html</context>
           <context context-type="linenumber">111</context>
         </context-group>
-        <target state="needs-translation">A zip file containing the selected documents will be created for this share link bundle. This process happens in the background and may take some time, especially for large bundles.</target>
+        <target state="translated">Pre tento súbor zdieľaných dokumentov sa vytvorí súbor ZIP. Tento proces prebieha na pozadí a môže chvíľu trvať, najmä v prípade veľkých súborov.</target>
       </trans-unit>
       <trans-unit id="7274497464693086242" datatype="html">
         <source>Manage share link bundles</source>
@@ -8390,7 +8410,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/document-list/bulk-editor/bulk-editor.component.html</context>
           <context context-type="linenumber">124</context>
         </context-group>
-        <target state="needs-translation">Manage share link bundles</target>
+        <target state="translated">Spravovať balíky odkazov na zdieľanie</target>
       </trans-unit>
       <trans-unit id="1070687661569746428" datatype="html">
         <source>Create share link bundle</source>
@@ -8398,7 +8418,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/share-link-bundle-dialog/share-link-bundle-dialog.component.ts</context>
           <context context-type="linenumber">59</context>
         </context-group>
-        <target state="needs-translation">Create share link bundle</target>
+        <target state="translated">Vytvoriť balík odkazov na zdieľanie</target>
       </trans-unit>
       <trans-unit id="2362798555008696742" datatype="html">
         <source>Create link</source>
@@ -8406,7 +8426,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/share-link-bundle-dialog/share-link-bundle-dialog.component.ts</context>
           <context context-type="linenumber">60</context>
         </context-group>
-        <target state="needs-translation">Create link</target>
+        <target state="translated">Vytvoriť odkaz</target>
       </trans-unit>
       <trans-unit id="6617773613987957957" datatype="html">
         <source> No existing links </source>
@@ -8414,7 +8434,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/share-links-dialog/share-links-dialog.component.html</context>
           <context context-type="linenumber">9,10</context>
         </context-group>
-        <target state="needs-translation"> No existing links </target>
+        <target state="translated"> Žiadne existujúce odkazy </target>
       </trans-unit>
       <trans-unit id="7419704019640008953" datatype="html">
         <source>Share</source>
@@ -8422,7 +8442,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/share-links-dialog/share-links-dialog.component.html</context>
           <context context-type="linenumber">32,33</context>
         </context-group>
-        <target state="needs-translation">Share</target>
+        <target state="translated">Zdielať</target>
       </trans-unit>
       <trans-unit id="6811921365829755679" datatype="html">
         <source>Share archive version</source>
@@ -8430,7 +8450,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/share-links-dialog/share-links-dialog.component.html</context>
           <context context-type="linenumber">48,49</context>
         </context-group>
-        <target state="needs-translation">Share archive version</target>
+        <target state="translated">Zdielať archivovanú verziu</target>
       </trans-unit>
       <trans-unit id="3429210839568770054" datatype="html">
         <source>Error retrieving links</source>
@@ -8438,7 +8458,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/share-links-dialog/share-links-dialog.component.ts</context>
           <context context-type="linenumber">67</context>
         </context-group>
-        <target state="needs-translation">Error retrieving links</target>
+        <target state="translated">Chyba pri získavaní odkazov</target>
       </trans-unit>
       <trans-unit id="4776429682428363094" datatype="html">
         <source>1 day</source>
@@ -8450,7 +8470,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/data/share-link.ts</context>
           <context context-type="linenumber">14</context>
         </context-group>
-        <target state="needs-translation">1 day</target>
+        <target state="translated">1 deň</target>
       </trans-unit>
       <trans-unit id="3242255798983858463" datatype="html">
         <source><x id="PH" equiv-text="days"/> days</source>
@@ -8458,7 +8478,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/share-links-dialog/share-links-dialog.component.ts</context>
           <context context-type="linenumber">86</context>
         </context-group>
-        <target state="needs-translation"><x id="PH" equiv-text="days"/> days</target>
+        <target state="translated"><x id="PH" equiv-text="days"/> dní</target>
       </trans-unit>
       <trans-unit id="2897042887615940599" datatype="html">
         <source>Error deleting link</source>
@@ -8466,7 +8486,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/share-links-dialog/share-links-dialog.component.ts</context>
           <context context-type="linenumber">115</context>
         </context-group>
-        <target state="needs-translation">Error deleting link</target>
+        <target state="translated">Chyba pri odstraňovaní odkazu</target>
       </trans-unit>
       <trans-unit id="8400747326190565173" datatype="html">
         <source>Error creating link</source>
@@ -8474,7 +8494,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/share-links-dialog/share-links-dialog.component.ts</context>
           <context context-type="linenumber">143</context>
         </context-group>
-        <target state="needs-translation">Error creating link</target>
+        <target state="translated">Chyba pri vytváraní odkazu</target>
       </trans-unit>
       <trans-unit id="8336346011691074629" datatype="html">
         <source>No suggestions</source>
@@ -8482,7 +8502,7 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/suggestions-dropdown/suggestions-dropdown.component.html</context>
           <context context-type="linenumber">12,13</context>
         </context-group>
-        <target state="needs-translation">No suggestions</target>
+        <target state="translated">Žiadne návrhy</target>
       </trans-unit>
       <trans-unit id="5320136382998259826" datatype="html">
         <source>Suggest</source>
@@ -8490,29 +8510,29 @@ zhodujúce sa</target>
           <context context-type="sourcefile">src/app/components/common/suggestions-dropdown/suggestions-dropdown.component.html</context>
           <context context-type="linenumber">14,15</context>
         </context-group>
-        <target state="needs-translation">Suggest</target>
+        <target state="translated">Návrh</target>
       </trans-unit>
       <trans-unit id="6934085657687954669" datatype="html">
         <source>Show suggestions</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/common/suggestions-dropdown/suggestions-dropdown.component.html</context>
-          <context context-type="linenumber">24,25</context>
+          <context context-type="linenumber">23,24</context>
         </context-group>
-        <target state="needs-translation">Show suggestions</target>
+        <target state="translated">Ukázať návrhy</target>
       </trans-unit>
       <trans-unit id="3834115140127576673" datatype="html">
         <source>No novel suggestions</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/common/suggestions-dropdown/suggestions-dropdown.component.html</context>
-          <context context-type="linenumber">31,32</context>
+          <context context-type="linenumber">30,31</context>
         </context-group>
-        <target state="needs-translation">No novel suggestions</target>
+        <target state="translated">Žiadne nové návrhy</target>
       </trans-unit>
       <trans-unit id="4369111787961525769" datatype="html">
         <source>Document Types</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/common/suggestions-dropdown/suggestions-dropdown.component.html</context>
-          <context context-type="linenumber">41</context>
+          <context context-type="linenumber">40</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/dashboard/widgets/statistics-widget/statistics-widget.component.html</context>
@@ -8524,49 +8544,49 @@ zhodujúce sa</target>
         <source>{VAR_PLURAL, plural, =1 {1 suggestion available below} other {<x id="INTERPOLATION"/> suggestions available below}}</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/common/suggestions-dropdown/suggestions-dropdown.component.html</context>
-          <context context-type="linenumber">54</context>
+          <context context-type="linenumber">53</context>
         </context-group>
-        <target state="needs-translation">{VAR_PLURAL, plural, =1 {1 suggestion available below} other {<x id="INTERPOLATION"/> suggestions available below}}</target>
+        <target state="translated">{VAR_PLURAL, plural, =1 {1 návrh dostupný nižšie} other {<x id="INTERPOLATION"/> návrhy dostupné nižšie}}</target>
       </trans-unit>
       <trans-unit id="4169875112244042673" datatype="html">
         <source>Suggestion options</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/common/suggestions-dropdown/suggestions-dropdown.component.html</context>
-          <context context-type="linenumber">65,66</context>
+          <context context-type="linenumber">63,64</context>
         </context-group>
-        <target state="needs-translation">Suggestion options</target>
+        <target state="translated">Možnosti návrhov</target>
       </trans-unit>
       <trans-unit id="3145824396228856507" datatype="html">
         <source>Not using default</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/common/suggestions-dropdown/suggestions-dropdown.component.html</context>
-          <context context-type="linenumber">69,70</context>
+          <context context-type="linenumber">67,68</context>
         </context-group>
-        <target state="needs-translation">Not using default</target>
+        <target state="translated">Nepoužíva sa predvolené nastavenie</target>
       </trans-unit>
       <trans-unit id="8102623853570619759" datatype="html">
         <source>Suggest using:</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/common/suggestions-dropdown/suggestions-dropdown.component.html</context>
-          <context context-type="linenumber">74,75</context>
+          <context context-type="linenumber">72,73</context>
         </context-group>
-        <target state="needs-translation">Suggest using:</target>
+        <target state="translated">Odporúčame použiť:</target>
       </trans-unit>
       <trans-unit id="5799391967036896978" datatype="html">
         <source>ML</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/common/suggestions-dropdown/suggestions-dropdown.component.html</context>
-          <context context-type="linenumber">77</context>
+          <context context-type="linenumber">75</context>
         </context-group>
-        <target state="needs-translation">ML</target>
+        <target state="translated">ML</target>
       </trans-unit>
       <trans-unit id="3484984238852181071" datatype="html">
         <source>AI</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/common/suggestions-dropdown/suggestions-dropdown.component.html</context>
-          <context context-type="linenumber">81</context>
+          <context context-type="linenumber">79</context>
         </context-group>
-        <target state="needs-translation">AI</target>
+        <target state="translated">AI</target>
       </trans-unit>
       <trans-unit id="9180110319941008393" datatype="html">
         <source>Environment</source>
@@ -8900,14 +8920,6 @@ zhodujúce sa</target>
         </context-group>
         <target state="translated">Chyba pri aktualizácii hlavného panela</target>
       </trans-unit>
-      <trans-unit id="2946624699882754313" datatype="html">
-        <source>Show all</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/components/dashboard/widgets/saved-view-widget/saved-view-widget.component.html</context>
-          <context context-type="linenumber">14,17</context>
-        </context-group>
-        <target state="translated">Zobraziť všetko</target>
-      </trans-unit>
       <trans-unit id="1559883523769732271" datatype="html">
         <source>Error while loading documents</source>
         <context-group purpose="location">
@@ -8924,7 +8936,7 @@ zhodujúce sa</target>
         <source>Filter by correspondent</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/dashboard/widgets/saved-view-widget/saved-view-widget.component.html</context>
-          <context context-type="linenumber">73</context>
+          <context context-type="linenumber">75</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/document-list/document-card-large/document-card-large.component.html</context>
@@ -8940,7 +8952,7 @@ zhodujúce sa</target>
         <source>Filter by document type</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/dashboard/widgets/saved-view-widget/saved-view-widget.component.html</context>
-          <context context-type="linenumber">83</context>
+          <context context-type="linenumber">85</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/document-list/document-card-large/document-card-large.component.html</context>
@@ -8956,7 +8968,7 @@ zhodujúce sa</target>
         <source>Filter by storage path</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/dashboard/widgets/saved-view-widget/saved-view-widget.component.html</context>
-          <context context-type="linenumber">88</context>
+          <context context-type="linenumber">90</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/document-list/document-card-large/document-card-large.component.html</context>
@@ -8972,7 +8984,7 @@ zhodujúce sa</target>
         <source>Filter by owner</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/dashboard/widgets/saved-view-widget/saved-view-widget.component.html</context>
-          <context context-type="linenumber">93</context>
+          <context context-type="linenumber">95</context>
         </context-group>
         <target state="translated">Filtrovať podľa vlastníka</target>
       </trans-unit>
@@ -8980,7 +8992,7 @@ zhodujúce sa</target>
         <source>No</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/dashboard/widgets/saved-view-widget/saved-view-widget.component.html</context>
-          <context context-type="linenumber">103</context>
+          <context context-type="linenumber">105</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/document-list/document-list.component.html</context>
@@ -8992,7 +9004,7 @@ zhodujúce sa</target>
         <source>No documents</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/dashboard/widgets/saved-view-widget/saved-view-widget.component.html</context>
-          <context context-type="linenumber">187,190</context>
+          <context context-type="linenumber">189,192</context>
         </context-group>
         <target state="needs-translation">No documents</target>
       </trans-unit>
@@ -9358,7 +9370,7 @@ zhodujúce sa</target>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/main.ts</context>
-          <context context-type="linenumber">473</context>
+          <context context-type="linenumber">475</context>
         </context-group>
         <target state="translated">Ďalší</target>
       </trans-unit>
@@ -11602,19 +11614,19 @@ zhodujúce sa</target>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">129,130</context>
+          <context context-type="linenumber">131,132</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">129,130</context>
+          <context context-type="linenumber">131,132</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">129,130</context>
+          <context context-type="linenumber">131,132</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">129,130</context>
+          <context context-type="linenumber">131,132</context>
         </context-group>
         <target state="needs-translation">Filter Documents (<x id="INTERPOLATION" equiv-text="{{ field.document_count }}"/>)</target>
       </trans-unit>
@@ -11810,19 +11822,19 @@ zhodujúce sa</target>
         <source>Matching</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">39,40</context>
+          <context context-type="linenumber">41,42</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">39,40</context>
+          <context context-type="linenumber">41,42</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">39,40</context>
+          <context context-type="linenumber">41,42</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">39,40</context>
+          <context context-type="linenumber">41,42</context>
         </context-group>
         <target state="translated">Zhoda</target>
       </trans-unit>
@@ -11830,19 +11842,19 @@ zhodujúce sa</target>
         <source>Document count</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">40,41</context>
+          <context context-type="linenumber">42,43</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">40,41</context>
+          <context context-type="linenumber">42,43</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">40,41</context>
+          <context context-type="linenumber">42,43</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">40,41</context>
+          <context context-type="linenumber">42,43</context>
         </context-group>
         <target state="translated">Počet dokumentov</target>
       </trans-unit>
@@ -11850,19 +11862,19 @@ zhodujúce sa</target>
         <source>{VAR_PLURAL, plural, =1 {One <x id="INTERPOLATION"/>} other {<x id="INTERPOLATION_1"/> total <x id="INTERPOLATION_2"/>}}</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">67</context>
+          <context context-type="linenumber">69</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">67</context>
+          <context context-type="linenumber">69</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">67</context>
+          <context context-type="linenumber">69</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/manage/document-attributes/management-list/management-list.component.html</context>
-          <context context-type="linenumber">67</context>
+          <context context-type="linenumber">69</context>
         </context-group>
         <target state="translated">{VAR_PLURAL, plural, =1 {Jeden <x id="INTERPOLATION"/>} other {<x id="INTERPOLATION_1"/> celkovo <x id="INTERPOLATION_2"/>}}</target>
       </trans-unit>
@@ -14667,7 +14679,7 @@ zhodujúce sa</target>
         <source>Prev</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/main.ts</context>
-          <context context-type="linenumber">472</context>
+          <context context-type="linenumber">474</context>
         </context-group>
         <target state="translated">Predchádzajúci</target>
       </trans-unit>
@@ -14675,7 +14687,7 @@ zhodujúce sa</target>
         <source>End</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/main.ts</context>
-          <context context-type="linenumber">474</context>
+          <context context-type="linenumber">476</context>
         </context-group>
         <target state="translated">Koniec</target>
       </trans-unit>

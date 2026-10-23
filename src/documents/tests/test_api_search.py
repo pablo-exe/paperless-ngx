@@ -245,8 +245,68 @@ class TestDocumentSearchApi(DirectoriesMixin, APITestCase):
         self.assertEqual(response.data["count"], 1)
         self.assertEqual(response.data["results"][0]["id"], title_match.id)
 
+    def test_simple_search_combined_with_query_filter(self) -> None:
+        """
+        GIVEN:
+            - A document with the term in its title, created this year
+            - A document with the term only in its content, created this year
+            - A document with the term in its title, created years ago
+        WHEN:
+            - A title or text search is combined with a relative created
+              date query, as the filter editor sends it
+        THEN:
+            - The simple search keeps its own field scope and the query only
+              narrows the results (issue #14436)
+        """
+        this_year = timezone.localdate().replace(month=1, day=1)
+        title_match = Document.objects.create(
+            title="foo report",
+            content="nothing relevant",
+            checksum="F1",
+            created=this_year,
+            pk=21,
+        )
+        content_match = Document.objects.create(
+            title="something else",
+            content="foo appears here",
+            checksum="F2",
+            created=this_year,
+            pk=22,
+        )
+        old_title_match = Document.objects.create(
+            title="foo archive",
+            content="nothing relevant",
+            checksum="F3",
+            created=datetime.date(2001, 1, 1),
+            pk=23,
+        )
+        backend = get_backend()
+        for doc in (title_match, content_match, old_title_match):
+            backend.add_or_update(doc)
+
+        query = "created:[-1 year to now]"
+        response = self.client.get(
+            "/api/documents/",
+            {"title_search": "foo", "query": query},
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            [r["id"] for r in response.data["results"]],
+            [title_match.id],
+        )
+
+        response = self.client.get(
+            "/api/documents/",
+            {"text": "foo", "query": query},
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertCountEqual(
+            [r["id"] for r in response.data["results"]],
+            [title_match.id, content_match.id],
+        )
+
     def test_search_rejects_multiple_search_modes(self) -> None:
-        response = self.client.get("/api/documents/?text=bank&query=bank")
+        response = self.client.get("/api/documents/?text=bank&title_search=bank")
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(
             response.data["detail"],
@@ -1196,6 +1256,59 @@ class TestDocumentSearchApi(DirectoriesMixin, APITestCase):
         self.assertIn(d3.id, result_ids)
         self.assertNotIn(d4.id, result_ids)
 
+    def test_search_more_like_version_uses_its_root(self) -> None:
+        """
+        GIVEN:
+            - A document similar in content to a root document, and one that is not
+            - A version of the root document, which is never indexed
+        WHEN:
+            - API request for more like the version
+        THEN:
+            - The documents similar to the root are returned, not the version
+        """
+        indexed = {}
+        for name, title, content, day in (
+            ("root", "bank statement 1", "things i paid for in august", (2019, 3, 4)),
+            (
+                "similar",
+                "bank statement 3",
+                "things i paid for in september",
+                (2020, 7, 9),
+            ),
+            (
+                "other",
+                "Quarterly Report",
+                "quarterly revenue profit margin",
+                (2021, 11, 30),
+            ),
+        ):
+            with time_machine.travel(
+                timezone.make_aware(datetime.datetime(*day)),
+                tick=False,
+            ):
+                indexed[name] = DocumentFactory(
+                    title=title,
+                    content=content,
+                    created=datetime.date(*day),
+                    added=timezone.make_aware(datetime.datetime(*day)),
+                )
+        version = DocumentFactory(
+            root_document=indexed["root"],
+            version_index=1,
+            content="things i paid for in august",
+        )
+        backend = get_backend()
+        for document in indexed.values():
+            backend.add_or_update(document)
+
+        response = self.client.get(f"/api/documents/?more_like_id={version.id}")
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        result_ids = [r["id"] for r in response.data["results"]]
+        self.assertIn(indexed["similar"].id, result_ids)
+        self.assertNotIn(indexed["other"].id, result_ids)
+        self.assertNotIn(version.id, result_ids)
+
     def test_more_like_requires_id_of_existing_document(self) -> None:
         """
         GIVEN:
@@ -1257,6 +1370,39 @@ class TestDocumentSearchApi(DirectoriesMixin, APITestCase):
         response = self.client.get(
             f"/api/documents/?more_like_id={private_seed.id}",
         )
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.content, b"Insufficient permissions.")
+
+    def test_search_more_like_version_requires_view_permission_on_its_root(
+        self,
+    ) -> None:
+        """
+        GIVEN:
+            - Another user's private root document with an unowned version
+        WHEN:
+            - A user without access requests more-like-this for the version
+        THEN:
+            - The request is rejected, the version's missing owner grants nothing
+        """
+        owner = UserFactory(username="owner")
+        attacker = UserFactory(username="attacker")
+        grant_global(attacker, "view_document")
+        private_root = DocumentFactory(
+            title="private bank statement",
+            content="quarterly treasury bank statement wire transfer",
+            owner=owner,
+        )
+        version = DocumentFactory(
+            root_document=private_root,
+            version_index=1,
+            owner=None,
+        )
+        get_backend().add_or_update(private_root)
+
+        self.client.force_authenticate(user=attacker)
+
+        response = self.client.get(f"/api/documents/?more_like_id={version.id}")
 
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
         self.assertEqual(response.content, b"Insufficient permissions.")
@@ -1990,29 +2136,6 @@ class TestDocumentSearchApi(DirectoriesMixin, APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data["documents"]), 1)
         self.assertEqual(response.data["documents"][0]["id"], title_match.id)
-
-    def test_global_search_returns_latest_version_content(self) -> None:
-        root = Document.objects.create(
-            title="bank statement",
-            content="superseded content",
-            checksum="GSV1",
-            pk=23,
-        )
-        Document.objects.create(
-            title="bank statement v2",
-            content="latest content",
-            checksum="GSV2",
-            pk=24,
-            root_document=root,
-            version_index=1,
-        )
-
-        self.client.force_authenticate(self.user)
-
-        response = self.client.get("/api/search/?query=bank&db_only=true")
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        returned = {doc["id"]: doc["content"] for doc in response.data["documents"]}
-        self.assertEqual(returned.get(root.id), "latest content")
 
     def test_global_search_filters_owned_mail_objects(self) -> None:
         user1 = UserFactory(username="mail-search-user")

@@ -3,6 +3,7 @@ from itertools import islice
 from pathlib import Path
 from typing import TYPE_CHECKING
 from typing import Any
+from typing import Final
 
 from allauth.mfa.models import Authenticator
 from allauth.socialaccount.models import SocialAccount
@@ -70,6 +71,15 @@ from paperless import version
 from paperless.models import ApplicationConfiguration
 from paperless_mail.models import MailAccount
 from paperless_mail.models import MailRule
+
+# Derived names replace the original's extension with these suffixes
+THUMBNAIL_SUFFIX: Final[str] = "-thumbnail.webp"
+ARCHIVE_SUFFIX: Final[str] = "-archive.pdf"
+# Leave room for the longest derived suffix, which replaces the original's extension
+MAX_BASE_NAME_BYTES: Final[int] = Document.MAX_PUBLIC_FILENAME_BYTES - max(
+    len(THUMBNAIL_SUFFIX),
+    len(ARCHIVE_SUFFIX),
+)
 
 
 def serialize_queryset_batched(
@@ -514,10 +524,16 @@ class Command(CryptMixin, PaperlessCommand):
                     counter=filename_counter,
                 )
             else:
-                base_name = document.get_public_filename(counter=filename_counter)
+                base_name = document.get_public_filename(
+                    counter=filename_counter,
+                    max_bytes=MAX_BASE_NAME_BYTES,
+                )
 
-            if base_name not in self.exported_files:
-                self.exported_files.add(base_name)
+            # The thumbnail and archive names are derived from the stem, so
+            # uniqueness must hold without the original's extension
+            unique_key = str(Path(base_name).with_suffix(""))
+            if unique_key not in self.exported_files:
+                self.exported_files.add(unique_key)
                 break
             else:
                 filename_counter += 1
@@ -540,7 +556,7 @@ class Command(CryptMixin, PaperlessCommand):
         document_dict[EXPORTER_FILE_NAME] = original_arc
 
         if not self.no_thumbnail:
-            thumbnail_name = base_name.parent / (base_name.stem + "-thumbnail.webp")
+            thumbnail_name = base_name.parent / (base_name.stem + THUMBNAIL_SUFFIX)
             if self.use_folder_prefix:
                 thumbnail_name = Path("thumbnails") / thumbnail_name
             thumbnail_arc = thumbnail_name.as_posix()
@@ -549,7 +565,7 @@ class Command(CryptMixin, PaperlessCommand):
             thumbnail_arc = None
 
         if not self.no_archive and document.has_archive_version:
-            archive_name = base_name.parent / (base_name.stem + "-archive.pdf")
+            archive_name = base_name.parent / (base_name.stem + ARCHIVE_SUFFIX)
             if self.use_folder_prefix:
                 archive_name = Path("archive") / archive_name
             archive_arc = archive_name.as_posix()
