@@ -5,8 +5,8 @@ import {
   NgbModal,
   NgbPaginationModule,
 } from '@ng-bootstrap/ng-bootstrap'
-import { BootstrapIconComponent } from 'src/app/components/common/bootstrap-icon/bootstrap-icon.component'
 import { Subscription, finalize, takeUntil } from 'rxjs'
+import { BootstrapIconComponent } from 'src/app/components/common/bootstrap-icon/bootstrap-icon.component'
 import { EditDialogMode } from 'src/app/components/common/edit-dialog/edit-dialog.component'
 import { FolderEditDialogComponent } from 'src/app/components/common/edit-dialog/folder-edit-dialog/folder-edit-dialog.component'
 import { Document } from 'src/app/data/document'

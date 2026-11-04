@@ -24,11 +24,7 @@ describe('FolderEditDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        NgbModule,
-        BootstrapIconComponent,
-        FolderEditDialogComponent,
-      ],
+      imports: [NgbModule, BootstrapIconComponent, FolderEditDialogComponent],
       providers: [
         NgbActiveModal,
         provideHttpClient(withInterceptorsFromDi()),

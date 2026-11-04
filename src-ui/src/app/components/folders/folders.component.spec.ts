@@ -3,8 +3,8 @@ import { provideHttpClientTesting } from '@angular/common/http/testing'
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 import { ActivatedRoute, Router, convertToParamMap } from '@angular/router'
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap'
-import { BootstrapIconComponent } from 'src/app/components/common/bootstrap-icon/bootstrap-icon.component'
 import { Subject, of, throwError } from 'rxjs'
+import { BootstrapIconComponent } from 'src/app/components/common/bootstrap-icon/bootstrap-icon.component'
 import { EditDialogMode } from 'src/app/components/common/edit-dialog/edit-dialog.component'
 import { Folder } from 'src/app/data/folder'
 import { PermissionsService } from 'src/app/services/permissions.service'
@@ -50,11 +50,7 @@ describe('FoldersComponent', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      imports: [
-        NgbModule,
-        BootstrapIconComponent,
-        FoldersComponent,
-      ],
+      imports: [NgbModule, BootstrapIconComponent, FoldersComponent],
       providers: [
         {
           provide: PermissionsService,
