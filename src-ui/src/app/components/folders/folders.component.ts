@@ -5,7 +5,7 @@ import {
   NgbModal,
   NgbPaginationModule,
 } from '@ng-bootstrap/ng-bootstrap'
-import { NgxBootstrapIconsModule } from 'ngx-bootstrap-icons'
+import { BootstrapIconComponent } from 'src/app/components/common/bootstrap-icon/bootstrap-icon.component'
 import { Subscription, finalize, takeUntil } from 'rxjs'
 import { EditDialogMode } from 'src/app/components/common/edit-dialog/edit-dialog.component'
 import { FolderEditDialogComponent } from 'src/app/components/common/edit-dialog/folder-edit-dialog/folder-edit-dialog.component'
@@ -31,7 +31,7 @@ import { LoadingComponentWithPermissions } from '../loading-component/loading.co
     IfPermissionsDirective,
     CustomDatePipe,
     RouterModule,
-    NgxBootstrapIconsModule,
+    BootstrapIconComponent,
     NgbDropdownModule,
     NgbPaginationModule,
   ],

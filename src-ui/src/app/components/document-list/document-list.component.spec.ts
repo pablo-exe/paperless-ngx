@@ -15,7 +15,6 @@ import {
   NgbModal,
   NgbModalRef,
 } from '@ng-bootstrap/ng-bootstrap'
-import { NgxBootstrapIconsModule, allIcons } from 'ngx-bootstrap-icons'
 import { provideUiTour } from 'ngx-ui-tour-ng-bootstrap'
 import { Subject, of, throwError } from 'rxjs'
 import { routes } from 'src/app/app-routing.module'
@@ -92,11 +91,7 @@ describe('DocumentListComponent', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes(routes),
-        NgxBootstrapIconsModule.pick(allIcons),
-        DocumentListComponent,
-      ],
+      imports: [RouterTestingModule.withRoutes(routes), DocumentListComponent],
       providers: [
         FilterPipe,
         CustomDatePipe,
@@ -487,7 +482,7 @@ describe('DocumentListComponent', () => {
     delete modifiedView.name
     const savedViewServicePatch = jest.spyOn(savedViewService, 'patch')
     savedViewServicePatch.mockReturnValue(of(modifiedView))
-    const toastSpy = jest.spyOn(toastService, 'showInfo')
+    const toastSpy = jest.spyOn(toastService, 'showSuccess')
 
     component.saveViewConfig()
     expect(savedViewServicePatch).toHaveBeenCalledWith(modifiedView)
@@ -592,7 +587,7 @@ describe('DocumentListComponent', () => {
     let openModal: NgbModalRef
     modalService.activeInstances.subscribe((modal) => (openModal = modal[0]))
     const modalSpy = jest.spyOn(modalService, 'open')
-    const toastSpy = jest.spyOn(toastService, 'showInfo')
+    const toastSpy = jest.spyOn(toastService, 'showSuccess')
     const savedViewServiceCreate = jest.spyOn(savedViewService, 'create')
     jest
       .spyOn(savedViewService, 'dashboardViews', 'get')

@@ -18,7 +18,6 @@ import {
   NgbTypeahead,
   NgbTypeaheadModule,
 } from '@ng-bootstrap/ng-bootstrap'
-import { NgxBootstrapIconsModule } from 'ngx-bootstrap-icons'
 import { TourNgBootstrap } from 'ngx-ui-tour-ng-bootstrap'
 import { Observable, Subject, from } from 'rxjs'
 import {
@@ -30,6 +29,7 @@ import {
   switchMap,
   takeUntil,
 } from 'rxjs/operators'
+import { BootstrapIconComponent } from 'src/app/components/common/bootstrap-icon/bootstrap-icon.component'
 import { CustomField } from 'src/app/data/custom-field'
 import {
   CustomFieldQueryLogicalOperator,
@@ -275,7 +275,7 @@ const DUPLICATES_FILTER_MODIFIER_OPTIONS = [
     ClearableBadgeComponent,
     DatesDropdownComponent,
     PermissionsFilterDropdownComponent,
-    NgxBootstrapIconsModule,
+    BootstrapIconComponent,
     NgbDropdownModule,
     NgbTypeaheadModule,
     FormsModule,

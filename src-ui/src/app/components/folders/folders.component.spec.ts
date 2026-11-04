@@ -3,7 +3,7 @@ import { provideHttpClientTesting } from '@angular/common/http/testing'
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 import { ActivatedRoute, Router, convertToParamMap } from '@angular/router'
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap'
-import { NgxBootstrapIconsModule, allIcons } from 'ngx-bootstrap-icons'
+import { BootstrapIconComponent } from 'src/app/components/common/bootstrap-icon/bootstrap-icon.component'
 import { Subject, of, throwError } from 'rxjs'
 import { EditDialogMode } from 'src/app/components/common/edit-dialog/edit-dialog.component'
 import { Folder } from 'src/app/data/folder'
@@ -52,7 +52,7 @@ describe('FoldersComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         NgbModule,
-        NgxBootstrapIconsModule.pick(allIcons),
+        BootstrapIconComponent,
         FoldersComponent,
       ],
       providers: [

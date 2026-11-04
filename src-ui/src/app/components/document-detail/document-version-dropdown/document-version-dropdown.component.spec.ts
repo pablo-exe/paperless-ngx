@@ -3,13 +3,12 @@ import { SimpleChange, signal } from '@angular/core'
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 import { By } from '@angular/platform-browser'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
-import { NgxBootstrapIconsModule, allIcons } from 'ngx-bootstrap-icons'
 import { Subject, of, throwError } from 'rxjs'
 import { DocumentVersionInfo } from 'src/app/data/document'
 import {
   PermissionAction,
-  PermissionsService,
   PermissionType,
+  PermissionsService,
 } from 'src/app/services/permissions.service'
 import { DocumentService } from 'src/app/services/rest/document.service'
 import { SettingsService } from 'src/app/services/settings.service'
@@ -33,7 +32,9 @@ describe('DocumentVersionDropdownComponent', () => {
       | 'updateVersionLabel'
     >
   >
-  let toastService: jest.Mocked<Pick<ToastService, 'showError' | 'showInfo'>>
+  let toastService: jest.Mocked<
+    Pick<ToastService, 'showError' | 'showInfo' | 'showSuccess'>
+  >
   let finished$: Subject<{ taskId: string }>
   let failed$: Subject<{ taskId: string; message?: string }>
   let modalService: jest.Mocked<Pick<NgbModal, 'open'>>
@@ -55,16 +56,14 @@ describe('DocumentVersionDropdownComponent', () => {
     toastService = {
       showError: jest.fn(),
       showInfo: jest.fn(),
+      showSuccess: jest.fn(),
     }
     permissionsService = {
       currentUserCan: jest.fn().mockReturnValue(true),
     }
 
     await TestBed.configureTestingModule({
-      imports: [
-        DocumentVersionDropdownComponent,
-        NgxBootstrapIconsModule.pick(allIcons),
-      ],
+      imports: [DocumentVersionDropdownComponent],
       providers: [
         DatePipe,
         {
@@ -416,6 +415,6 @@ describe('DocumentVersionDropdownComponent', () => {
     expect(selectedEmitSpy).toHaveBeenCalledWith(2)
     expect(component.newVersionLabel).toEqual('')
     expect(modal.close).toHaveBeenCalled()
-    expect(toastService.showInfo).toHaveBeenCalled()
+    expect(toastService.showSuccess).toHaveBeenCalled()
   })
 })

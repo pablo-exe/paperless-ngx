@@ -41,7 +41,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.homelab
-    image: paperless-local:v3.3.3-folders-20261023
+    image: paperless-local:v3.4.2-folders-20261104
     restart: unless-stopped
     depends_on:
       - db

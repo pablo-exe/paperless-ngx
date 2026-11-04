@@ -10,7 +10,6 @@ import {
   NgbModalModule,
   NgbModalRef,
 } from '@ng-bootstrap/ng-bootstrap'
-import { NgxBootstrapIconsModule, allIcons } from 'ngx-bootstrap-icons'
 import { of } from 'rxjs'
 import { DataType } from 'src/app/data/datatype'
 import {
@@ -138,7 +137,6 @@ describe('GlobalSearchComponent', () => {
         NgbDropdownModule,
         FormsModule,
         ReactiveFormsModule,
-        NgxBootstrapIconsModule.pick(allIcons),
         GlobalSearchComponent,
       ],
       providers: [
@@ -409,7 +407,7 @@ describe('GlobalSearchComponent', () => {
 
     const editDialog = modal.componentInstance as CustomFieldEditDialogComponent
     const toastErrorSpy = jest.spyOn(toastService, 'showError')
-    const toastInfoSpy = jest.spyOn(toastService, 'showInfo')
+    const toastInfoSpy = jest.spyOn(toastService, 'showSuccess')
 
     // fail first
     editDialog.failed.emit({ error: 'error creating item' })
@@ -460,7 +458,7 @@ describe('GlobalSearchComponent', () => {
 
     const editDialog = modal.componentInstance as CustomFieldEditDialogComponent
     const toastErrorSpy = jest.spyOn(toastService, 'showError')
-    const toastInfoSpy = jest.spyOn(toastService, 'showInfo')
+    const toastInfoSpy = jest.spyOn(toastService, 'showSuccess')
 
     // fail first
     editDialog.failed.emit({ error: 'error creating item' })

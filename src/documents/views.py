@@ -5,7 +5,6 @@ import platform
 import re
 import tempfile
 import zipfile
-from collections import defaultdict
 from collections import deque
 from collections.abc import Callable
 from datetime import datetime
@@ -17,7 +16,6 @@ from time import sleep
 from typing import TYPE_CHECKING
 from typing import Any
 from typing import Final
-from typing import Literal
 from typing import NamedTuple
 from unicodedata import normalize
 from urllib.parse import quote
@@ -29,7 +27,6 @@ import pathvalidate
 from django.conf import settings
 from django.contrib.auth.models import Group
 from django.contrib.auth.models import User
-from django.contrib.contenttypes.models import ContentType
 from django.core.cache import cache
 from django.db import connections
 from django.db.migrations.loader import MigrationLoader
@@ -77,8 +74,6 @@ from drf_spectacular.utils import extend_schema
 from drf_spectacular.utils import extend_schema_serializer
 from drf_spectacular.utils import extend_schema_view
 from drf_spectacular.utils import inline_serializer
-from guardian.utils import get_group_obj_perms_model
-from guardian.utils import get_user_obj_perms_model
 from langdetect import detect
 from packaging import version as packaging_version
 from redis import Redis
@@ -138,6 +133,7 @@ from documents.filters import DocumentsOrderingFilter
 from documents.filters import DocumentTypeFilterSet
 from documents.filters import EffectiveContentFilter
 from documents.filters import FolderFilterSet
+from documents.filters import ObjectFilter
 from documents.filters import PaperlessTaskFilterSet
 from documents.filters import PermittedObjectsFilter
 from documents.filters import ShareLinkBundleFilterSet
@@ -178,12 +174,13 @@ from documents.permissions import ViewDocumentsPermissions
 from documents.permissions import annotate_document_count_by_ids
 from documents.permissions import annotate_document_count_for_related_queryset
 from documents.permissions import get_document_count_filter_for_user
-from documents.permissions import get_objects_for_user_owner_aware
+from documents.permissions import get_permission_grantees
 from documents.permissions import has_global_statistics_permission
 from documents.permissions import has_perms_owner_aware
 from documents.permissions import has_system_status_permission
 from documents.permissions import permitted_document_ids
 from documents.permissions import permitted_object_ids
+from documents.permissions import restrict_queryset_to_visible
 from documents.permissions import set_permissions_for_objects
 from documents.permissions import user_is_unrestricted
 from documents.plugins.date_parsing import get_date_parser
@@ -257,20 +254,8 @@ from paperless.parsers.remote import RemoteEngineConfig
 from paperless.serialisers import GroupSerializer
 from paperless.serialisers import UserSerializer
 from paperless.views import StandardPagination
-from paperless_ai.ai_classifier import get_ai_document_classification
-from paperless_ai.ai_classifier import get_llm_output_language
-from paperless_ai.chat import stream_chat_with_documents
 from paperless_ai.exceptions import LLMProviderError
 from paperless_ai.exceptions import LLMTimeoutError
-from paperless_ai.matching import extract_unmatched_names
-from paperless_ai.matching import match_correspondents_by_name
-from paperless_ai.matching import match_document_types_by_name
-from paperless_ai.matching import match_storage_paths_by_name
-from paperless_ai.matching import match_tags_by_name
-from paperless_ai.matching import resolve_correspondent_ids
-from paperless_ai.matching import resolve_document_type_ids
-from paperless_ai.matching import resolve_storage_path_ids
-from paperless_ai.matching import resolve_tag_ids
 from paperless_mail.models import MailAccount
 from paperless_mail.models import MailRule
 from paperless_mail.oauth import PaperlessMailOAuth2Manager
@@ -459,42 +444,6 @@ class BulkPermissionMixin:
     Prefetch Django-Guardian permissions for a list before serialization, to avoid N+1 queries.
     """
 
-    def _get_object_perms(
-        self,
-        objects: list,
-        perm_codenames: list[str],
-        actor: Literal["users", "groups"],
-    ) -> dict[int, dict[str, list[int]]]:
-        """
-        Collect object-level permissions for either users or groups.
-        """
-        model = self.queryset.model
-        obj_perm_model = (
-            get_user_obj_perms_model(model)
-            if actor == "users"
-            else get_group_obj_perms_model(model)
-        )
-        id_field = "user_id" if actor == "users" else "group_id"
-        ctype = ContentType.objects.get_for_model(model)
-        object_pks = [obj.pk for obj in objects]
-
-        perms_qs = obj_perm_model.objects.filter(
-            content_type=ctype,
-            object_pk__in=object_pks,
-            permission__codename__in=perm_codenames,
-        ).values_list("object_pk", id_field, "permission__codename")
-
-        perms: dict[int, dict[str, list[int]]] = defaultdict(lambda: defaultdict(list))
-        for object_pk, actor_id, codename in perms_qs:
-            perms[int(object_pk)][codename].append(actor_id)
-
-        # Ensure that all objects have all codenames, even if empty
-        for pk in object_pks:
-            for codename in perm_codenames:
-                perms[pk][codename]
-
-        return perms
-
     def get_serializer_context(self):
         """
         Get all permissions of the current list of objects at once and pass them to the serializer.
@@ -502,10 +451,15 @@ class BulkPermissionMixin:
         """
         context = super().get_serializer_context()
 
+        if getattr(self, "swagger_fake_view", False):
+            # Schema generation only needs the serializer shape; without a
+            # paginated page we'd otherwise scan the entire queryset below.
+            return context
+
         if getattr(self, "action", None) != "list":
             # Batching only pays off across a page of objects; for single-object
             # actions (retrieve, update, ...) the per-object fallback in
-            # get_user_can_change()/_get_perms() is cheap and avoids scanning
+            # get_user_can_change()/get_permissions() is cheap and avoids scanning
             # the whole queryset here.
             return context
 
@@ -518,33 +472,10 @@ class BulkPermissionMixin:
         else:
             queryset = self.filter_queryset(self.get_queryset())
 
-        model_name = self.queryset.model.__name__.lower()
-        permission_name_view = f"view_{model_name}"
-        permission_name_change = f"change_{model_name}"
-
-        user_perms = self._get_object_perms(
-            objects=queryset,
-            perm_codenames=[permission_name_view, permission_name_change],
-            actor="users",
+        context["permission_grantees"] = get_permission_grantees(
+            self.queryset.model,
+            [obj.pk for obj in queryset],
         )
-        group_perms = self._get_object_perms(
-            objects=queryset,
-            perm_codenames=[permission_name_view, permission_name_change],
-            actor="groups",
-        )
-
-        context["users_view_perms"] = {
-            pk: user_perms[pk][permission_name_view] for pk in user_perms
-        }
-        context["users_change_perms"] = {
-            pk: user_perms[pk][permission_name_change] for pk in user_perms
-        }
-        context["groups_view_perms"] = {
-            pk: group_perms[pk][permission_name_view] for pk in group_perms
-        }
-        context["groups_change_perms"] = {
-            pk: group_perms[pk][permission_name_change] for pk in group_perms
-        }
 
         return context
 
@@ -1362,12 +1293,18 @@ class DocumentViewSet(
 
         from documents.search import get_backend
 
-        get_backend().add_or_update(refreshed_doc)
-
         document_updated.send(
             sender=self.__class__,
             document=refreshed_doc,
         )
+
+        # Index the final workflow state, including deletion.
+        backend = get_backend()
+        final_doc = Document.objects.filter(pk=root_doc.pk).first()
+        if final_doc is None:
+            backend.remove(root_doc.pk)
+        else:
+            backend.add_or_update(final_doc)
 
         return response
 
@@ -1664,6 +1601,18 @@ class DocumentViewSet(
         ai_config = AIConfig()
         if not ai_config.ai_enabled:
             return HttpResponseBadRequest("AI is required for this feature")
+
+        from paperless_ai.ai_classifier import get_ai_document_classification
+        from paperless_ai.ai_classifier import get_llm_output_language
+        from paperless_ai.matching import extract_unmatched_names
+        from paperless_ai.matching import match_correspondents_by_name
+        from paperless_ai.matching import match_document_types_by_name
+        from paperless_ai.matching import match_storage_paths_by_name
+        from paperless_ai.matching import match_tags_by_name
+        from paperless_ai.matching import resolve_correspondent_ids
+        from paperless_ai.matching import resolve_document_type_ids
+        from paperless_ai.matching import resolve_storage_path_ids
+        from paperless_ai.matching import resolve_tag_ids
 
         output_language = get_llm_output_language(
             ai_config=ai_config,
@@ -2498,6 +2447,9 @@ class ChatStreamingView(GenericAPIView[Any]):
             )
             unrestricted = user_is_unrestricted(request.user)
 
+        from paperless_ai.ai_classifier import get_llm_output_language
+        from paperless_ai.chat import stream_chat_with_documents
+
         output_language = get_llm_output_language(
             ai_config=ai_config,
             user=request.user,
@@ -2519,6 +2471,17 @@ class ChatStreamingView(GenericAPIView[Any]):
     list=extend_schema(
         description="Document views including search",
         parameters=[
+            *(
+                OpenApiParameter(
+                    name=name,
+                    type=OpenApiTypes.INT,
+                    many=True,
+                    style="form",
+                    explode=False,
+                )
+                for name, field in DocumentFilterSet.base_filters.items()
+                if isinstance(field, ObjectFilter)
+            ),
             OpenApiParameter(
                 name="text",
                 type=OpenApiTypes.STR,
@@ -3859,49 +3822,51 @@ class GlobalSearchView(PassUserMixin):
                     if doc_id in docs_by_id
                 ][:OBJECT_LIMIT]
         saved_views = (
-            get_objects_for_user_owner_aware(
+            restrict_queryset_to_visible(
+                SavedView.objects.filter(name__icontains=query),
                 request.user,
                 "view_savedview",
-                SavedView,
-            ).filter(name__icontains=query)
+            )
             if request.user.has_perm("documents.view_savedview")
             else []
         )
         saved_views = saved_views[:OBJECT_LIMIT]
         tags = (
-            get_objects_for_user_owner_aware(request.user, "view_tag", Tag).filter(
-                name__icontains=query,
+            restrict_queryset_to_visible(
+                Tag.objects.filter(name__icontains=query),
+                request.user,
+                "view_tag",
             )
             if request.user.has_perm("documents.view_tag")
             else []
         )
         tags = tags[:OBJECT_LIMIT]
         correspondents = (
-            get_objects_for_user_owner_aware(
+            restrict_queryset_to_visible(
+                Correspondent.objects.filter(name__icontains=query),
                 request.user,
                 "view_correspondent",
-                Correspondent,
-            ).filter(name__icontains=query)
+            )
             if request.user.has_perm("documents.view_correspondent")
             else []
         )
         correspondents = correspondents[:OBJECT_LIMIT]
         document_types = (
-            get_objects_for_user_owner_aware(
+            restrict_queryset_to_visible(
+                DocumentType.objects.filter(name__icontains=query),
                 request.user,
                 "view_documenttype",
-                DocumentType,
-            ).filter(name__icontains=query)
+            )
             if request.user.has_perm("documents.view_documenttype")
             else []
         )
         document_types = document_types[:OBJECT_LIMIT]
         storage_paths = (
-            get_objects_for_user_owner_aware(
+            restrict_queryset_to_visible(
+                StoragePath.objects.filter(name__icontains=query),
                 request.user,
                 "view_storagepath",
-                StoragePath,
-            ).filter(name__icontains=query)
+            )
             if request.user.has_perm("documents.view_storagepath")
             else []
         )
@@ -3919,21 +3884,21 @@ class GlobalSearchView(PassUserMixin):
         )
         groups = groups[:OBJECT_LIMIT]
         mail_rules = (
-            get_objects_for_user_owner_aware(
+            restrict_queryset_to_visible(
+                MailRule.objects.filter(name__icontains=query),
                 request.user,
                 "view_mailrule",
-                MailRule,
-            ).filter(name__icontains=query)
+            )
             if request.user.has_perm("paperless_mail.view_mailrule")
             else []
         )
         mail_rules = mail_rules[:OBJECT_LIMIT]
         mail_accounts = (
-            get_objects_for_user_owner_aware(
+            restrict_queryset_to_visible(
+                MailAccount.objects.filter(name__icontains=query),
                 request.user,
                 "view_mailaccount",
-                MailAccount,
-            ).filter(name__icontains=query)
+            )
             if request.user.has_perm("paperless_mail.view_mailaccount")
             else []
         )
@@ -4054,33 +4019,33 @@ class StatisticsView(GenericAPIView[Any]):
         tags = (
             Tag.objects.all()
             if can_view_global_stats
-            else get_objects_for_user_owner_aware(user, "documents.view_tag", Tag)
+            else restrict_queryset_to_visible(Tag.objects.all(), user, "view_tag")
         ).only("id", "is_inbox_tag")
         correspondent_count = (
             Correspondent.objects.count()
             if can_view_global_stats
-            else get_objects_for_user_owner_aware(
+            else restrict_queryset_to_visible(
+                Correspondent.objects.all(),
                 user,
-                "documents.view_correspondent",
-                Correspondent,
+                "view_correspondent",
             ).count()
         )
         document_type_count = (
             DocumentType.objects.count()
             if can_view_global_stats
-            else get_objects_for_user_owner_aware(
+            else restrict_queryset_to_visible(
+                DocumentType.objects.all(),
                 user,
-                "documents.view_documenttype",
-                DocumentType,
+                "view_documenttype",
             ).count()
         )
         storage_path_count = (
             StoragePath.objects.count()
             if can_view_global_stats
-            else get_objects_for_user_owner_aware(
+            else restrict_queryset_to_visible(
+                StoragePath.objects.all(),
                 user,
-                "documents.view_storagepath",
-                StoragePath,
+                "view_storagepath",
             ).count()
         )
 
@@ -5377,7 +5342,9 @@ class CustomFieldViewSet(PermissionsAwareDocumentCountMixin, ModelViewSet[Custom
                             "migration_status": inline_serializer(
                                 name="MigrationStatus",
                                 fields={
-                                    "latest_migration": serializers.CharField(),
+                                    "latest_migration": serializers.CharField(
+                                        allow_null=True,
+                                    ),
                                     "unapplied_migrations": serializers.ListSerializer(
                                         child=serializers.CharField(),
                                     ),
@@ -5452,6 +5419,8 @@ class SystemStatusView(PassUserMixin):
         db_conn = connections["default"]
         db_url = str(db_conn.settings_dict["NAME"])
         db_error = None
+        all_migrations: list[str] = []
+        applied_migrations: list[str] = []
 
         try:
             db_conn.ensure_connection()
@@ -5462,7 +5431,8 @@ class SystemStatusView(PassUserMixin):
                 f"{m.app}.{m.name}"
                 for m in MigrationRecorder.Migration.objects.all().order_by("id")
             ]
-        except Exception as e:  # pragma: no cover
+        except Exception as e:
+            all_migrations = []
             applied_migrations = []
             db_status = "ERROR"
             logger.exception(
@@ -5658,7 +5628,9 @@ class SystemStatusView(PassUserMixin):
                     "status": db_status,
                     "error": db_error,
                     "migration_status": {
-                        "latest_migration": applied_migrations[-1],
+                        "latest_migration": (
+                            applied_migrations[-1] if applied_migrations else None
+                        ),
                         "unapplied_migrations": [
                             m for m in all_migrations if m not in applied_migrations
                         ],

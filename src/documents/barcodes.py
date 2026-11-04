@@ -10,9 +10,6 @@ from typing import TYPE_CHECKING
 import regex as regex_mod
 from django.conf import settings
 from pdf2image import convert_from_path
-from pikepdf import Page
-from pikepdf import PasswordError
-from pikepdf import Pdf
 
 from documents.converters import convert_from_tiff_to_pdf
 from documents.data_models import ConsumableDocument
@@ -34,6 +31,7 @@ from documents.utils import maybe_override_pixel_limit
 from paperless.config import BarcodeConfig
 
 if TYPE_CHECKING:
+    from pikepdf import Page
     from PIL import Image
 
 logger = logging.getLogger("paperless.barcodes")
@@ -165,17 +163,19 @@ class BarcodePlugin(ConsumeTaskPlugin):
         # Locate any barcodes in the files
         self.detect()
 
-        # try reading tags from barcodes
-        # If tag splitting is enabled, skip this on the original document - let each split document extract its own tags
-        # However, if we're processing a split document (original_path is set), extract tags
+        separator_pages = (
+            self.get_separation_pages() if self.settings.barcodes_enabled else {}
+        )
+
+        # Defer tags to split documents only when a split will actually happen.
         if (
             self.settings.barcode_enable_tag
             and (
                 not self.settings.barcode_tag_split
                 or self.input_doc.original_path is not None
+                or not separator_pages
             )
-            and (tags := self.tags) is not None
-            and len(tags) > 0
+            and (tags := self.tags)
         ):
             if self.metadata.tag_ids:
                 self.metadata.tag_ids += tags
@@ -184,9 +184,7 @@ class BarcodePlugin(ConsumeTaskPlugin):
             logger.info(f"Found tags in barcode: {tags}")
 
         # Lastly attempt to split documents
-        if self.settings.barcodes_enabled and (
-            separator_pages := self.get_separation_pages()
-        ):
+        if separator_pages:
             # We have pages to split against
 
             # Note this does NOT use the base_temp_dir, as that will be removed
@@ -281,6 +279,8 @@ class BarcodePlugin(ConsumeTaskPlugin):
 
         # No op if not a TIFF
         self.convert_from_tiff_to_pdf()
+
+        from pikepdf import PasswordError
 
         try:
             self.barcodes = scan_pdf(
@@ -433,6 +433,8 @@ class BarcodePlugin(ConsumeTaskPlugin):
 
         document_paths = []
         fname: str = self.input_doc.original_file.stem
+        from pikepdf import Pdf
+
         with Pdf.open(self.pdf_file) as input_pdf:
             # Start with an empty document
             current_document: list[Page] = []
@@ -515,6 +517,8 @@ def scan_pdf(pdf_path: Path, settings: BarcodeConfig, work_dir: Path) -> list[Ba
     so callers can tell a failed scan from one that found nothing.
     """
     barcodes: list[Barcode] = []
+
+    from pikepdf import Pdf
 
     with Pdf.open(pdf_path) as pdf:
         num_of_pages = len(pdf.pages)

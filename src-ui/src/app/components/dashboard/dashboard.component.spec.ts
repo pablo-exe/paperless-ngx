@@ -5,7 +5,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing'
 import { By } from '@angular/platform-browser'
 import { RouterTestingModule } from '@angular/router/testing'
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap'
-import { allIcons, NgxBootstrapIconsModule } from 'ngx-bootstrap-icons'
 import {
   provideUiTour,
   TourNgBootstrap,
@@ -81,7 +80,6 @@ describe('DashboardComponent', () => {
         RouterTestingModule,
         TourNgBootstrap,
         DragDropModule,
-        NgxBootstrapIconsModule.pick(allIcons),
         DashboardComponent,
         StatisticsWidgetComponent,
         PageHeaderComponent,
@@ -173,7 +171,7 @@ describe('DashboardComponent', () => {
 
   it('should update saved view sorting on drag + drop, show info', () => {
     const settingsSpy = jest.spyOn(settingsService, 'updateDashboardViewsSort')
-    const toastSpy = jest.spyOn(toastService, 'showInfo')
+    const toastSpy = jest.spyOn(toastService, 'showSuccess')
     jest.spyOn(settingsService, 'storeSettings').mockReturnValue(of(true))
     component.onDrop({ previousIndex: 0, currentIndex: 1 } as CdkDragDrop<
       SavedView[]

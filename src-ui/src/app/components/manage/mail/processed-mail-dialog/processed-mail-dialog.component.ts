@@ -7,7 +7,7 @@ import {
   NgbPopoverModule,
   NgbTooltipModule,
 } from '@ng-bootstrap/ng-bootstrap'
-import { NgxBootstrapIconsModule } from 'ngx-bootstrap-icons'
+import { BootstrapIconComponent } from 'src/app/components/common/bootstrap-icon/bootstrap-icon.component'
 import { ConfirmButtonComponent } from 'src/app/components/common/confirm-button/confirm-button.component'
 import { MailRule } from 'src/app/data/mail-rule'
 import { ProcessedMail } from 'src/app/data/processed-mail'
@@ -23,7 +23,7 @@ import { ToastService } from 'src/app/services/toast.service'
     NgbPagination,
     NgbPopoverModule,
     NgbTooltipModule,
-    NgxBootstrapIconsModule,
+    BootstrapIconComponent,
     FormsModule,
     ReactiveFormsModule,
     SlicePipe,
@@ -67,7 +67,7 @@ export class ProcessedMailDialogComponent implements OnInit {
     this.processedMailService
       .bulk_delete(Array.from(this.selectedMailIds()))
       .subscribe(() => {
-        this.toastService.showInfo($localize`Processed mail(s) deleted`)
+        this.toastService.showSuccess($localize`Processed mail(s) deleted`)
         this.loadProcessedMails()
       })
   }

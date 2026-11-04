@@ -7,8 +7,8 @@ import {
 } from '@angular/cdk/drag-drop'
 import { Component, inject, signal } from '@angular/core'
 import { RouterModule } from '@angular/router'
-import { NgxBootstrapIconsModule } from 'ngx-bootstrap-icons'
 import { TourNgBootstrap, TourService } from 'ngx-ui-tour-ng-bootstrap'
+import { BootstrapIconComponent } from 'src/app/components/common/bootstrap-icon/bootstrap-icon.component'
 import { SavedView } from 'src/app/data/saved-view'
 import { IfPermissionsDirective } from 'src/app/directives/if-permissions.directive'
 import { SavedViewService } from 'src/app/services/rest/saved-view.service'
@@ -35,7 +35,7 @@ import { WelcomeWidgetComponent } from './widgets/welcome-widget/welcome-widget.
     IfPermissionsDirective,
     DragDropModule,
     TourNgBootstrap,
-    NgxBootstrapIconsModule,
+    BootstrapIconComponent,
     RouterModule,
   ],
 })
@@ -87,7 +87,7 @@ export class DashboardComponent extends ComponentWithPermissions {
       .updateDashboardViewsSort(this.dashboardViews())
       .subscribe({
         next: () => {
-          this.toastService.showInfo($localize`Dashboard updated`)
+          this.toastService.showSuccess($localize`Dashboard updated`)
         },
         error: (e) => {
           this.toastService.showError($localize`Error updating dashboard`, e)

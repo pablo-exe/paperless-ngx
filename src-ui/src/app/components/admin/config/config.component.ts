@@ -9,7 +9,6 @@ import {
 } from '@angular/forms'
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap'
 import { DirtyComponent, dirtyCheck } from '@ngneat/dirty-check-forms'
-import { NgxBootstrapIconsModule } from 'ngx-bootstrap-icons'
 import {
   BehaviorSubject,
   Observable,
@@ -17,6 +16,7 @@ import {
   first,
   takeUntil,
 } from 'rxjs'
+import { BootstrapIconComponent } from 'src/app/components/common/bootstrap-icon/bootstrap-icon.component'
 import {
   ConfigCategory,
   ConfigOption,
@@ -52,7 +52,7 @@ import { LoadingComponentWithPermissions } from '../../loading-component/loading
     NgbNavModule,
     FormsModule,
     ReactiveFormsModule,
-    NgxBootstrapIconsModule,
+    BootstrapIconComponent,
   ],
 })
 export class ConfigComponent
@@ -190,7 +190,7 @@ export class ConfigComponent
           this.initialize(config)
           this.store.next(config)
           this.settingsService.initializeSettings().subscribe()
-          this.toastService.showInfo($localize`Configuration updated`)
+          this.toastService.showSuccess($localize`Configuration updated`)
         },
         error: (e) => {
           this.loading.set(false)
@@ -217,7 +217,7 @@ export class ConfigComponent
           this.initialize(config)
           this.store.next(config)
           this.settingsService.initializeSettings().subscribe()
-          this.toastService.showInfo($localize`File successfully updated`)
+          this.toastService.showSuccess($localize`File successfully updated`)
         },
         error: (e) => {
           this.loading.set(false)

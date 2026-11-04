@@ -2,7 +2,7 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { provideHttpClientTesting } from '@angular/common/http/testing'
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap'
-import { NgxBootstrapIconsModule, allIcons } from 'ngx-bootstrap-icons'
+import { BootstrapIconComponent } from 'src/app/components/common/bootstrap-icon/bootstrap-icon.component'
 import { Folder } from 'src/app/data/folder'
 import { SettingsService } from 'src/app/services/settings.service'
 import { EditDialogMode } from '../edit-dialog.component'
@@ -26,7 +26,7 @@ describe('FolderEditDialogComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         NgbModule,
-        NgxBootstrapIconsModule.pick(allIcons),
+        BootstrapIconComponent,
         FolderEditDialogComponent,
       ],
       providers: [

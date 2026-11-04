@@ -23,7 +23,6 @@ import {
   NgbPopoverModule,
 } from '@ng-bootstrap/ng-bootstrap'
 import { DirtyComponent, dirtyCheck } from '@ngneat/dirty-check-forms'
-import { NgxBootstrapIconsModule } from 'ngx-bootstrap-icons'
 import { TourService } from 'ngx-ui-tour-ng-bootstrap'
 import {
   BehaviorSubject,
@@ -34,6 +33,7 @@ import {
   takeUntil,
   tap,
 } from 'rxjs'
+import { BootstrapIconComponent } from 'src/app/components/common/bootstrap-icon/bootstrap-icon.component'
 import { Group } from 'src/app/data/group'
 import {
   SystemStatus,
@@ -63,7 +63,7 @@ import {
   SettingsService,
 } from 'src/app/services/settings.service'
 import { SystemStatusService } from 'src/app/services/system-status.service'
-import { Toast, ToastService } from 'src/app/services/toast.service'
+import { Toast, ToastLevel, ToastService } from 'src/app/services/toast.service'
 import { locationReload } from 'src/app/utils/navigation'
 import { CheckComponent } from '../../common/input/check/check.component'
 import { ColorComponent } from '../../common/input/color/color.component'
@@ -135,7 +135,7 @@ const sidebarItemLabels: Record<HideableSidebarItemID, string> = {
     ReactiveFormsModule,
     NgbNavModule,
     NgbPopoverModule,
-    NgxBootstrapIconsModule,
+    BootstrapIconComponent,
   ],
 })
 export class SettingsComponent
@@ -190,10 +190,8 @@ export class SettingsComponent
     searchDbOnly: new FormControl(null),
     searchLink: new FormControl(null),
 
-    notificationsConsumerNewDocument: new FormControl(null),
     notificationsConsumerSuccess: new FormControl(null),
     notificationsConsumerFailed: new FormControl(null),
-    notificationsConsumerSuppressOnDashboard: new FormControl(null),
 
     savedViewsWarnOnUnsavedChange: new FormControl(null),
     sidebarViewsShowCount: new FormControl(null),
@@ -371,17 +369,11 @@ export class SettingsComponent
       updateCheckingEnabled: this.settings.get(
         SETTINGS_KEYS.UPDATE_CHECKING_ENABLED
       ),
-      notificationsConsumerNewDocument: this.settings.get(
-        SETTINGS_KEYS.NOTIFICATIONS_CONSUMER_NEW_DOCUMENT
-      ),
       notificationsConsumerSuccess: this.settings.get(
         SETTINGS_KEYS.NOTIFICATIONS_CONSUMER_SUCCESS
       ),
       notificationsConsumerFailed: this.settings.get(
         SETTINGS_KEYS.NOTIFICATIONS_CONSUMER_FAILED
-      ),
-      notificationsConsumerSuppressOnDashboard: this.settings.get(
-        SETTINGS_KEYS.NOTIFICATIONS_CONSUMER_SUPPRESS_ON_DASHBOARD
       ),
       savedViewsWarnOnUnsavedChange: this.settings.get(
         SETTINGS_KEYS.SAVED_VIEWS_WARN_ON_UNSAVED_CHANGE
@@ -572,20 +564,12 @@ export class SettingsComponent
       this.settingsForm.value.dateFormat
     )
     this.settings.set(
-      SETTINGS_KEYS.NOTIFICATIONS_CONSUMER_NEW_DOCUMENT,
-      this.settingsForm.value.notificationsConsumerNewDocument
-    )
-    this.settings.set(
       SETTINGS_KEYS.NOTIFICATIONS_CONSUMER_SUCCESS,
       this.settingsForm.value.notificationsConsumerSuccess
     )
     this.settings.set(
       SETTINGS_KEYS.NOTIFICATIONS_CONSUMER_FAILED,
       this.settingsForm.value.notificationsConsumerFailed
-    )
-    this.settings.set(
-      SETTINGS_KEYS.NOTIFICATIONS_CONSUMER_SUPPRESS_ON_DASHBOARD,
-      this.settingsForm.value.notificationsConsumerSuppressOnDashboard
     )
     this.settings.set(
       SETTINGS_KEYS.NOTES_ENABLED,
@@ -664,8 +648,11 @@ export class SettingsComponent
           let savedToast: Toast = {
             content: $localize`Settings were saved successfully.`,
             delay: 5000,
+            level: ToastLevel.Success,
+            persistent: false,
           }
           if (reloadRequired) {
+            savedToast.persistent = true
             savedToast.content = $localize`Settings were saved successfully. Reload is required to apply some changes.`
             savedToast.actionName = $localize`Reload now`
             savedToast.action = () => {

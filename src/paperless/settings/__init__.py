@@ -349,6 +349,10 @@ SOCIAL_ACCOUNT_SYNC_SUPERUSER_GROUP: Final[str | None] = os.getenv(
 SOCIAL_ACCOUNT_SYNC_STAFF_GROUP: Final[str | None] = os.getenv(
     "PAPERLESS_SOCIAL_ACCOUNT_SYNC_STAFF_GROUP",
 )
+SOCIAL_ACCOUNT_MFA_TRUSTED_AMR = get_list_from_env(
+    "PAPERLESS_SOCIAL_ACCOUNT_MFA_TRUSTED_AMR",
+    "mfa",
+)
 
 HEADLESS_TOKEN_STRATEGY = "paperless.adapter.DrfTokenStrategy"
 
@@ -457,9 +461,14 @@ def _parse_paperless_url():
     global CSRF_TRUSTED_ORIGINS, CORS_ALLOWED_ORIGINS, ALLOWED_HOSTS
     url = os.getenv("PAPERLESS_URL")
     if url:
+        hostname = urlparse(url).hostname
+        if not hostname:
+            raise ImproperlyConfigured(
+                f"PAPERLESS_URL {url!r} has no hostname, expected a URL like https://example.com",
+            )
         CSRF_TRUSTED_ORIGINS.append(url)
         CORS_ALLOWED_ORIGINS.append(url)
-        ALLOWED_HOSTS.append(urlparse(url).hostname)
+        ALLOWED_HOSTS.append(hostname)
 
     return url
 
@@ -680,6 +689,9 @@ logging.config.dictConfig(LOGGING)
 ###############################################################################
 
 # https://docs.celeryq.dev/en/stable/userguide/configuration.html
+
+# Tasks outside tasks.py must be loaded even when Django skips checks
+CELERY_IMPORTS = ("documents.bulk_edit",)
 
 CELERY_BROKER_URL = _CELERY_REDIS_URL
 CELERY_RESULT_BACKEND = _CELERY_REDIS_URL
@@ -975,13 +987,6 @@ MAX_IMAGE_PIXELS: Final[int | None] = get_int_from_env(
 
 # GNUPG needs a home directory for some reason
 GNUPG_HOME = os.getenv("HOME", "/tmp")
-
-# Convert is part of the ImageMagick package
-CONVERT_BINARY = os.getenv("PAPERLESS_CONVERT_BINARY", "convert")
-CONVERT_TMPDIR = os.getenv("PAPERLESS_CONVERT_TMPDIR")
-CONVERT_MEMORY_LIMIT = os.getenv("PAPERLESS_CONVERT_MEMORY_LIMIT")
-
-GS_BINARY = os.getenv("PAPERLESS_GS_BINARY", "gs")
 
 # Fallback layout for .eml consumption
 EMAIL_PARSE_DEFAULT_LAYOUT = get_int_from_env(

@@ -1,8 +1,8 @@
 import { Component, OnInit, inject, signal } from '@angular/core'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { NgbDropdownModule, NgbModal } from '@ng-bootstrap/ng-bootstrap'
-import { NgxBootstrapIconsModule } from 'ngx-bootstrap-icons'
 import { takeUntil, tap } from 'rxjs'
+import { BootstrapIconComponent } from 'src/app/components/common/bootstrap-icon/bootstrap-icon.component'
 import { Workflow } from 'src/app/data/workflow'
 import { IfPermissionsDirective } from 'src/app/directives/if-permissions.directive'
 import { PermissionsService } from 'src/app/services/permissions.service'
@@ -27,7 +27,7 @@ import { LoadingComponentWithPermissions } from '../../loading-component/loading
     FormsModule,
     ReactiveFormsModule,
     NgbDropdownModule,
-    NgxBootstrapIconsModule,
+    BootstrapIconComponent,
   ],
 })
 export class WorkflowsComponent
@@ -86,7 +86,7 @@ export class WorkflowsComponent
     modal.componentInstance.succeeded
       .pipe(takeUntil(this.unsubscribeNotifier))
       .subscribe((newWorkflow) => {
-        this.toastService.showInfo(
+        this.toastService.showSuccess(
           $localize`Saved workflow "${newWorkflow.name}".`
         )
         this.workflowService.clearCache()
@@ -138,7 +138,7 @@ export class WorkflowsComponent
       this.workflowService.delete(workflow).subscribe({
         next: () => {
           modal.close()
-          this.toastService.showInfo(
+          this.toastService.showSuccess(
             $localize`Deleted workflow "${workflow.name}".`
           )
           this.workflowService.clearCache()
@@ -157,7 +157,7 @@ export class WorkflowsComponent
   toggleWorkflowEnabled(workflow: Workflow) {
     this.workflowService.patch(workflow).subscribe({
       next: () => {
-        this.toastService.showInfo(
+        this.toastService.showSuccess(
           workflow.enabled
             ? $localize`Enabled workflow "${workflow.name}"`
             : $localize`Disabled workflow "${workflow.name}"`

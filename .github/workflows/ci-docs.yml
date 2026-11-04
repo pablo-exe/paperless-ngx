@@ -6,12 +6,13 @@ on:
   pull_request:
   workflow_dispatch:
 concurrency:
-  group: docs-${{ github.event.pull_request.number || github.ref }}
+  # Let dev/main commits finish, PR and feature-branch runs supersede older ones
+  group: docs-${{ github.event.pull_request.number || ((github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/main') && github.run_id) || github.ref }}
   cancel-in-progress: true
 permissions:
   contents: read
 env:
-  DEFAULT_UV_VERSION: "0.12.x"
+  DEFAULT_UV_VERSION: "0.13.x"
   DEFAULT_PYTHON_VERSION: "3.12"
 jobs:
   changes:
@@ -78,7 +79,7 @@ jobs:
         with:
           python-version: ${{ env.DEFAULT_PYTHON_VERSION }}
       - name: Install uv
-        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e # v10.3.2
         with:
           version: ${{ env.DEFAULT_UV_VERSION }}
           enable-cache: true

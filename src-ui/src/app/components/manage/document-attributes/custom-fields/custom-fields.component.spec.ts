@@ -12,7 +12,6 @@ import {
   NgbPaginationModule,
   NgbPopoverModule,
 } from '@ng-bootstrap/ng-bootstrap'
-import { NgxBootstrapIconsModule, allIcons } from 'ngx-bootstrap-icons'
 import { of, throwError } from 'rxjs'
 import { CustomField, CustomFieldDataType } from 'src/app/data/custom-field'
 import {
@@ -61,7 +60,6 @@ describe('CustomFieldsComponent', () => {
         ReactiveFormsModule,
         NgbModalModule,
         NgbPopoverModule,
-        NgxBootstrapIconsModule.pick(allIcons),
         RouterTestingModule,
         CustomFieldsComponent,
         IfPermissionsDirective,
@@ -107,7 +105,7 @@ describe('CustomFieldsComponent', () => {
     let modal: NgbModalRef
     modalService.activeInstances.subscribe((m) => (modal = m[m.length - 1]))
     const toastErrorSpy = jest.spyOn(toastService, 'showError')
-    const toastInfoSpy = jest.spyOn(toastService, 'showInfo')
+    const toastInfoSpy = jest.spyOn(toastService, 'showSuccess')
     const reloadSpy = jest.spyOn(component, 'reload')
 
     component.editField()
@@ -131,7 +129,7 @@ describe('CustomFieldsComponent', () => {
     let modal: NgbModalRef
     modalService.activeInstances.subscribe((m) => (modal = m[m.length - 1]))
     const toastErrorSpy = jest.spyOn(toastService, 'showError')
-    const toastInfoSpy = jest.spyOn(toastService, 'showInfo')
+    const toastInfoSpy = jest.spyOn(toastService, 'showSuccess')
     const reloadSpy = jest.spyOn(component, 'reload')
 
     const editButton = fixture.debugElement

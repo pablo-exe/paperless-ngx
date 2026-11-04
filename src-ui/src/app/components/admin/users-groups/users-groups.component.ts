@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
-import { NgxBootstrapIconsModule } from 'ngx-bootstrap-icons'
 import { Subject, first, takeUntil } from 'rxjs'
+import { BootstrapIconComponent } from 'src/app/components/common/bootstrap-icon/bootstrap-icon.component'
 import { Group } from 'src/app/data/group'
 import { User } from 'src/app/data/user'
 import { IfPermissionsDirective } from 'src/app/directives/if-permissions.directive'
@@ -29,7 +29,7 @@ import { ComponentWithPermissions } from '../../with-permissions/with-permission
   imports: [
     PageHeaderComponent,
     IfPermissionsDirective,
-    NgxBootstrapIconsModule,
+    BootstrapIconComponent,
   ],
 })
 export class UsersAndGroupsComponent
@@ -122,7 +122,7 @@ export class UsersAndGroupsComponent
             )
           }, 2500)
         } else {
-          this.toastService.showInfo(
+          this.toastService.showSuccess(
             $localize`Saved user "${newUser.username}".`
           )
           this.usersService.listAll().subscribe((r) => {
@@ -151,7 +151,9 @@ export class UsersAndGroupsComponent
       this.usersService.delete(user).subscribe({
         next: () => {
           modal.close()
-          this.toastService.showInfo($localize`Deleted user "${user.username}"`)
+          this.toastService.showSuccess(
+            $localize`Deleted user "${user.username}"`
+          )
           this.usersService.listAll().subscribe((r) => {
             this.users.set(r.results)
           })
@@ -178,7 +180,9 @@ export class UsersAndGroupsComponent
     modal.componentInstance.succeeded
       .pipe(takeUntil(this.unsubscribeNotifier))
       .subscribe((newGroup) => {
-        this.toastService.showInfo($localize`Saved group "${newGroup.name}".`)
+        this.toastService.showSuccess(
+          $localize`Saved group "${newGroup.name}".`
+        )
         this.groupsService.listAll().subscribe((r) => {
           this.groups.set(r.results)
         })
@@ -204,7 +208,9 @@ export class UsersAndGroupsComponent
       this.groupsService.delete(group).subscribe({
         next: () => {
           modal.close()
-          this.toastService.showInfo($localize`Deleted group "${group.name}"`)
+          this.toastService.showSuccess(
+            $localize`Deleted group "${group.name}"`
+          )
           this.groupsService.listAll().subscribe((r) => {
             this.groups.set(r.results)
           })

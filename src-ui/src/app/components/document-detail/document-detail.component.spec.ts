@@ -22,7 +22,6 @@ import {
   NgbModal,
   NgbModalRef,
 } from '@ng-bootstrap/ng-bootstrap'
-import { NgxBootstrapIconsModule, allIcons } from 'ngx-bootstrap-icons'
 import { DeviceDetectorService } from 'ngx-device-detector'
 import { Subject, of, throwError } from 'rxjs'
 import { routes } from 'src/app/app-routing.module'
@@ -60,6 +59,7 @@ import { TagService } from 'src/app/services/rest/tag.service'
 import { UserService } from 'src/app/services/rest/user.service'
 import { SettingsService } from 'src/app/services/settings.service'
 import { ToastService } from 'src/app/services/toast.service'
+import { TrashService } from 'src/app/services/trash.service'
 import { WebsocketStatusService } from 'src/app/services/websocket-status.service'
 import { environment } from 'src/environments/environment'
 import { ConfirmDialogComponent } from '../common/confirm-dialog/confirm-dialog.component'
@@ -137,6 +137,7 @@ describe('DocumentDetailComponent', () => {
   let openDocumentsService: OpenDocumentsService
   let modalService: NgbModal
   let toastService: ToastService
+  let trashService: TrashService
   let documentListViewService: DocumentListViewService
   let settingsService: SettingsService
   let customFieldsService: CustomFieldsService
@@ -150,11 +151,7 @@ describe('DocumentDetailComponent', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      imports: [
-        DocumentDetailComponent,
-        RouterModule.forRoot(routes),
-        NgxBootstrapIconsModule.pick(allIcons),
-      ],
+      imports: [DocumentDetailComponent, RouterModule.forRoot(routes)],
       providers: [
         DocumentTitlePipe,
         {
@@ -285,6 +282,7 @@ describe('DocumentDetailComponent', () => {
     documentService = TestBed.inject(DocumentService)
     modalService = TestBed.inject(NgbModal)
     toastService = TestBed.inject(ToastService)
+    trashService = TestBed.inject(TrashService)
     documentListViewService = TestBed.inject(DocumentListViewService)
     settingsService = TestBed.inject(SettingsService)
     settingsService.currentUser.set({ id: 1 })
@@ -775,7 +773,7 @@ describe('DocumentDetailComponent', () => {
     component.title.set('Foo Bar')
     const closeSpy = jest.spyOn(component, 'close')
     const patchSpy = jest.spyOn(documentService, 'patch')
-    const toastSpy = jest.spyOn(toastService, 'showInfo')
+    const toastSpy = jest.spyOn(toastService, 'showSuccess')
     patchSpy.mockImplementation((o) => of(doc))
     component.save(true)
     expect(patchSpy).toHaveBeenCalled()
@@ -790,7 +788,7 @@ describe('DocumentDetailComponent', () => {
     component.title.set('Foo Bar')
     const closeSpy = jest.spyOn(component, 'close')
     const patchSpy = jest.spyOn(documentService, 'patch')
-    const toastSpy = jest.spyOn(toastService, 'showInfo')
+    const toastSpy = jest.spyOn(toastService, 'showSuccess')
     patchSpy.mockImplementation((o) => of(doc))
     component.save()
     expect(patchSpy).toHaveBeenCalled()
@@ -836,7 +834,7 @@ describe('DocumentDetailComponent', () => {
     component.title.set('Foo Bar')
     const closeSpy = jest.spyOn(component, 'close')
     const patchSpy = jest.spyOn(documentService, 'patch')
-    const toastSpy = jest.spyOn(toastService, 'showInfo')
+    const toastSpy = jest.spyOn(toastService, 'showSuccess')
     patchSpy.mockImplementation(() =>
       throwError(() => new Error('failed to save'))
     )
@@ -887,31 +885,31 @@ describe('DocumentDetailComponent', () => {
     fixture.detectChanges()
     expect(
       fixture.debugElement
-        .queryAll(By.css('button'))
-        .find((b) => b.nativeElement.textContent === 'Save')
+        .queryAll(By.css('button.btn'))
+        .find((b) => b.nativeElement.textContent.trim() === 'Save')
     ).not.toBeUndefined()
     expect(
       fixture.debugElement
-        .queryAll(By.css('button'))
-        .find((b) => b.nativeElement.textContent === 'Save & close')
+        .queryAll(By.css('button.btn'))
+        .find((b) => b.nativeElement.textContent.trim() === 'Save & close')
     ).not.toBeUndefined()
     expect(
       fixture.debugElement
-        .queryAll(By.css('button'))
-        .find((b) => b.nativeElement.textContent === 'Save & next')
+        .queryAll(By.css('button.btn'))
+        .find((b) => b.nativeElement.textContent.trim() === 'Save & next')
     ).toBeUndefined()
     nextSpy.mockReturnValue(true)
     component.networkActive.set(true)
     fixture.detectChanges()
     expect(
       fixture.debugElement
-        .queryAll(By.css('button'))
-        .find((b) => b.nativeElement.textContent === 'Save & close')
+        .queryAll(By.css('button.btn'))
+        .find((b) => b.nativeElement.textContent.trim() === 'Save & close')
     ).toBeUndefined()
     expect(
       fixture.debugElement
-        .queryAll(By.css('button'))
-        .find((b) => b.nativeElement.textContent === 'Save & next')
+        .queryAll(By.css('button.btn'))
+        .find((b) => b.nativeElement.textContent.trim() === 'Save & next')
     ).not.toBeUndefined()
   })
 
@@ -957,12 +955,16 @@ describe('DocumentDetailComponent', () => {
     const modalSpy = jest.spyOn(modalService, 'open')
     const deleteSpy = jest.spyOn(documentService, 'delete')
     deleteSpy.mockReturnValue(of(true))
+    const notifySpy = jest
+      .spyOn(trashService, 'notifyMovedToTrash')
+      .mockImplementation(() => {})
     component.delete()
     expect(modalSpy).toHaveBeenCalled()
     const modalCloseSpy = jest.spyOn(openModal, 'close')
     openModal.componentInstance.confirmClicked.next()
     expect(deleteSpy).toHaveBeenCalled()
     expect(modalCloseSpy).toHaveBeenCalled()
+    expect(notifySpy).toHaveBeenCalledWith(expect.any(String), [doc.id])
   })
 
   it('should allow retry delete if error', () => {

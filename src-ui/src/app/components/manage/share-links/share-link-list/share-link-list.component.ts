@@ -4,8 +4,8 @@ import { Component, OnInit, inject, signal } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { RouterModule } from '@angular/router'
 import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap'
-import { NgxBootstrapIconsModule } from 'ngx-bootstrap-icons'
 import { takeUntil } from 'rxjs'
+import { BootstrapIconComponent } from 'src/app/components/common/bootstrap-icon/bootstrap-icon.component'
 import { ConfirmButtonComponent } from 'src/app/components/common/confirm-button/confirm-button.component'
 import { LoadingComponentWithPermissions } from 'src/app/components/loading-component/loading.component'
 import { FileVersion, ShareLink } from 'src/app/data/share-link'
@@ -36,7 +36,7 @@ import { environment } from 'src/environments/environment'
     FormsModule,
     IfPermissionsDirective,
     NgbPaginationModule,
-    NgxBootstrapIconsModule,
+    BootstrapIconComponent,
     RouterModule,
     SortableDirective,
   ],
@@ -151,7 +151,7 @@ export class ShareLinkListComponent
         if (this.links().length === 1 && this.page() > 1) {
           this.page.update((page) => page - 1)
         }
-        this.toastService.showInfo($localize`Share link deleted.`)
+        this.toastService.showSuccess($localize`Share link deleted.`)
         this.reload()
       },
       error: (error) => {

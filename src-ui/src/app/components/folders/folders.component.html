@@ -8,7 +8,7 @@
       type: PermissionType.Folder,
     }"
   >
-    <i-bs name="folder-plus"></i-bs>&nbsp;<ng-container i18n
+    <pngx-bs-icon name="folder-plus"></pngx-bs-icon>&nbsp;<ng-container i18n
       >New folder</ng-container
     >
   </button>
@@ -24,7 +24,7 @@
         [class.active]="!currentFolder"
         (click)="openFolder(null)"
       >
-        <i-bs name="hdd-stack" class="me-2"></i-bs>
+        <pngx-bs-icon name="hdd-stack" class="me-2"></pngx-bs-icon>
         <span i18n>All folders</span>
       </button>
       @for (
@@ -50,9 +50,9 @@
             [class.invisible]="!hasChildren(folder)"
             (click)="$event.stopPropagation(); toggleFolderCollapsed(folder)"
           >
-            <i-bs
+            <pngx-bs-icon
               [name]="isCollapsed(folder) ? 'chevron-right' : 'chevron-down'"
-            ></i-bs>
+            ></pngx-bs-icon>
           </button>
           <button
             type="button"
@@ -63,10 +63,10 @@
             [title]="folder.full_path || folder.name"
             (click)="openFolder(folder)"
           >
-            <i-bs
+            <pngx-bs-icon
               [name]="folder.is_default ? 'inbox' : 'folder'"
               class="me-2"
-            ></i-bs>
+            ></pngx-bs-icon>
             <span class="text-truncate">{{ folder.name }}</span>
             @if (folder.document_count) {
               <span class="badge bg-secondary ms-auto">{{
@@ -116,7 +116,7 @@
               type: PermissionType.Folder,
             }"
           >
-            <i-bs name="pencil"></i-bs>&nbsp;<ng-container i18n
+            <pngx-bs-icon name="pencil"></pngx-bs-icon>&nbsp;<ng-container i18n
               >Edit folder</ng-container
             >
           </button>
@@ -151,7 +151,7 @@
                 [disabled]="moving()"
                 ngbDropdownToggle
               >
-                <i-bs name="folder-symlink"></i-bs>&nbsp;<ng-container i18n
+                <pngx-bs-icon name="folder-symlink"></pngx-bs-icon>&nbsp;<ng-container i18n
                   >Move {{ selected.size }} selected to…</ng-container
                 >
               </button>
@@ -180,7 +180,7 @@
                     [style.padding-left.rem]="1 + folder.depth * 1"
                     (click)="moveSelectedTo(folder)"
                   >
-                    <i-bs
+                    <pngx-bs-icon
                       [name]="folder.is_default ? 'inbox' : 'folder'"
                       class="me-2"
                     ></i-bs
@@ -211,10 +211,10 @@
                 (dragover)="onFolderDragOver($event, folder)"
                 (drop)="onFolderDrop($event, folder)"
               >
-                <i-bs
+                <pngx-bs-icon
                   [name]="folder.is_default ? 'inbox' : 'folder-fill'"
                   class="me-2 text-primary"
-                ></i-bs>
+                ></pngx-bs-icon>
                 <span class="text-truncate">{{ folder.name }}</span>
                 @if (folder.document_count) {
                   <span class="badge bg-secondary ms-auto">{{
@@ -319,13 +319,13 @@
           }
         } @else if (!subfolders.length) {
           <div class="text-center text-muted p-5">
-            <i-bs name="folder2-open" width="2em" height="2em"></i-bs>
+            <pngx-bs-icon name="folder2-open" width="2em" height="2em"></pngx-bs-icon>
             <p class="mt-2" i18n>This folder is empty.</p>
           </div>
         }
       } @else if (!roots.length) {
         <div class="text-center text-muted p-5">
-          <i-bs name="folder2-open" width="2em" height="2em"></i-bs>
+          <pngx-bs-icon name="folder2-open" width="2em" height="2em"></pngx-bs-icon>
           <p class="mt-2" i18n>No folders yet. Create one to get started.</p>
         </div>
       }

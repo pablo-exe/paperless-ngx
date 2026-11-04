@@ -142,7 +142,7 @@ main {
       padding-left: 0;
       padding-right: 0;
 
-      i-bs {
+      pngx-bs-icon {
         margin-right: 0 !important;
       }
     }
@@ -268,7 +268,7 @@ main {
     }
   }
 
-  i-bs {
+  pngx-bs-icon {
     position: relative;
     top: -1px;
   }
@@ -279,7 +279,7 @@ main {
   align-items: center;
   min-width: 0;
 
-  > i-bs {
+  > pngx-bs-icon {
     flex: 0 0 auto;
   }
 
@@ -373,11 +373,11 @@ main {
     width: 1.8rem;
     height: 100%;
 
-    i-bs {
+    pngx-bs-icon {
       opacity: 0.5;
     }
 
-    &:hover i-bs {
+    &:hover pngx-bs-icon {
       opacity: 1;
     }
   }
@@ -392,7 +392,7 @@ main {
       text-decoration: underline;
     }
 
-    i-bs {
+    pngx-bs-icon {
       margin-bottom: 2px;
     }
   }
@@ -538,7 +538,36 @@ main {
 
 .header-search {
   width: 100%;
-  max-width: 55rem;
+  max-width: 50rem;
+}
+
+.header-search pngx-global-search {
+  min-width: 0;
+}
+
+// light w shadow to stand out against search
+.header-upload {
+  --bs-btn-bg: rgba(255, 255, 255, .15);
+  --bs-btn-hover-bg: rgba(255, 255, 255, .22);
+  --bs-btn-active-bg: rgba(255, 255, 255, .3);
+  color: var(--pngx-primary-text-contrast) !important; // .navbar .dropdown > .btn in styles.scss
+
+  & + & {
+    border-left: 1px solid rgba(255, 255, 255, .2) !important;
+  }
+
+  &:focus {
+    box-shadow: none;
+  }
+
+  &:focus-visible {
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .5);
+  }
+}
+
+.header-upload-group {
+  border-radius: var(--bs-border-radius-sm);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .35), 0 1px 1px rgba(0, 0, 0, .2);
 }
 
 @media screen and (max-width: 575.98px) {
@@ -630,14 +659,13 @@ main {
 }
 
 .dropdown-toggle::after {
-  margin-left: 0.4em;
-  vertical-align: 0.155em;
+  display: none;
 }
 
 .navbar .dropdown-menu {
   font-size: 0.875rem; // body size
 
-  a i-bs, button i-bs {
+  a pngx-bs-icon, button pngx-bs-icon {
     opacity: 0.6;
   }
 }
@@ -665,6 +693,10 @@ main {
   cursor: move;
 }
 
-::ng-deep .navItemDrag .position-absolute i-bs {
+::ng-deep .navItemDrag .position-absolute pngx-bs-icon {
   display: none;
+}
+
+.smaller {
+  font-size: 0.75rem;
 }
