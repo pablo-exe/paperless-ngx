@@ -1,10 +1,12 @@
 import json
+from unittest import mock
 
 from django.contrib.auth.models import Permission
 from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.test import APITestCase
 
+from documents.bulk_operations import execute_bulk_operation
 from documents.models import Document
 from documents.models import Folder
 from documents.models import get_default_folder
@@ -260,7 +262,10 @@ class TestApiFolderBulkMove(DirectoriesMixin, APITestCase):
         self.doc1 = Document.objects.create(checksum="A", title="A", folder=self.f1)
         self.doc2 = Document.objects.create(checksum="B", title="B", folder=self.f1)
 
-    def test_bulk_set_folder(self) -> None:
+    @mock.patch("documents.bulk_operations.bulk_update_documents")
+    @mock.patch("documents.views.execute_bulk_operation.apply_async")
+    def test_bulk_set_folder(self, enqueue, update_documents) -> None:
+        enqueue.return_value.id = "folder-move"
         response = self.client.post(
             "/api/documents/bulk_edit/",
             json.dumps(
@@ -273,7 +278,42 @@ class TestApiFolderBulkMove(DirectoriesMixin, APITestCase):
             content_type="application/json",
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["task_id"], "folder-move")
+        self.assertEqual(Document.objects.filter(folder=self.f2).count(), 0)
+        execute_bulk_operation(**enqueue.call_args.kwargs["kwargs"])
         self.assertEqual(Document.objects.filter(folder=self.f2).count(), 2)
+        self.assertCountEqual(
+            update_documents.call_args.args[0],
+            [self.doc1.pk, self.doc2.pk],
+        )
+
+    @mock.patch("documents.bulk_operations.bulk_update_documents")
+    def test_queued_folder_move_falls_back_to_default(self, update_documents) -> None:
+        execute_bulk_operation(
+            operation="set_folder",
+            document_ids=[self.doc1.pk],
+            parameters={"folder": None},
+            user_id=self.user.pk,
+        )
+        self.doc1.refresh_from_db()
+        self.assertEqual(self.doc1.folder_id, get_default_folder().pk)
+
+    def test_filtered_selection_data_preserves_folder_counts(self) -> None:
+        response = self.client.post(
+            "/api/documents/selection_data/",
+            {
+                "all": True,
+                "filters": {"folder__id": str(self.f1.pk)},
+            },
+            format="json",
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        counts = {
+            item["id"]: item["document_count"]
+            for item in response.data["selected_folders"]
+        }
+        self.assertEqual(counts[self.f1.pk], 2)
+        self.assertEqual(counts[self.f2.pk], 0)
 
     def test_bulk_set_folder_invalid(self) -> None:
         response = self.client.post(

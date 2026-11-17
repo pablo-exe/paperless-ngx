@@ -5,11 +5,14 @@ import platform
 import re
 import tempfile
 import zipfile
+from collections import Counter
 from collections import deque
 from collections.abc import Callable
 from datetime import datetime
 from datetime import timedelta
 from http import HTTPStatus
+from inspect import signature
+from itertools import islice
 from pathlib import Path
 from time import mktime
 from time import sleep
@@ -104,6 +107,9 @@ from documents import bulk_edit
 from documents.bulk_download import ArchiveOnlyStrategy
 from documents.bulk_download import OriginalAndArchiveStrategy
 from documents.bulk_download import OriginalsOnlyStrategy
+from documents.bulk_operations import TRIGGER_SOURCE_OPERATIONS
+from documents.bulk_operations import USER_OPERATIONS
+from documents.bulk_operations import execute_bulk_operation
 from documents.caching import get_llm_suggestion_cache
 from documents.caching import get_metadata_cache
 from documents.caching import get_suggestion_cache
@@ -141,6 +147,7 @@ from documents.filters import ShareLinkFilterSet
 from documents.filters import StoragePathFilterSet
 from documents.filters import TagFilterSet
 from documents.filters import TitleContentFilter
+from documents.filters import WorkflowFilterSet
 from documents.mail import EmailAttachment
 from documents.mail import send_email
 from documents.matching import match_correspondents
@@ -171,10 +178,10 @@ from documents.permissions import PaperlessNotePermissions
 from documents.permissions import PaperlessObjectPermissions
 from documents.permissions import TrashPermissions
 from documents.permissions import ViewDocumentsPermissions
-from documents.permissions import annotate_document_count_by_ids
 from documents.permissions import annotate_document_count_for_related_queryset
 from documents.permissions import get_document_count_filter_for_user
 from documents.permissions import get_permission_grantees
+from documents.permissions import has_document_operation_permissions
 from documents.permissions import has_global_statistics_permission
 from documents.permissions import has_perms_owner_aware
 from documents.permissions import has_system_status_permission
@@ -204,6 +211,7 @@ from documents.serialisers import EmailSerializer
 from documents.serialisers import FolderSerializer
 from documents.serialisers import MergeDocumentsAsVersionsSerializer
 from documents.serialisers import MergeDocumentsSerializer
+from documents.serialisers import NoteCreateSerializer
 from documents.serialisers import NotesSerializer
 from documents.serialisers import PostDocumentSerializer
 from documents.serialisers import RemovePasswordDocumentsSerializer
@@ -580,6 +588,15 @@ class CorrespondentViewSet(
         return super().retrieve(request, *args, **kwargs)
 
 
+def _with_tag_descendants(tags: QuerySet[Tag]) -> QuerySet[Tag]:
+    """Include every tag that deleting the selected tags will affect."""
+    tag_ids = set()
+    for tag in tags:
+        tag_ids.add(tag.pk)
+        tag_ids.update(tag.get_descendants_pks())
+    return Tag.objects.filter(pk__in=tag_ids)
+
+
 @extend_schema_view(**generate_object_with_permissions_schema(TagSerializer))
 class TagViewSet(PermissionsAwareDocumentCountMixin, ModelViewSet[Tag]):
     model = Tag
@@ -601,6 +618,14 @@ class TagViewSet(PermissionsAwareDocumentCountMixin, ModelViewSet[Tag]):
     filterset_class = TagFilterSet
     ordering_fields = ("color", "name", "matching_algorithm", "match", "document_count")
 
+    def perform_destroy(self, instance):
+        tags = _with_tag_descendants(Tag.objects.filter(pk=instance.pk))
+        if tags.exclude(
+            pk__in=permitted_object_ids(self.request.user, Tag, "delete_tag"),
+        ).exists():
+            raise PermissionDenied(_("Insufficient permissions."))
+        super().perform_destroy(instance)
+
     def get_serializer_context(self):
         context = super().get_serializer_context()
         context["document_count_filter"] = self.get_document_count_filter()
@@ -619,7 +644,7 @@ class TagViewSet(PermissionsAwareDocumentCountMixin, ModelViewSet[Tag]):
         queryset = queryset.order_by(*ordering)
 
         all_tags = list(queryset)
-        descendant_pks = {pk for tag in all_tags for pk in tag.get_descendants_pks()}
+        descendant_pks = Tag.get_hierarchy().descendants(t.pk for t in all_tags)
 
         if descendant_pks:
             user = getattr(getattr(self, "request", None), "user", None)
@@ -813,12 +838,7 @@ class EmailDocumentDetailSchema(EmailSerializer):
     notes=extend_schema(
         description="View, add, or delete notes for the document",
         methods=["GET", "POST", "DELETE"],
-        request=inline_serializer(
-            name="NoteCreateRequest",
-            fields={
-                "note": serializers.CharField(),
-            },
-        ),
+        request=NoteCreateSerializer,
         parameters=[
             OpenApiParameter(
                 name="id",
@@ -1001,81 +1021,84 @@ class DocumentViewSet(
         "custom_field_",
     )
 
-    def _get_selection_data_for_queryset(self, queryset):
-        # Resolve once instead of once per model below. `queryset` can carry an
-        # arbitrarily expensive WHERE clause (user filters plus the permission
-        # filter); re-embedding it as a subquery inside 5 separate Count(...)
-        # calls forces the database to re-evaluate that whole thing 5 times, and
-        # -- for FK relations especially -- can defeat semi-join planning
-        # entirely at scale. A concrete id list is cheap to reuse.
-        # order_by() drops the default/user ordering -- irrelevant for a plain
-        # id list, but left in place it forces a sort over the full filtered
-        # set before the ids can even be collected.
-        document_ids = list(queryset.order_by().values_list("pk", flat=True))
+    # Bound the IN clauses used for search results and through-table lookups.
+    selection_data_batch_size = 10_000
 
-        correspondents = Correspondent.objects.annotate(
-            document_count=Count(
-                "documents",
-                filter=Q(documents__id__in=document_ids),
-                distinct=True,
-            ),
+    def _get_selection_data_for_queryset(
+        self,
+        queryset: QuerySet[Document],
+        *,
+        search_ids: list[int] | None = None,
+    ) -> dict[str, list[dict[str, int]]]:
+        # Keep permission and filter predicates at document granularity.
+        # Reusing the filtered queryset as a subquery for each count is slow.
+        rows = (
+            queryset.order_by()
+            .prefetch_related(None)
+            .values_list(
+                "pk",
+                "correspondent_id",
+                "document_type_id",
+                "storage_path_id",
+                "folder_id",
+            )
         )
-        document_types = DocumentType.objects.annotate(
-            document_count=Count(
-                "documents",
-                filter=Q(documents__id__in=document_ids),
-                distinct=True,
-            ),
-        )
-        storage_paths = StoragePath.objects.annotate(
-            document_count=Count(
-                "documents",
-                filter=Q(documents__id__in=document_ids),
-                distinct=True,
-            ),
-        )
-        folders = Folder.objects.annotate(
-            document_count=Count(
-                "documents",
-                filter=Q(documents__id__in=document_ids),
-                distinct=True,
-            ),
-        )
-        # Tag and CustomField reach Document through an M2M/through-model table;
-        # a plain Count(filter=...) there is a much more expensive plan than the
-        # FK relations above once the bridge table is large -- see
-        # annotate_document_count_by_ids() for why.
-        tags = annotate_document_count_by_ids(
-            Tag.objects.all(),
-            through_model=Document.tags.through,
-            related_object_field="tag_id",
-            document_ids=document_ids,
-        )
-        custom_fields = annotate_document_count_by_ids(
-            CustomField.objects.all(),
-            through_model=CustomFieldInstance,
-            related_object_field="field_id",
-            document_ids=document_ids,
-        )
+        batch_size = self.selection_data_batch_size
+
+        def document_rows():
+            if search_ids is None:
+                yield from rows.iterator()
+            else:
+                for start in range(0, len(search_ids), batch_size):
+                    yield from rows.filter(
+                        pk__in=search_ids[start : start + batch_size],
+                    ).iterator()
+
+        correspondents: Counter[int | None] = Counter()
+        document_types: Counter[int | None] = Counter()
+        storage_paths: Counter[int | None] = Counter()
+        folders: Counter[int | None] = Counter()
+        document_ids: set[int] = set()
+        for pk, correspondent, document_type, storage_path, folder in document_rows():
+            # Filters that join multi-valued relations can repeat a document.
+            if pk in document_ids:
+                continue
+            document_ids.add(pk)
+            correspondents[correspondent] += 1
+            document_types[document_type] += 1
+            storage_paths[storage_path] += 1
+            folders[folder] += 1
+
+        tags: Counter[int | None] = Counter()
+        custom_fields: Counter[int | None] = Counter()
+        ids = iter(document_ids)
+        while batch := list(islice(ids, batch_size)):
+            for model, field, counts in (
+                (Document.tags.through, "tag_id", tags),
+                (CustomFieldInstance, "field_id", custom_fields),
+            ):
+                counts.update(
+                    dict(
+                        model.objects.filter(document_id__in=batch)
+                        .order_by()
+                        .values_list(field)
+                        .annotate(document_count=Count("document_id")),
+                    ),
+                )
+
+        def selection(model: type[Model], counts: Counter[int | None]):
+            return [
+                {"id": pk, "document_count": counts[pk]}
+                for pk in model._default_manager.values_list("pk", flat=True)
+            ]
+
         return {
-            "selected_correspondents": [
-                {"id": t.id, "document_count": t.document_count} for t in correspondents
-            ],
-            "selected_tags": [
-                {"id": t.id, "document_count": t.document_count} for t in tags
-            ],
-            "selected_document_types": [
-                {"id": t.id, "document_count": t.document_count} for t in document_types
-            ],
-            "selected_storage_paths": [
-                {"id": t.id, "document_count": t.document_count} for t in storage_paths
-            ],
-            "selected_folders": [
-                {"id": t.id, "document_count": t.document_count} for t in folders
-            ],
-            "selected_custom_fields": [
-                {"id": t.id, "document_count": t.document_count} for t in custom_fields
-            ],
+            "selected_correspondents": selection(Correspondent, correspondents),
+            "selected_tags": selection(Tag, tags),
+            "selected_document_types": selection(DocumentType, document_types),
+            "selected_storage_paths": selection(StoragePath, storage_paths),
+            "selected_folders": selection(Folder, folders),
+            "selected_custom_fields": selection(CustomField, custom_fields),
         }
 
     @classmethod
@@ -1877,19 +1900,23 @@ class DocumentViewSet(
                     {"error": "Error retrieving notes, check logs for more detail."},
                 )
         elif request.method == "POST":
-            try:
-                if currentUser is not None and not has_perms_owner_aware(
-                    currentUser,
-                    "change_document",
-                    doc,
-                ):
-                    return HttpResponseForbidden(
-                        "Insufficient permissions to create notes",
-                    )
+            if currentUser is not None and not has_perms_owner_aware(
+                currentUser,
+                "change_document",
+                doc,
+            ):
+                return HttpResponseForbidden(
+                    "Insufficient permissions to create notes",
+                )
 
+            note_serializer = NoteCreateSerializer(data=request.data)
+            note_serializer.is_valid(raise_exception=True)
+
+            try:
                 c = Note.objects.create(
                     document=doc,
-                    note=request.data["note"],
+                    note=note_serializer.validated_data["note"],
+                    format=note_serializer.validated_data["format"],
                     user=currentUser,
                 )
                 # If audit log is enabled make an entry in the log
@@ -2722,13 +2749,10 @@ class UnifiedSearchViewSet(DocumentViewSet):
                 if get_boolean(
                     str(request.query_params.get("include_selection_data", "false")),
                 ):
-                    # NOTE: pk__in=ordered_ids generates a large SQL IN clause
-                    # for big result sets.  Acceptable today but may need a temp
-                    # table or chunked approach if selection_data becomes slow
-                    # at scale (tens of thousands of matching documents).
                     response.data["selection_data"] = (
                         self._get_selection_data_for_queryset(
-                            filtered_qs.filter(pk__in=result.ordered_ids),
+                            filtered_qs,
+                            search_ids=result.ordered_ids,
                         )
                     )
                 return response
@@ -2958,19 +2982,32 @@ class DocumentSelectionMixin:
 class DocumentOperationPermissionMixin(PassUserMixin, DocumentSelectionMixin):
     permission_classes = (IsAuthenticated,)
     parser_classes = (parsers.JSONParser,)
-    METHOD_NAMES_REQUIRING_USER = {
-        "split",
-        "merge",
-        "rotate",
-        "delete_pages",
-        "edit_pdf",
-        "remove_password",
-        "merge_as_versions",
-    }
-    # merge_as_versions doesn't queue any consume tasks
-    METHOD_NAMES_REQUIRING_TRIGGER_SOURCE = METHOD_NAMES_REQUIRING_USER - {
-        "merge_as_versions",
-    }
+
+    def _queue_bulk_operation(self, method, documents, parameters, from_webui):
+        if "update_callback" in parameters:
+            raise ValueError("Unsupported bulk operation parameter: update_callback")
+        trigger_source = (
+            PaperlessTask.TriggerSource.WEB_UI
+            if from_webui
+            else PaperlessTask.TriggerSource.API_UPLOAD
+        )
+        final_parameters = parameters.copy()
+        if method.__name__ in USER_OPERATIONS:
+            final_parameters["user"] = self.request.user
+        if method.__name__ in TRIGGER_SOURCE_OPERATIONS:
+            final_parameters["trigger_source"] = trigger_source
+        signature(method).bind(documents, **final_parameters)
+        task = execute_bulk_operation.apply_async(
+            kwargs={
+                "operation": method.__name__,
+                "document_ids": documents,
+                "parameters": parameters,
+                "user_id": self.request.user.pk,
+                "trigger_source": trigger_source,
+            },
+            headers={"trigger_source": trigger_source},
+        )
+        return Response({"result": "OK", "task_id": task.id})
 
     def _has_document_permissions(
         self,
@@ -3017,6 +3054,7 @@ class DocumentOperationPermissionMixin(PassUserMixin, DocumentSelectionMixin):
                     bulk_edit.edit_pdf,
                     bulk_edit.merge_as_versions,
                     bulk_edit.remove_password,
+                    bulk_edit.run_workflow,
                 ]
             )
             or (
@@ -3091,16 +3129,7 @@ class DocumentOperationPermissionMixin(PassUserMixin, DocumentSelectionMixin):
         user = self.request.user
         from_webui = validated_data.get("from_webui", False)
 
-        if method.__name__ in self.METHOD_NAMES_REQUIRING_USER:
-            parameters["user"] = user
-        if method.__name__ in self.METHOD_NAMES_REQUIRING_TRIGGER_SOURCE:
-            parameters["trigger_source"] = (
-                PaperlessTask.TriggerSource.WEB_UI
-                if from_webui
-                else PaperlessTask.TriggerSource.API_UPLOAD
-            )
-
-        if not self._has_document_permissions(
+        if not has_document_operation_permissions(
             user=user,
             documents=documents,
             method=method,
@@ -3109,8 +3138,12 @@ class DocumentOperationPermissionMixin(PassUserMixin, DocumentSelectionMixin):
             return HttpResponseForbidden("Insufficient permissions")
 
         try:
-            result = method(documents, **parameters)
-            return Response({"result": result})
+            return self._queue_bulk_operation(
+                method,
+                documents,
+                parameters,
+                from_webui,
+            )
         except Exception as e:
             logger.warning(f"An error occurred performing {operation_label}: {e!s}")
             return HttpResponseBadRequest(
@@ -3131,66 +3164,14 @@ class DocumentOperationPermissionMixin(PassUserMixin, DocumentSelectionMixin):
                 name="BulkEditDocumentsResult",
                 fields={
                     "result": serializers.CharField(),
+                    "task_id": serializers.CharField(),
                 },
             ),
         },
     ),
 )
 class BulkEditView(DocumentOperationPermissionMixin):
-    MODIFIED_FIELD_BY_METHOD = {
-        "set_correspondent": "correspondent",
-        "set_document_type": "document_type",
-        "set_storage_path": "storage_path",
-        "add_tag": "tags",
-        "remove_tag": "tags",
-        "modify_tags": "tags",
-        "modify_custom_fields": "custom_fields",
-        "set_permissions": None,
-        "delete": "deleted_at",
-        # These operations create new documents/versions no longer altering
-        # fields on the selected document in place
-        "rotate": None,
-        "delete_pages": None,
-        "split": None,
-        "merge": None,
-        "edit_pdf": None,
-        "reprocess": "checksum",
-        "remove_password": None,
-    }
-
     serializer_class = BulkEditSerializer
-
-    @staticmethod
-    def _snapshot_field(doc_ids: list[int], field: str) -> dict[int, Any]:
-        """
-        Returns each document's current value of field, for the audit log.
-
-        Tags and custom fields are one row per value, so they are gathered
-        into a sorted list of pks per document (empty when there are none).
-        Reading them through Document.values() instead would join those rows
-        and return one arbitrary value per document.
-        """
-        if field == "tags":
-            rows = (
-                Document.tags.through.objects.filter(document_id__in=doc_ids)
-                .order_by("tag_id")
-                .values_list("document_id", "tag_id")
-            )
-        elif field == "custom_fields":
-            rows = (
-                CustomFieldInstance.objects.filter(document_id__in=doc_ids)
-                .order_by("pk")
-                .values_list("document_id", "pk")
-            )
-        else:
-            return dict(
-                Document.objects.filter(pk__in=doc_ids).values_list("pk", field),
-            )
-
-        values: dict[int, list[int]] = {doc_id: [] for doc_id in doc_ids}
-        for doc_id, pk in rows:
-            values[doc_id].append(pk)
-        return values
 
     def post(self, request, *args, **kwargs):
         request_method = request.data.get("method")
@@ -3219,15 +3200,7 @@ class BulkEditView(DocumentOperationPermissionMixin):
             user=user,
             validated_data=serializer.validated_data,
         )
-        if method.__name__ in self.METHOD_NAMES_REQUIRING_USER:
-            parameters["user"] = user
-        if method.__name__ in self.METHOD_NAMES_REQUIRING_TRIGGER_SOURCE:
-            parameters["trigger_source"] = (
-                PaperlessTask.TriggerSource.WEB_UI
-                if from_webui
-                else PaperlessTask.TriggerSource.API_UPLOAD
-            )
-        if not self._has_document_permissions(
+        if not has_document_operation_permissions(
             user=user,
             documents=documents,
             method=method,
@@ -3236,31 +3209,12 @@ class BulkEditView(DocumentOperationPermissionMixin):
             return HttpResponseForbidden("Insufficient permissions")
 
         try:
-            modified_field = self.MODIFIED_FIELD_BY_METHOD.get(method.__name__, None)
-            if settings.AUDIT_LOG_ENABLED and modified_field:
-                old_values = self._snapshot_field(documents, modified_field)
-
-            result = method(documents, **parameters)
-
-            if settings.AUDIT_LOG_ENABLED and modified_field:
-                new_values = self._snapshot_field(documents, modified_field)
-                for doc in Document.objects.filter(pk__in=documents):
-                    LogEntry.objects.log_create(
-                        instance=doc,
-                        changes={
-                            modified_field: [
-                                old_values[doc.pk],
-                                new_values[doc.pk],
-                            ],
-                        },
-                        action=LogEntry.Action.UPDATE,
-                        actor=user,
-                        additional_data={
-                            "reason": f"Bulk edit: {method.__name__}",
-                        },
-                    )
-
-            return Response({"result": result})
+            return self._queue_bulk_operation(
+                method,
+                documents,
+                parameters,
+                from_webui,
+            )
         except Exception as e:
             logger.warning(f"An error occurred performing bulk edit: {e!s}")
             return HttpResponseBadRequest(
@@ -3277,6 +3231,7 @@ class BulkEditView(DocumentOperationPermissionMixin):
                 name="RotateDocumentsResult",
                 fields={
                     "result": serializers.CharField(),
+                    "task_id": serializers.CharField(),
                 },
             ),
         },
@@ -3304,6 +3259,7 @@ class RotateDocumentsView(DocumentOperationPermissionMixin):
                 name="MergeDocumentsResult",
                 fields={
                     "result": serializers.CharField(),
+                    "task_id": serializers.CharField(),
                 },
             ),
         },
@@ -3331,6 +3287,7 @@ class MergeDocumentsView(DocumentOperationPermissionMixin):
                 name="MergeDocumentsAsVersionsResult",
                 fields={
                     "result": serializers.CharField(),
+                    "task_id": serializers.CharField(),
                 },
             ),
         },
@@ -3358,6 +3315,7 @@ class MergeDocumentsAsVersionsView(DocumentOperationPermissionMixin):
                 name="DeleteDocumentsResult",
                 fields={
                     "result": serializers.CharField(),
+                    "task_id": serializers.CharField(),
                 },
             ),
         },
@@ -3385,6 +3343,7 @@ class DeleteDocumentsView(DocumentOperationPermissionMixin):
                 name="ReprocessDocumentsResult",
                 fields={
                     "result": serializers.CharField(),
+                    "task_id": serializers.CharField(),
                 },
             ),
         },
@@ -3412,6 +3371,7 @@ class ReprocessDocumentsView(DocumentOperationPermissionMixin):
                 name="EditPdfDocumentsResult",
                 fields={
                     "result": serializers.CharField(),
+                    "task_id": serializers.CharField(),
                 },
             ),
         },
@@ -3439,6 +3399,7 @@ class EditPdfDocumentsView(DocumentOperationPermissionMixin):
                 name="RemovePasswordDocumentsResult",
                 fields={
                     "result": serializers.CharField(),
+                    "task_id": serializers.CharField(),
                 },
             ),
         },
@@ -4077,7 +4038,7 @@ class StatisticsView(GenericAPIView[Any]):
             for row in mime_type_stats
         ]
 
-        current_asn = Document.objects.aggregate(
+        current_asn = documents.aggregate(
             Max("archive_serial_number", default=0),
         ).get(
             "archive_serial_number__max",
@@ -5135,12 +5096,7 @@ class BulkEditObjectsView(PassUserMixin):
             if object_type == "tags":
                 editable_ids = set(user_permitted_objects.values_list("pk", flat=True))
                 all_ids = set(objs.values_list("pk", flat=True))
-                for tag in objs:
-                    all_ids.update(
-                        descendant.pk
-                        for descendant in tag.get_descendants()
-                        if descendant.pk in editable_ids
-                    )
+                all_ids.update(Tag.get_hierarchy().descendants(all_ids) & editable_ids)
                 objs = object_class.objects.filter(pk__in=all_ids)
             objs = objs.select_related("owner")
             object_ids = list(objs.values_list("pk", flat=True))
@@ -5148,6 +5104,9 @@ class BulkEditObjectsView(PassUserMixin):
             objs = object_class.objects.select_related("owner").filter(
                 pk__in=object_ids,
             )
+
+        if object_type == "tags" and operation == "delete":
+            objs = _with_tag_descendants(objs)
 
         if not user.is_superuser:
             perm = f"documents.{perm_codename}"
@@ -5248,6 +5207,8 @@ class WorkflowViewSet(ModelViewSet[Workflow]):
 
     serializer_class = WorkflowSerializer
     pagination_class = StandardPagination
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = WorkflowFilterSet
 
     model = Workflow
 

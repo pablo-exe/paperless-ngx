@@ -5,6 +5,7 @@
 # Virtual environment & similar
 .venv/
 ./src-ui/node_modules
+**/.pnpm-store
 ./src-ui/dist
 # IDE folders
 .idea/

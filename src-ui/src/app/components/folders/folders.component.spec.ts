@@ -7,10 +7,13 @@ import { Subject, of, throwError } from 'rxjs'
 import { BootstrapIconComponent } from 'src/app/components/common/bootstrap-icon/bootstrap-icon.component'
 import { EditDialogMode } from 'src/app/components/common/edit-dialog/edit-dialog.component'
 import { Folder } from 'src/app/data/folder'
+import { PaperlessTaskStatus } from 'src/app/data/paperless-task'
 import { PermissionsService } from 'src/app/services/permissions.service'
 import { DocumentService } from 'src/app/services/rest/document.service'
 import { FolderService } from 'src/app/services/rest/folder.service'
+import { TaskNotificationService } from 'src/app/services/task-notification.service'
 import { ToastService } from 'src/app/services/toast.service'
+import { WebsocketStatusService } from 'src/app/services/websocket-status.service'
 import { FoldersComponent } from './folders.component'
 
 const tree: Folder[] = [
@@ -47,11 +50,23 @@ describe('FoldersComponent', () => {
   let toastService: ToastService
   let modalService: NgbModal
   let permissionsService: PermissionsService
+  let operationStatus: Subject<any>
+  let queued: jest.Mock
 
   beforeEach(async () => {
+    operationStatus = new Subject()
+    queued = jest.fn()
     TestBed.configureTestingModule({
       imports: [NgbModule, BootstrapIconComponent, FoldersComponent],
       providers: [
+        {
+          provide: TaskNotificationService,
+          useValue: { showQueued: queued },
+        },
+        {
+          provide: WebsocketStatusService,
+          useValue: { onBulkOperationStatus: () => operationStatus },
+        },
         {
           provide: PermissionsService,
           useValue: {
@@ -137,7 +152,7 @@ describe('FoldersComponent', () => {
   it('should move documents via bulk edit', () => {
     const bulkSpy = jest
       .spyOn(documentService, 'bulkEdit')
-      .mockReturnValue(of(true) as any)
+      .mockReturnValue(of({ result: 'OK', task_id: 'folder-move' }))
     component.openFolder(component.foldersById.get(1))
     component.moveDocsTo(2, [10, 11])
     expect(bulkSpy).toHaveBeenCalledWith(
@@ -147,6 +162,26 @@ describe('FoldersComponent', () => {
         folder: 2,
       }
     )
+    expect(queued).toHaveBeenCalledWith(
+      'folder-move',
+      expect.any(String),
+      expect.objectContaining({ content: expect.any(String) })
+    )
+  })
+
+  it('refreshes folders only when the queued move completes', () => {
+    jest
+      .spyOn(documentService, 'bulkEdit')
+      .mockReturnValue(of({ result: 'OK', task_id: 'folder-move' }))
+    const reload = jest.spyOn(component, 'reloadTree')
+    component.moveDocsTo(2, [10])
+    expect(reload).not.toHaveBeenCalled()
+    operationStatus.next({
+      operation: 'set_folder',
+      task_id: 'folder-move',
+      status: PaperlessTaskStatus.Success,
+    })
+    expect(reload).toHaveBeenCalled()
   })
 
   it('should open a create dialog', () => {
@@ -195,7 +230,7 @@ describe('FoldersComponent', () => {
   it('moves the selected group when dragging a selected document', () => {
     const bulkSpy = jest
       .spyOn(documentService, 'bulkEdit')
-      .mockReturnValue(of(true))
+      .mockReturnValue(of({ result: 'OK', task_id: 'folder-move' }))
     component.openFolder(tree[0], false)
     component.selected = new Set([10, 11])
     component.onDocDragStart(
@@ -295,7 +330,7 @@ describe('FoldersComponent', () => {
   it('should delete a folder', () => {
     const delSpy = jest
       .spyOn(folderService, 'delete')
-      .mockReturnValue(of(true) as any)
+      .mockReturnValue(of({ result: 'OK', task_id: 'folder-move' }) as any)
     const toastSpy = jest.spyOn(toastService, 'showInfo')
     component.deleteFolder(tree[1])
     expect(delSpy).toHaveBeenCalled()

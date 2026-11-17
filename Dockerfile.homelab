@@ -6,7 +6,7 @@ RUN corepack enable && pnpm install --frozen-lockfile
 ENV NG_BUILD_MAX_WORKERS=2 NODE_OPTIONS=--max-old-space-size=2048
 RUN pnpm run build --configuration production --localize
 
-FROM ghcr.io/paperless-ngx/paperless-ngx:3.4.2@sha256:d704e84f88300eb6ab001ab15720a2330ff99169cf9f94d6b8fcc44b63a84c84
+FROM ghcr.io/paperless-ngx/paperless-ngx:3.5.0@sha256:8c1e2c4e0abb50576c7a09f062ed581e2d955e298a302e1e196a35338639005e
 USER root
 RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates \
     && rm -rf /var/lib/apt/lists/* \

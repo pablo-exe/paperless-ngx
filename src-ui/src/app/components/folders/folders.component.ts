@@ -11,12 +11,15 @@ import { EditDialogMode } from 'src/app/components/common/edit-dialog/edit-dialo
 import { FolderEditDialogComponent } from 'src/app/components/common/edit-dialog/folder-edit-dialog/folder-edit-dialog.component'
 import { Document } from 'src/app/data/document'
 import { Folder } from 'src/app/data/folder'
+import { PaperlessTaskStatus } from 'src/app/data/paperless-task'
 import { IfPermissionsDirective } from 'src/app/directives/if-permissions.directive'
 import { CustomDatePipe } from 'src/app/pipes/custom-date.pipe'
 import { PermissionsService } from 'src/app/services/permissions.service'
 import { DocumentService } from 'src/app/services/rest/document.service'
 import { FolderService } from 'src/app/services/rest/folder.service'
+import { TaskNotificationService } from 'src/app/services/task-notification.service'
 import { ToastService } from 'src/app/services/toast.service'
+import { WebsocketStatusService } from 'src/app/services/websocket-status.service'
 import { ConfirmButtonComponent } from '../common/confirm-button/confirm-button.component'
 import { PageHeaderComponent } from '../common/page-header/page-header.component'
 import { LoadingComponentWithPermissions } from '../loading-component/loading.component'
@@ -44,6 +47,8 @@ export class FoldersComponent
   private documentService = inject(DocumentService)
   private modalService = inject(NgbModal)
   private toastService = inject(ToastService)
+  private taskNotifications = inject(TaskNotificationService)
+  private websocketStatus = inject(WebsocketStatusService)
   private route = inject(ActivatedRoute)
   private router = inject(Router)
   private permissionsService = inject(PermissionsService)
@@ -100,6 +105,19 @@ export class FoldersComponent
   }
 
   ngOnInit(): void {
+    this.websocketStatus
+      .onBulkOperationStatus()
+      .pipe(takeUntil(this.unsubscribeNotifier))
+      .subscribe((result) => {
+        if (
+          result.operation === 'set_folder' &&
+          result.status === PaperlessTaskStatus.Success
+        ) {
+          this.documentService.clearCache()
+          this.reloadTree()
+          this.loadDocuments()
+        }
+      })
     this.reloadTree(() => {
       this.route.paramMap
         .pipe(takeUntil(this.unsubscribeNotifier))
@@ -378,14 +396,15 @@ export class FoldersComponent
         })
       )
       .subscribe({
-        next: () => {
-          this.toastService.showInfo(
-            $localize`Moved ${docIds.length} document(s) to ${destination}.`
+        next: ({ task_id }) => {
+          this.taskNotifications.showQueued(
+            task_id,
+            $localize`Move to folder queued.`,
+            {
+              content: $localize`Moved ${docIds.length} document(s) to ${destination}.`,
+            }
           )
           this.selected.clear()
-          this.documentService.clearCache()
-          this.reloadTree()
-          this.loadDocuments()
         },
         error: (e) => {
           this.toastService.showError($localize`Error moving documents`, e)
