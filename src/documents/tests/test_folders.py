@@ -1,4 +1,5 @@
 from datetime import date
+from unittest import mock
 
 from django.core.exceptions import ValidationError
 from django.test import TestCase
@@ -94,6 +95,9 @@ class TestSetFolderSignal(DirectoriesMixin, TestCase):
 class TestBulkEditFolder(DirectoriesMixin, TestCase):
     def setUp(self) -> None:
         super().setUp()
+        patcher = mock.patch("documents.bulk_edit.bulk_update_documents.apply_async")
+        self.update_documents = patcher.start()
+        self.addCleanup(patcher.stop)
         self.f1 = Folder.objects.create(name="f1")
         self.f2 = Folder.objects.create(name="f2")
         self.doc1 = Document.objects.create(
@@ -111,6 +115,10 @@ class TestBulkEditFolder(DirectoriesMixin, TestCase):
 
     def test_set_folder_single(self) -> None:
         bulk_edit.set_folder([self.doc1.id], self.f2.id)
+        self.assertEqual(
+            self.update_documents.call_args.kwargs["kwargs"]["document_ids"],
+            [self.doc1.pk],
+        )
         self.doc1.refresh_from_db()
         self.assertEqual(self.doc1.folder_id, self.f2.id)
         # doc2 untouched

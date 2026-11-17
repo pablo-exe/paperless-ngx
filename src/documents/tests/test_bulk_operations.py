@@ -240,7 +240,7 @@ def test_queue_failure_does_not_change_documents(bulk_setup):
     assert doc.correspondent_id is None
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 @pytest.mark.parametrize("failed", [False, True])
 def test_tracked_outcome_records_initiator_and_result(bulk_setup, failed):
     user, _, doc, _ = bulk_setup
@@ -321,7 +321,7 @@ def test_large_filtered_selection_is_one_task(bulk_setup):
     assert len(enqueue.call_args.kwargs["kwargs"]["document_ids"]) == 10_000
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 @pytest.mark.parametrize(
     ("outcome", "expected_status", "expected_error"),
     [
